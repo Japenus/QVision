@@ -1,0 +1,35 @@
+#ifndef CHARRECOGDLG_H
+#define CHARRECOGDLG_H
+#include <QObject>
+#include "tools.h"
+#include "global.h"
+class CharRecogDlg:public QDialog
+{
+    Q_OBJECT
+public:
+    Tools T;
+    QString picPath;
+    QString getPath();
+    void setPath(QString pic);
+    CharRecogDlg(QWidget *parent=nullptr);
+private slots:
+    void Clean();
+    void MakeBig();
+    void SaveText();
+    void ShutDown();
+    void Recognize();
+    void getPicture();
+private:
+    Mat charImg;
+    QLabel *tip1;
+    QLabel *tip2;
+    QLabel *DisplayPic;
+    QTextEdit *ShowResult;
+    QPushButton *getPicBtn;
+    QPushButton *makeBigBtn;
+    QPushButton *saveTxtBtn;
+    QPushButton *clearBtn;
+    QPushButton *recogBtn;
+    QPushButton *exitBtn;
+};
+#endif // CHARRECOGDLG_H
