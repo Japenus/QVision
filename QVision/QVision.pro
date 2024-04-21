@@ -11,9 +11,9 @@ CONFIG += c++17
 #     LIBS += -L$$OPENCV_PATH -l$$libName
 # }
 
-INCLUDEPATH+=core/opencv2
-INCLUDEPATH+=core/tesseract
-INCLUDEPATH+=core/leptonica
+INCLUDEPATH+=include/opencv2
+INCLUDEPATH+=include/tesseract
+INCLUDEPATH+=include/leptonica
 LIBS +=-L$$PWD/library -lopencv_world480 -lleptonica-1.84.0 -ltesseract53
 
 INCLUDEPATH+=$$PWD/src
