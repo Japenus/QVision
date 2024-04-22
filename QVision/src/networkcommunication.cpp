@@ -1,6 +1,8 @@
 #include "networkcommunication.h"
 NetworkCommunication::NetworkCommunication(QWidget *parent):QMainWindow(parent)
 {
+    tcpServer = new QTcpServer();
+    tcpSocket = new QTcpSocket();
     QIcon icon("Spyder.png");
     QMenuBar *menubar = new QMenuBar();
     QMenu *menulist = menubar->addMenu("Operation");
@@ -26,16 +28,19 @@ NetworkCommunication::NetworkCommunication(QWidget *parent):QMainWindow(parent)
     clientIP->setEditable(true);
     serverIP->setEditable(true);
 
-    clientIP->setCurrentText("localhost");
-    clientPort->setText("2222");
+    clientPort->setText("1234");
+    clientIP->setCurrentText("127.0.0.1");
+
+    serverPort->setText("1234");
+    serverIP->setCurrentText("127.0.0.1");
 
     sendData=new QTextEdit();
     recvData=new QTextEdit();
     curStatus=new QTextEdit();
-    connectBtn = new QPushButton("连接");
-    disconnectBtn = new QPushButton("断开");
     sendBtn = new QPushButton("发送");
     stopBtn = new QPushButton("停止");
+    connectBtn = new QPushButton("连接");
+    disconnectBtn = new QPushButton("断开");
     tip1->setAlignment(Qt::AlignCenter);
     tip2->setAlignment(Qt::AlignCenter);
 
@@ -128,18 +133,33 @@ void NetworkCommunication::createServer()
 
 void NetworkCommunication::senData()
 {
-
+    QString sendStr = sendData->toPlainText().toLatin1().toLower();
+    QByteArray sendData;
+    QString showStr;
+    QTcpSocket* tmpSocket = NULL;
+    if (connCount)
+    {
+        tmpSocket = tcpSocket;
+    }
+    tmpSocket->write(sendData, sendData.size());
+    recvData->setText(sendData);
 }
 
 void NetworkCommunication::connected()
 {
-    QTcpServer server = qobject_cast<QTcpServer>(sender());
-    if(!server.isListening()) return;
-    QTcpSocket *socket = server.nextPendingConnection();
-    if(socket->waitForConnected(300)){
+    QHostAddress serverIp;
+    serverIp.setAddress(serverIP->currentText());
+    if (tcpSocket->isOpen()) tcpSocket->close();
+    uint16_t port=serverPort->text().toUShort();
+    tcpSocket->connectToHost(serverIp, port);
+    if (!tcpSocket->waitForConnected(600))
+    {
+        curStatus->setText("连接失败!");
+        return;
+    }else{
         curStatus->setText("连接成功!");
-    } else {
-        curStatus->setText("连接失败,ip地址:"/*+ip+"端口号:"+QString::number(port)*/);
+        recvData->setText(">>客户端已登录");
+        connCount = 1;
     }
 }
 
@@ -150,6 +170,7 @@ void NetworkCommunication::disconnected()
         socket.disconnectFromHost();
         socket.close();
         curStatus->setText("连接已断开！");
+        recvData->setText("<<客户端退出");
     }
 }
 
