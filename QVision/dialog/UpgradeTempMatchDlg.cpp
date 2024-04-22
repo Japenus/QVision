@@ -19,11 +19,11 @@ UpgradeTempMatchDlg::UpgradeTempMatchDlg(QWidget *parent):QDialog(parent)
     okBtn=new QPushButton("Ok",this);
     cancelBtn=new QPushButton("cancel",this);
 
-    ImgThresBox->setValue(80);
+    ImgThresBox->setValue(90);
     ImgThresBox->setRange(0,255);
     ImgThresBox->setSingleStep(10);
 
-    ScalestepBox->setValue(0.01);
+    ScalestepBox->setValue(0.5);
     ScalestepBox->setRange(0,1);
     ScalestepBox->setSingleStep(0.01);
 
@@ -35,12 +35,12 @@ UpgradeTempMatchDlg::UpgradeTempMatchDlg(QWidget *parent):QDialog(parent)
     MaxScaleRatioBox->setRange(-2,2);
     MaxScaleRatioBox->setSingleStep(0.5);
 
-    PreProcessThresBox->setValue(0.7);
-    PreProcessThresBox->setRange(0,10);
-    PreProcessThresBox->setSingleStep(0.1);
+    PreProcessThresBox->setValue(0.2);
+    PreProcessThresBox->setRange(0,1);
+    PreProcessThresBox->setSingleStep(0.01);
 
-    OverlapThresBox->setValue(0.001);
-    OverlapThresBox->setRange(0,5);
+    OverlapThresBox->setValue(0.995);
+    OverlapThresBox->setRange(0,2);
     OverlapThresBox->setSingleStep(0.001);
     OverlapThresBox->setDecimals(3);
 

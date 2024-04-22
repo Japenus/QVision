@@ -11,7 +11,7 @@ public:
     int getValue();
     void setValue(int val);
 public:
-    int matcThreshold;
+    int thresh;
 private slots:
     void onOkClicked();
     void onCancelClicked();

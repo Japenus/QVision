@@ -278,8 +278,7 @@ Mat ImgAlgorithm::MatchTemp(Mat src, Mat target, int thresVal)
     output = tools.ThresholdProcess(roi,thresVal);
     absdiff(output, target, diff) ;
     diff.convertTo(diff,CV_32F);
-    Scalar mse=sum(diff.mul(diff))(output.rows * output.cols * output.channels());
-    //峰值信噪比
+    Scalar mse=sum(diff.mul(diff))/(output.rows * output.cols * output.channels());
     double psnr= 10.0 * log10((255 * 255)/mse[0]);
     string Correlation = format("%.2f", maxVal);
     string psnRatio = format("%.2f", psnr);
@@ -302,20 +301,20 @@ Mat ImgAlgorithm::MatchTemp(Mat src, Mat target, int thresVal)
 Mat ImgAlgorithm::FeaturePointMatch(Mat m1, Mat m2)
 {
     auto start = chrono::high_resolution_clock::now();
-    pyrDown (m1, m1) ;
-    pyrDown(m2,m2) ;
+    pyrDown(m1,m1);
+    pyrDown(m2,m2);
     vector<DMatch> best;
-    vector<KeyPoint> p1, p2;
+    vector<KeyPoint> p1,p2;
     vector<Point2f> targetArea;
-    vector<vector<DMatch>>twoPoint;//一对匹配的点
-    Mat d1 , d2, res, thM1 , thM2 ;
-    Point2f tempBest, srcBest, matchedArea;
-    Ptr<SIFT> sift = SIFT::create();//创建特征提取器
+    vector<vector<DMatch>>twoPoint;
+    Mat d1,d2,res,thM1,thM2;
+    Point2f tempBest,srcBest,matchedArea;
+    Ptr<SIFT> sift = SIFT::create();
     thM1 = Process.GrayTransform(m1);
     thM2 = Process.GrayTransform(m2);
     sift->detectAndCompute(thM1, noArray(), p1, d1);
     sift->detectAndCompute(thM2,noArray(), p2,d2);
-    BFMatcher matcher(NORM_L2);//暴力匹配
+    BFMatcher matcher(NORM_L2);
     matcher.knnMatch(d1, d2, twoPoint,2, noArray(), true) ;
     for (int i = 0; i < twoPoint.size(); i++)
     {
@@ -327,8 +326,8 @@ Mat ImgAlgorithm::FeaturePointMatch(Mat m1, Mat m2)
     drawMatches(m1, p1, m2, p2, best, res);
     for (const auto& match : best)
     {
-        tempBest = p1[match.queryIdx].pt; // 获取第一幅图像中的匹配点
-        srcBest = p2[match.trainIdx].pt; // 获取第二幅图像中的匹配点
+        tempBest = p1[match.queryIdx].pt;
+        srcBest = p2[match.trainIdx].pt;
         circle(res,tempBest,5,QVGreen, 2);
         circle(res,srcBest+ Point2f(m1.cols,0),5,QVGreen, 2);
     }
@@ -337,7 +336,7 @@ Mat ImgAlgorithm::FeaturePointMatch(Mat m1, Mat m2)
     srcRect.y-=srcRect.height/2;
     srcRect.width *= 1.5;
     srcRect.height *= 2;
-    rectangle(res, srcRect,QVGreen,1);
+    rectangle(res, srcRect,QVGreen,2,LINE_8);
     auto end = chrono::high_resolution_clock::now();
     auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);
     //Info.MsgBox("检测到旋转角度(度)",angle);
@@ -400,10 +399,10 @@ Mat ImgAlgorithm::HoughBallard(Mat src,Mat temp,double mindist, int level, doubl
     {
         Mat whereTemp = src(tempArea).clone();
         Point2f center(tempArea.x + tempArea.width/2.0,tempArea.y + tempArea.height/2.0);
-        // float Outcir = sqrt(pow(tempArea.width/2.0, 2) + pow(tempArea.height/2.0, 2));
+        float Outcir = sqrt(pow(tempArea.width/2.0, 2) + pow(tempArea.height/2.0, 2));
         float InCir = min(tempArea.width, tempArea.height)/2.0;
-        // circle(src, center,Outcir, QVGreen,10,8,0);
-        circle(src,center,InCir, QVGreen,5,8,0);
+        circle(src, center,Outcir, QVCyan,10,8,0);
+        circle(src,center,InCir, QVYellow,5,8,0);
         circle(src,center,5,QVPurple,-1);
     }
 NullCoord:
@@ -437,9 +436,9 @@ NullCoord:
 }
 
 
-Mat ImgAlgorithm::HoughGuil(Mat src, Mat temp, double mindist, int level, double dp, double xi, int buffersize,
-                            int cannylow,int cannyhigh,int minangle, int maxangle, int anglestep, int anglethreshold,
-                            float minscale,float maxscale,double angleeplise,int scalestep,int scalethreshold,float positionthreshold)
+Mat ImgAlgorithm::HoughGuil(Mat src, Mat temp, double mindist, int level, double dp, double xi,
+    int buffersize,int cannylow,int cannyhigh,int minangle, int maxangle, int anglestep,
+    int anglethreshold,float minscale,float maxscale,double angleeplise,int scalestep,int scalethreshold,float positionthreshold)
 {
     auto start = chrono::high_resolution_clock::now();
     int lineWidth = 1;
@@ -500,32 +499,32 @@ Mat ImgAlgorithm::ShiTomasiDetect(Mat src)
 
 Mat ImgAlgorithm::HarrisDetect(Mat src)
 {
-    Mat gray, corners, res;
+    Mat gray,corners,res;
     gray = Process.GrayTransform(src);
-    cornerHarris(gray, corners, 10,3,0.04);
-    normalize(corners, corners,0,255,NORM_MINMAX, CV_32FC1);
+    cornerHarris(gray,corners,10,3,0.04);
+    normalize(corners,corners,0,255,NORM_MINMAX,CV_32FC1);
     vector<Point2f> HarrisRes;
     int val = 245;
-    src.convertTo(res, CV_8U);
+    src.convertTo(res,CV_8U);
     for(int i = 0; i < corners.rows; ++i){
         for (int j = 0; i< corners.cols; ++i){
-            float response = static_cast<int>(corners.at<float>(i, j));
+            float response = static_cast<int>(corners.at<float>(i,j));
             if (response > val)
             {
-                circle(res,Point(j, i), 20, QVGreen,5,LINE_8);
+                circle(res,Point(j,i),20,QVGreen,5,LINE_8);
                 HarrisRes.push_back(Point(j,i));
             }
         }
     }
     QMessageBox::information(nullptr, QString("提示"),tr("检测到角点数量:%1").arg(HarrisRes.size()));
-    imwrite("output.png", src);
+    imwrite("output.png",src);
     waitKey(0);
     destroyAllWindows();
     return res;
 }
 
 
-//FAST角占检测器(通过在圆周上选择像素占并快速判断是否为角占
+//FAST角占检测器(通过在圆周上选择像素占并快速判断是否为角占)
 Mat ImgAlgorithm::FASTDetect(Mat src)
 {
     Mat res,gray = Process.GrayTransform(src);

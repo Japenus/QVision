@@ -477,11 +477,12 @@ vector<pair<Rect, double>> Tools::TotalArea(const Mat& src, const Mat& temp,doub
 
 void Tools::DrawRotRect(Mat whichimg,const Point2f& rCenter,const Size2f& rSize,float rAngle, Scalar rColor,int rwidth)
 {
+    RotatedRect rEct(rCenter,rSize,rAngle);
     Point2f v[4];
-    RotatedRect rEct(rCenter,rSize, rAngle);
+    rEct.points(v);
     for(int i=0; i < 4; i++)
     {
-        line(whichimg, v[i], v[(i + 1) % 4], rColor, rwidth);
+        line(whichimg, v[i], v[(i + 1) % 4], rColor, rwidth,LINE_8);
     }
 }
 

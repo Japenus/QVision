@@ -22,7 +22,7 @@ BallardDlg::BallardDlg(QWidget *parent):QDialog(parent)
     tip6=new QLabel("低阈值");
     tip7=new QLabel("高阈值");
 
-    minDistBox->setValue(100);
+    minDistBox->setValue(90);
     minDistBox->setRange(0,10000);
     minDistBox->setSingleStep(10);
 
@@ -36,17 +36,17 @@ BallardDlg::BallardDlg(QWidget *parent):QDialog(parent)
 
     buffersizeBox->setValue(1000);
     buffersizeBox->setRange(0,10000);
-    buffersizeBox->setSingleStep(20);
+    buffersizeBox->setSingleStep(100);
 
     voteBox->setValue(40);
     voteBox->setRange(0,360);
     voteBox->setSingleStep(10);
 
-    cannylowBox->setValue(50);
+    cannylowBox->setValue(80);
     cannylowBox->setRange(0,255);
     cannylowBox->setSingleStep(10);
 
-    cannyhighBox->setValue(100);
+    cannyhighBox->setValue(120);
     cannyhighBox->setRange(0,255);
     cannyhighBox->setSingleStep(10);
     cannyhighBox->setFixedWidth(200);

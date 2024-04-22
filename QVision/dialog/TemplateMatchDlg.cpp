@@ -32,15 +32,15 @@ TemplateMatchDlg::TemplateMatchDlg(QWidget *parent):QDialog(parent)
 }
 int TemplateMatchDlg::getValue()
 {
-    return matcThreshold;
+    return thresh;
 }
 void TemplateMatchDlg::setValue(int val)
 {
-    matcThreshold=val;
+    thresh=val;
 }
 void TemplateMatchDlg::onOkClicked()
 {
-    matcThreshold= matchThresval->value();
+    thresh= matchThresval->value();
     accept();
 }
 

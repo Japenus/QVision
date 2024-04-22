@@ -634,14 +634,13 @@ void QVision::on_actionTemplate_Match_triggered()
     QString temPath = getFilepath();
     QString srcPath = getFilepath();
     if (temPath.isEmpty()||srcPath.isEmpty()) return;
-    Mat temp = imread(temPath.toStdString());
     Mat src = imread(srcPath.toStdString());
+    Mat temp = imread(temPath.toStdString());
     if(TMD.exec()== QDialog::Accepted){
-        int thresh=TMD.getValue();
-        TMD.setValue(thresh);
-        TMD.matcThreshold=thresh;
-        Dst=IA.MatchTemp(src, temp, thresh);
-        Save(Dst);
+        int curThresh=TMD.getValue();
+        TMD.setValue(curThresh);
+        TMD.thresh=curThresh;
+        Dst=IA.MatchTemp(src, temp, curThresh);
         Show();
     }
 }
@@ -650,11 +649,11 @@ void QVision::on_actionTemplate_Match_triggered()
 void QVision::on_actionFeature_Point_MAtch_triggered()
 {
     QString temPath = getFilepath();
-    if (temPath.isNull())return;
     QString srcPath = getFilepath();
-    Mat srcl = imread(temPath.toStdString());
+    if (temPath.isEmpty()||srcPath.isEmpty())return;
+    Mat src1 = imread(temPath.toStdString());
     Mat src2 =imread(srcPath.toStdString());
-    Dst=IA.FeaturePointMatch(srcl,src2);
+    Dst=IA.FeaturePointMatch(src1,src2);
     Save(Dst);
     Show();
 }
@@ -663,8 +662,8 @@ void QVision::on_actionFeature_Point_MAtch_triggered()
 void QVision::on_actionUpgrade_TempMatch_triggered()
 {
     QString temPath = getFilepath();
-    if (temPath.isNull()) return;
     QString srcPath = getFilepath();
+    if (temPath.isEmpty()||srcPath.isEmpty()) return;
     Mat temp = imread(temPath.toStdString());
     Mat src = imread(srcPath.toStdString());
     if(UTD.exec()== QDialog::Accepted){
@@ -750,7 +749,7 @@ void QVision::on_actionBallard_triggered()
         BD.vote=vote;
         BD.cannylow=cannylow;
         BD.cannyhigh=cannyhigh;
-        Dst=IA.HoughBallard(src, temp,mindist,level,dp,buffersize,vote,cannylow,cannyhigh);
+        Dst=IA.HoughBallard(src,temp,mindist,level,dp,buffersize,vote,cannylow,cannyhigh);
         Save(Dst);
         Show();
     }

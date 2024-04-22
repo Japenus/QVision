@@ -99,9 +99,11 @@ DataBase::DataBase(QWidget *parent):QMainWindow(parent)
 
 void DataBase::ConnectSQLServer()
 {
-    qDB=ts.SqlServer();
-    if(qDB.isOpen()){
+    if(!qDB.isOpen()){
+        qDB=ts.SqlServer();
         showInfo->setText("已连接");
+    }else{
+        showInfo->setText("<warning>重复的连接");
     }
 }
 

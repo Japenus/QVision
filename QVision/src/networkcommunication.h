@@ -6,12 +6,13 @@ class NetworkCommunication:public QMainWindow
 public:
     NetworkCommunication(QWidget *parent = nullptr);
 private slots:
-    void createServer();
     void senData();
-    void connected();
     void stopped();
+    void connected();
+    void createServer();
     void disconnected();
 private:
+    int connCount=0;
     QLabel *tip1;
     QLabel *tip2;
     QLabel *tip3;
@@ -19,18 +20,22 @@ private:
     QLabel *tip5;
     QLabel *tip6;
     QComboBox *clientIP;
-    QLineEdit *clientPort;
     QComboBox *serverIP;
+    QLineEdit *clientPort;
     QLineEdit *serverPort;
 
-    QPushButton *connectBtn;
-    QPushButton *disconnectBtn;
     QPushButton *sendBtn;
     QPushButton *stopBtn;
+    QPushButton *connectBtn;
+    QPushButton *disconnectBtn;
 
     QTextEdit *sendData;
     QTextEdit *recvData;
     QTextEdit *curStatus;
+
+    QTcpServer *tcpServer;
+    QTcpSocket *tcpSocket;
+    QList<QTcpSocket*> clientLists;
 };
 
 #endif // NETWORKCOMMUNICATION_H
