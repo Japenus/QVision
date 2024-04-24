@@ -504,7 +504,7 @@ void QVision::on_actionPick_Color_triggered()
 
 void QVision::on_actionScreen_Cut_triggered()
 {
-
+    CS.show();
 }
 
 void QVision::on_actionWakeUp_QQ_triggered()

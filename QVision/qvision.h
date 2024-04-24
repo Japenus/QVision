@@ -11,6 +11,7 @@
 #include "imgcalculate.h"
 #include "dynamicdetect.h"
 #include "fileOperation.h"
+#include "CaptureScreen.h"
 #include "networkcommunication.h"
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -35,6 +36,7 @@ public:
     ImgAlgorithm IA;
     ImgCalculate IC;
     fileOperation FO;
+    CaptureScreen CS;
     Preprocess pretreat;
 
     GuilDlg GD;

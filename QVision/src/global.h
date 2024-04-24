@@ -2,12 +2,14 @@
 #define GLOBAL_H
 #include <QSql>
 #include <QList>
+#include <QMenu>
 #include <QLabel>
 #include <QTimer>
 #include <QObject>
 #include <QScreen>
 #include <QMenuBar>
 #include <QProcess>
+#include <QPainter>
 #include <core.hpp>
 #include <QSpinBox>
 #include <QLineEdit>
@@ -20,6 +22,7 @@
 #include <QTableView>
 #include <opencv.hpp>
 #include <QEventLoop>
+#include <QMouseEvent>
 #include <QMainWindow>
 #include <QFileDialog>
 #include <QMessageBox>
