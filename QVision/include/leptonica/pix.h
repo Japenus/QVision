@@ -134,6 +134,7 @@
      * that direct non-default actions, e.g., in png and jpeg I/O. */
 
 /*! Basic Pix */
+#include<allheaders.h>
 struct Pix
 {
     l_uint32             w;         /*!< width in pixels                   */

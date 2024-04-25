@@ -136,3 +136,9 @@ Pix* FormatTransfer::QImage2Pix(QImage &datatype)
     }
     return pix;
 }
+
+Mat FormatTransfer::QPixmap2Mat(QPixmap &datatype)
+{
+    qInfo()<<"func QPixmap2Mat";
+    return Mat();
+}

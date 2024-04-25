@@ -88,7 +88,7 @@ QVision::~QVision()
 }
 
 
-//基本功能
+//basic
 void QVision::on_actionOpen_triggered()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open Image"), "png", tr("Type (*.png *.jpg *.bmp)"));
@@ -504,7 +504,9 @@ void QVision::on_actionPick_Color_triggered()
 
 void QVision::on_actionScreen_Cut_triggered()
 {
-    CS.show();
+    SC.show();
+    Dst=SC.CurrentArea;
+    Show();
 }
 
 void QVision::on_actionWakeUp_QQ_triggered()

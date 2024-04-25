@@ -36,7 +36,6 @@ HEADERS += \
     dialog/TemplateMatchDlg.h \
     dialog/StatisticPixelDlg.h \
     dialog/UpgradeTempMatchDlg.h \
-    src/capturescreen.h \
     src/tools.h \
     src/color.h \
     src/Dialog.h \
@@ -71,7 +70,6 @@ SOURCES += \
     dialog/TemplateMatchDlg.cpp \
     dialog/StatisticPixelDlg.cpp \
     dialog/UpgradeTempMatchDlg.cpp \
-    src/capturescreen.cpp \
     src/tools.cpp \
     src/database.cpp \
     src/screencut.cpp \
