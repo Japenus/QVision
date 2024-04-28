@@ -36,17 +36,15 @@ DataBase::DataBase(QWidget *parent):QMainWindow(parent)
     showInfo=new QTextEdit();
     dataList=new QTableView();
 
-    QStandardItem *cells=new QStandardItem();
-    QStandardItemModel *tableData=new QStandardItemModel(20,3,this);
-    tableData->setHorizontalHeaderLabels(QStringList()<<"请求地址"<<"状态"<<"结果");
-    for (int var = 1; var < 20; ++var) {
-        cells->appendRow(new QStandardItem(QString::number(var)));
-    }
-    tableData->setVerticalHeaderItem(0,cells);
+    tableCols=new QStandardItem();
+    tableData=new QStandardItemModel();
+    item = new QTableWidgetItem();
+
     dataList->setModel(tableData);
 
-    tip1->setFixedHeight(tipHeight);
-    tip2->setFixedHeight(tipHeight);
+    tip1->setFixedHeight(fixHeight);
+    tip2->setFixedHeight(fixHeight);
+    showInfo->setReadOnly(true);
 
     //style
     addDataItem->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
@@ -109,26 +107,11 @@ DataBase::DataBase(QWidget *parent):QMainWindow(parent)
     connect(disConn, &QPushButton::clicked, this, &DataBase::disConnection);
     connect(cleanTips, &QPushButton::clicked, this, &DataBase::clearTips);
 
-    connect(databaseListBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &DataBase::updateTableList);
-
     resize(w/2,h/2);
     setWindowIcon(icon);
     setWindowTitle("DataBase Management");
 }
 
-void DataBase::updateTableList(int index)
-{
-    if (index >= 0)
-    {
-        QString selectedDatabase = databaseListBox->itemText(index);
-        QStringList tables = ts.GetTables(&qDB/*, selectedDatabase*/);
-        datatableListsBox->clear();
-        for (int i = 0; i < tables.size(); i++)
-        {
-            datatableListsBox->addItem(tables.at(i));
-        }
-    }
-}
 
 void DataBase::ConnectSQLServer()
 {
@@ -188,10 +171,28 @@ void DataBase::curDatabases()
 void DataBase::curDataTables()
 {
     if(qDB.isOpen()){
-        QStringList tables=ts.GetTables(&qDB);
-        for(int i=0;i<tables.size();i++){
-            showInfo->setText(tables.at(i));
+        geTable=ts.GetTables(&qDB);
+        for(int i=0;i<geTable.size();i++){
+            temp=geTable.at(i);
+            showInfo->setText("获取表名:"+geTable.at(i));
+            datatableListsBox->addItem(geTable.at(i));
+            tablElement=ts.GetTableFields(&qDB,geTable.at(i));
+            qslist<<tablElement;
+            tableData->setHorizontalHeaderLabels(qslist);
+            dataItem=ts.GetTableData(&qDB,geTable.at(i));
+            for(int i = 0; i < dataItem.size(); i++){
+                QList<QStandardItem*> rowData;
+                for(int j = 0; j < dataItem[i].size(); j++){
+                    rowData.append(new QStandardItem(dataItem[i][j]));
+                }
+                int rowNum = tableData->rowCount();
+                tableData->insertRow(rowNum);
+                for(int col = 0; col < rowData.size(); col++){
+                    tableData->setItem(rowNum, col, rowData.at(col));
+                }
+            }
         }
+        showInfo->setText("获取数据成功");
     }else{
         showInfo->setText("未连接");
     }
@@ -200,7 +201,8 @@ void DataBase::curDataTables()
 void DataBase::addItem()
 {
     if(qDB.isOpen()){
-        showInfo->setText(ts.addData());
+        QString res=ts.AddData(&qDB,temp);
+        showInfo->setText(res);
     }else{
         showInfo->setText("未连接");
     }
@@ -209,7 +211,8 @@ void DataBase::addItem()
 void DataBase::deleteItem()
 {
     if(qDB.isOpen()){
-        showInfo->setText(ts.delData());
+        QString res=ts.DelData(&qDB,temp);
+        showInfo->setText(res);
     }else{
         showInfo->setText("未连接");
     }
@@ -218,7 +221,8 @@ void DataBase::deleteItem()
 void DataBase::updateItem()
 {
     if(qDB.isOpen()){
-        showInfo->setText(ts.updateData());
+        QString res=ts.UpdateData(&qDB,temp);
+        showInfo->setText(res);
     }else{
         showInfo->setText("未连接");
     }
@@ -227,7 +231,8 @@ void DataBase::updateItem()
 void DataBase::findItem()
 {
     if(qDB.isOpen()){
-        showInfo->setText(ts.findData());
+        QString res=ts.FindData(&qDB,temp);
+        showInfo->setText(res);
     }else{
         showInfo->setText("未连接");
     }

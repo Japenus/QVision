@@ -20,14 +20,21 @@ private slots:
     void disConnection();
     void curDataTables();
     void ConnectSQLServer();
-    void updateTableList(int index);
 private:
-    int tipHeight=30;
+    QString temp;
+    int fixHeight=30;
     QLabel *tip1;
     QLabel *tip2;
     QSqlDatabase qDB;
+    QStringList qslist;
+    QStringList geTable;
     QTextEdit *showInfo;
     QTableView *dataList;
+    QPushButton *disConn;
+    QTableWidgetItem *item;
+    QPushButton *cleanTips;
+    QStringList tablElement;
+    QStandardItem *tableCols;
     QPushButton *addDataItem;
     QPushButton *delDataItem;
     QPushButton *fixDataItem;
@@ -36,8 +43,9 @@ private:
     QPushButton *databaseLists;
     QComboBox *datatableListsBox;
     QPushButton *datatableLists;
-    QPushButton *cleanTips;
-    QPushButton *disConn;
+
+    QStandardItemModel *tableData;
+    QList<QList<QString>> dataItem;
 };
 
 #endif // DATABASE_H

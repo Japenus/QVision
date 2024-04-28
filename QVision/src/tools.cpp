@@ -689,111 +689,105 @@ QSqlDatabase Tools::SQLite()
 QStringList Tools::GetTables(QSqlDatabase *qDB)
 {
     QStringList tables;
-    if (qDB->isOpen())
-    {
-        tables = qDB->tables();
-    }
+    if (qDB->isOpen()) tables = qDB->tables();
     return tables;
 }
 
-QStringList Tools::GetTables(QSqlDatabase *qDB,QString databaseName)
+
+QStringList Tools::GetTableFields(QSqlDatabase *db, const QString& tableName)
 {
-    QStringList tables;
-    if (qDB->isOpen())
-    {
-        QStringList allTables = qDB->tables();
-        for (auto& table : allTables)
-        {
-            // QString dbName = qDB->record(table).value("TABLE_SCHEMA").toString();
-            // if (dbName == databaseName)
-            // {
-            //     tables.append(table);
-            // }
+    QStringList fields;
+    if(db->isOpen()){
+        QSqlQuery query(*db);
+        query.prepare("PRAGMA table_info(" + tableName + ")");
+        if(query.exec()){
+            while(query.next()){
+                fields.append(query.value(1).toString());
+            }
+        } else {
+            QMessageBox::warning(nullptr,tr("警告"),tr("无法获取表头数据:%s").arg(query.lastError().text()));
         }
     }
-    return tables;
+    return fields;
 }
+
+QList<QList<QString>> Tools::GetTableData(QSqlDatabase *db, const QString& tableName)
+{
+    QList<QList<QString>> tableData;
+    if(db->isOpen()){
+        QSqlQuery query(*db);
+        query.prepare("SELECT * FROM " + tableName);
+        if(query.exec()){
+            while(query.next()){
+                QList<QString> rowData;
+                for(int i = 0; i < query.record().count(); i++){
+                    rowData.append(query.value(i).toString());
+                }
+                tableData.append(rowData);
+            }
+        } else {
+            QMessageBox::warning(nullptr,tr("警告"),tr("获取数据失败:%s").arg(query.lastError().text()));
+        }
+    }
+    return tableData;
+}
+
 
 QStringList Tools::GetDataBases(QSqlDatabase *qDB)
 {
     QStringList dbs;
-
-    if(qDB->isOpen()){
-        dbs = qDB->tables(QSql::Tables);
-    }
+    if(qDB->isOpen()) dbs = qDB->tables(QSql::Tables);
     return dbs;
 }
 
-QString Tools::addData()
+QString Tools::AddData(QSqlDatabase *db,QString& tableName)
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase("QODBC");
-    db.setDatabaseName("Test.db");
-    if (!db.open()) {
-       return QString("数据库不存在");
-    }
+    if (!db->open()){return QString("数据库不存在");}
     QSqlQuery query;
-    query.prepare("INSERT INTO mytable (name, age) VALUES (:name, :age)");
+    query.prepare("INSERT INTO userData (name, age) VALUES (:name, :age)");
     query.bindValue(":name", "John");
     query.bindValue(":age", 30);
-    if (!query.exec()) {
-        return QString("添加数据失败!");
-    }
-    db.close();
+    if (!query.exec()) {return QString("添加数据失败!");}
+    db->close();
     return QString("操作成功!");
 }
 
-QString Tools::delData()
+QString Tools::DelData(QSqlDatabase *db,QString& tableName)
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase("QODBC");
-    db.setDatabaseName("mydatabase.db");
-    if (!db.open()) {
-       return QString("无法打开数据库");
-    }
+    if (!db->open()) return QString("无法打开数据库");
     QSqlQuery query;
-    query.prepare("DELETE FROM mytable WHERE name = :name");
+    query.prepare("DELETE FROM userData WHERE name = :name");
     query.bindValue(":name", "John");
-    if (!query.exec()) {
-        return QString("删除数据失败!");
-    }
-    db.close();
+    if (!query.exec()) {return QString("删除数据失败!");}
+    db->close();
     return QString("操作成功!");
 }
 
-QString Tools::updateData()
+QString Tools::UpdateData(QSqlDatabase *db, QString& tableName)
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase("QODBC");
-    db.setDatabaseName("mydatabase.db");
-    if (!db.open()) {
-        return QString("无法打开数据库");
-    }
+    if (!db->open()) return QString("无法打开数据库");
     QSqlQuery query;
-    query.prepare("UPDATE mytable SET age = :age WHERE name = :name");
+    query.prepare("UPDATE useData SET age = :age WHERE name = :name");
     query.bindValue(":name", "John");
     query.bindValue(":age", 35);
-    if (!query.exec()) {
-        return QString("数据写入失败!");
-    }
-    db.close();
+    if (!query.exec()) {return QString("数据写入失败!");}
+    db->close();
     return QString("操作成功!");
 }
 
-QString Tools::findData()
+QString Tools::FindData(QSqlDatabase *db,QString& tableName)
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase("QODBC");
-    db.setDatabaseName("mydatabase.db");
-    if (!db.open()) {
-        return QString("无法打开数据库");
-    }
+    if (!db->open()) return QString("无法打开数据库");
     QSqlQuery query;
-    query.prepare("SELECT * FROM mytable WHERE name = :name");
-    query.bindValue(":name", "John");
+    query.prepare("SELECT * FROM userData WHERE name = :name");
+    query.bindValue(":name", "Rose");
     if (query.exec() && query.next()) {
         QString name = query.value(0).toString();
         int age = query.value(1).toInt();
         qDebug() << "Name: " << name << ", Age: " << age;
+        db->close();
+        return QString("操作成功!");
     } else {
         return QString("数据不存在!");
     }
-    db.close();
-    return QString("操作成功!");
 }

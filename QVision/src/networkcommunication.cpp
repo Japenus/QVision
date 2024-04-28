@@ -51,6 +51,7 @@ NetworkCommunication::NetworkCommunication(QWidget *parent):QMainWindow(parent)
     tip5->setFixedWidth(80);
     tip6->setFixedWidth(80);
     curStatus->setFixedHeight(30);
+    curStatus->setReadOnly(true);
     tip1->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
     tip2->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
     tip3->setStyleSheet("border: 2px solid rgb(25, 25, 112);color: blue;border-radius: 5px;font-weight: bold;");
@@ -158,11 +159,12 @@ void NetworkCommunication::send()
     if (connCount&&Socket->isOpen())
     {
         if(!str.isEmpty()){
-            QByteArray sendData = str.toUtf8();
-            Socket->write(sendData, sendData.size());
+            QByteArray Data = str.toUtf8();
+            Socket->write(Data, Data.size());
             QString oldData = recvData->toPlainText();
             info = oldData + "\n" + "<" + formatted + ">" + str;
             recvData->setText(info);
+            sendData->setText("");
         }else{
             info="<"+formatted+">不能发送空消息!";
             curStatus->setText(info);
@@ -206,6 +208,7 @@ void NetworkCommunication::disconnected()
         curStatus->setText(info);
         info="<"+formatted+">客户端退出";
         recvData->setText(info);
+        sendData->setText("");
     }else{
         info="<"+formatted+">无连接!";
         curStatus->setText(info);

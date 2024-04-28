@@ -3,6 +3,7 @@
 #include <QSql>
 #include <QList>
 #include <QMenu>
+#include <QList>
 #include <QLabel>
 #include <QTimer>
 #include <QObject>
@@ -18,6 +19,7 @@
 #include <QComboBox>
 #include <QSqlError>
 #include <QSqlQuery>
+#include <QSqlRecord>
 #include <QTcpServer>
 #include <QTableView>
 #include <opencv.hpp>
@@ -47,6 +49,7 @@
 #include <QNetworkReply>
 #include <QPlainTextEdit>
 #include <QGuiApplication>
+#include <QTableWidgetItem>
 #include <QDesktopServices>
 #include <QRegularExpression>
 #include <QNetworkAccessManager>
