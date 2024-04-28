@@ -14,10 +14,13 @@ private slots:
     void clearTips();
     void updateItem();
     void deleteItem();
+    void ConnectMySQL();
+    void ConnectSQLite();
     void curDatabases();
     void disConnection();
     void curDataTables();
     void ConnectSQLServer();
+    void updateTableList(int index);
 private:
     int tipHeight=30;
     QLabel *tip1;
@@ -29,7 +32,9 @@ private:
     QPushButton *delDataItem;
     QPushButton *fixDataItem;
     QPushButton *findDataItem;
+    QComboBox *databaseListBox;
     QPushButton *databaseLists;
+    QComboBox *datatableListsBox;
     QPushButton *datatableLists;
     QPushButton *cleanTips;
     QPushButton *disConn;

@@ -5,13 +5,21 @@ class NetworkCommunication:public QMainWindow
 {
 public:
     NetworkCommunication(QWidget *parent = nullptr);
+    ~NetworkCommunication();
+    void log();
+protected:
+    void keyPressEvent(QKeyEvent *event) override;
 private slots:
-    void senData();
+    void send();
     void stopped();
     void connected();
     void createServer();
     void disconnected();
 private:
+    int listenPort=80;
+    QString info;
+    QString formatted;
+    QDateTime curTime;
     int connCount=0;
     QLabel *tip1;
     QLabel *tip2;
@@ -34,7 +42,8 @@ private:
     QTextEdit *curStatus;
 
     QTcpServer *tcpServer;
-    QTcpSocket *tcpSocket;
+    QTcpSocket *Socket;
+    QHostAddress ipAddress;
     QList<QTcpSocket*> clientLists;
 };
 

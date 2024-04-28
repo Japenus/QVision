@@ -139,6 +139,13 @@ Pix* FormatTransfer::QImage2Pix(QImage &datatype)
 
 Mat FormatTransfer::QPixmap2Mat(QPixmap &datatype)
 {
-    qInfo()<<"func QPixmap2Mat";
-    return Mat();
+    QImage image = datatype.toImage();
+    if(image.isNull())
+    {
+        qDebug() << "Failed to convert";
+        return Mat();
+    }
+    Mat res(image.height(), image.width(), CV_8UC4, image.bits(), image.bytesPerLine());
+    cvtColor(res, res, COLOR_BGRA2BGR);
+    return res;
 }

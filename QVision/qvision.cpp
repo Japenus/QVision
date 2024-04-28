@@ -103,7 +103,7 @@ void QVision::on_actionOpen_triggered()
 void QVision::on_actionSave_triggered()
 {
     QImage image = resBox->pixmap().toImage();
-    QString filePath = QFileDialog::getSaveFileName(this, tr("Save Image"), "", tr("Images (*.png *.jpg *.bmp)"));
+    QString filePath = QFileDialog::getSaveFileName(this, tr("Save Image"), "result1.png", tr("Images (*.png *.jpg *.bmp)"));
     if (!filePath.isEmpty()) image.save(filePath);
 }
 
@@ -153,34 +153,46 @@ QString QVision::getFolder()
 void QVision::Show()
 {
     QImage img;
-    if (Dst.channels() == 1)
+    Mat tmp=imread("output.png");
+    if(!tmp.empty()){
+        img = QImage(tmp.data, tmp.cols, tmp.rows, tmp.step, QImage::Format_BGR888);
+        QPixmap showcut = QPixmap::fromImage(img);
+        resBox->setPixmap(showcut);
+        resBox->setScaledContents(true);
+        resBox->show();
+    }
+
+    if(!Dst.empty()){
+        if (Dst.channels() == 1)
+        {
+            img = QImage(Dst.data, Dst.cols, Dst.rows, Dst.step, QImage::Format_Grayscale8);
+        }
+        else
+        {
+            img = QImage(Dst.data, Dst.cols, Dst.rows, Dst.step, QImage::Format_BGR888);
+        }
+        QPixmap pixmap = QPixmap::fromImage(img);
+        resBox->setPixmap(pixmap);
+        resBox->setScaledContents(true);
+        resBox->show();
+    }
+}
+
+void QVision::Show(Mat image)
+{
+    QImage img;
+    if (image.channels() == 1)
     {
-        img = QImage(Dst.data, Dst.cols, Dst.rows, Dst.step, QImage::Format_Grayscale8);
+        img = QImage(image.data, image.cols, image.rows, image.step, QImage::Format_Grayscale8);
     }
     else
     {
-        img = QImage(Dst.data, Dst.cols, Dst.rows, Dst.step, QImage::Format_BGR888);
+        img = QImage(image.data, image.cols, image.rows, image.step, QImage::Format_BGR888);
     }
     QPixmap pixmap = QPixmap::fromImage(img);
     resBox->setPixmap(pixmap);
     resBox->setScaledContents(true);
     resBox->show();
-}
-
-void QVision::Show(Mat image)
-{
-    QImage img(image.data,image.cols,image.rows,image.step,QImage::Format_RGB888);
-    QPixmap pixmap=QPixmap::fromImage(img);
-    resBox->setPixmap(pixmap);
-    resBox->setScaledContents(true);
-    resBox->show();
-}
-
-bool QVision::haveRes()
-{
-    Res=imread("output.png");
-    if(Res.empty()) return false;
-    return true;
 }
 
 bool QVision::Save(Mat what)
@@ -191,25 +203,38 @@ bool QVision::Save(Mat what)
     return true;
 }
 
+Mat QVision::QPixmap2Mat(QPixmap &datatype)
+{
+    QImage image = datatype.toImage();
+    if(image.isNull())
+    {
+        qDebug() << "Failed to convert";
+        return Mat();
+    }
+    Mat res(image.height(), image.width(), CV_8UC4, image.bits(), image.bytesPerLine());
+    cvtColor(res, res, COLOR_BGRA2BGR);
+    return res;
+}
+
 void QVision::on_srcHist_clicked()
 {
-    if(!IsImgOpen()) return;
+    if(!srcBox->pixmap()) return;
     Dst=tools.ShowHistogram(Src);
 }
 
 
 void QVision::on_resHist_clicked()
 {
-    if(!IsImgOpen()) return;
-    if(!haveRes()) return;
-    Dst=imread("output.png");
+    if(!resBox->pixmap()) return;
+    QPixmap pixmap = resBox->pixmap();
+    Dst = QPixmap2Mat(pixmap);
     tools.ShowHistogram(Dst);
 }
 
 
 void QVision::on_bigSrc_clicked()
 {
-    if(!IsImgOpen()) return;
+    if(!srcBox->pixmap()) return;
     tools.MakeBig(Src);
     Show();
 }
@@ -217,8 +242,7 @@ void QVision::on_bigSrc_clicked()
 
 void QVision::on_bigRes_clicked()
 {
-    if(!IsImgOpen()) return;
-    if(!haveRes()) return;
+    if(!resBox->pixmap()) return;
     tools.MakeBig(Dst);
     Show();
 }
@@ -228,7 +252,7 @@ void QVision::on_actionGray_Transform_triggered()
 {
     if(!IsImgOpen()) return;
     Dst=pretreat.GrayTransform(Src);
-    Show();
+    Show(Dst);
 }
 
 
@@ -236,7 +260,7 @@ void QVision::on_actionLog_Transform_triggered()
 {
     if(!IsImgOpen()) return;
     Dst=pretreat.LogTransform(Src,10);
-    Show();
+    Show(Dst);
 }
 
 
@@ -244,7 +268,7 @@ void QVision::on_actionLinear_Transform_triggered()
 {
     if(!IsImgOpen()) return;
     Dst=pretreat.LinearTransform(Src);
-    Show();
+    Show(Dst);
 }
 
 
@@ -252,7 +276,7 @@ void QVision::on_actionGamma_Transform_triggered()
 {
     if(!IsImgOpen()) return;
     Dst=pretreat.GammaTransform(Src,1.2);
-    Show();
+    Show(Dst);
 }
 
 
@@ -260,7 +284,7 @@ void QVision::on_actionBox_Filter_triggered()
 {
     if(!IsImgOpen()) return;
     Dst=pretreat.BoxFilter(Src);
-    Show();
+    Show(Dst);
 }
 
 
@@ -268,7 +292,7 @@ void QVision::on_actionMean_Filter_triggered()
 {
     if(!IsImgOpen()) return;
     Dst=pretreat.MeanFilter(Src);
-    Show();
+    Show(Dst);
 }
 
 
@@ -276,7 +300,7 @@ void QVision::on_actionMedium_Filter_triggered()
 {
     if(!IsImgOpen()) return;
     Dst=pretreat.MediumFilter(Src);
-    Show();
+    Show(Dst);
 }
 
 
@@ -284,14 +308,14 @@ void QVision::on_actionBilateral_Filter_triggered()
 {
     if(!IsImgOpen()) return;
     Dst=pretreat.BilateralFilter(Src);
-    Show();
+    Show(Dst);
 }
 
 void QVision::on_actionGauss_Filter_triggered()
 {
     if(!IsImgOpen()) return;
     Dst=pretreat.GaussFilter(Src);
-    Show();
+    Show(Dst);
 }
 
 
@@ -299,7 +323,7 @@ void QVision::on_actionDilation_triggered()
 {
     if(!IsImgOpen()) return;
     Dst=pretreat.Dilation(Src);
-    Show();
+    Show(Dst);
 }
 
 
@@ -307,7 +331,7 @@ void QVision::on_actionErosion_triggered()
 {
     if(!IsImgOpen()) return;
     Dst=pretreat.Erosion(Src);
-    Show();
+    Show(Dst);
 }
 
 //工具
@@ -345,12 +369,11 @@ void QVision::on_actionScharr_triggered()
 void QVision::on_actionRegion_Grow_triggered()
 {
     if(!IsImgOpen()) return;
-    int threshold = 20;
-    Point seedPoint(100, 100);
+    int threshold = 10;
+    Point seedPoint(10, 10);
     Mat visited = Mat::zeros(Src.size(), CV_8U);
     Dst = tools.RegionGrow(Src, seedPoint, threshold, visited);
-    Show();
-    Save(Dst);
+    Show(Dst);
 }
 
 
@@ -505,7 +528,6 @@ void QVision::on_actionPick_Color_triggered()
 void QVision::on_actionScreen_Cut_triggered()
 {
     SC.show();
-    Dst=SC.CurrentArea;
     Show();
 }
 

@@ -14,6 +14,8 @@ public:
     QString delData();
     QString findData();
     Scalar PickColor();
+    QSqlDatabase MySql();
+    QSqlDatabase SQLite();
     QSqlDatabase SqlServer();
     QString updateData();
     int Pyramid(Mat src);
@@ -24,6 +26,7 @@ public:
     Mat AreaCover(Mat img);
     Mat Edgescharr(Mat src);
     QStringList GetTables(QSqlDatabase *qDB);
+    QStringList GetTables(QSqlDatabase *qDB,QString databaseName);
     QStringList GetDataBases(QSqlDatabase *qDB);
     Mat ShowHistogram(Mat src);
     QString CharRecognize(Mat img);

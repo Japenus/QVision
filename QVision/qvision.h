@@ -60,7 +60,6 @@ public:
     NetworkCommunication NC;
 
     void Show();
-    bool haveRes();
     bool IsImgOpen();
     void Show(Mat src);
     bool Save(Mat what);
@@ -68,6 +67,7 @@ public:
     QString getFolder();
     QString getFilepath();
     QString getOutputpath();
+    Mat QPixmap2Mat(QPixmap &pix);
 private slots:
     void on_bigSrc_clicked();
     void on_bigRes_clicked();

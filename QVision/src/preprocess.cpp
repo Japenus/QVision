@@ -1,14 +1,10 @@
 #include "Preprocess.h"
-//灰度变换
 Mat Preprocess::GrayTransform(Mat src)
 {
-    Mat res;
-    cvtColor(src, res,COLOR_BGR2GRAY);
-    imwrite("Gray.png", res);
-    imwrite("output.png", res);
-    return res;
+    cvtColor(src, src,COLOR_BGR2GRAY);
+    return src;
 }
-//对数变换
+
 Mat Preprocess::LogTransform(Mat src,double para)
 {
     assert(src.channels() == 3);
@@ -22,11 +18,9 @@ Mat Preprocess::LogTransform(Mat src,double para)
             res.at<uchar>(i, j) = grayValue;
         }
     }
-    imwrite("LogTransform.png", res);
-    imwrite("output.png", res);
     return res;
 }
-//线性变换
+
 Mat Preprocess::LinearTransform(Mat src)
 {
     assert(src.channels() == 3);
@@ -40,11 +34,9 @@ Mat Preprocess::LinearTransform(Mat src)
             res.at<uchar>(i, j) = grayValue;
         }
     }
-    imwrite("LinearTransform.png", res);
-    imwrite("output.png", res ) ;
     return res;
 }
-//伽马变换
+
 Mat Preprocess::GammaTransform(Mat src, float gamma)
 {
     assert(src.channels() == 3);
@@ -58,20 +50,16 @@ Mat Preprocess::GammaTransform(Mat src, float gamma)
             res.at<uchar>(i, j) = grayValue;
         }
     }
-    imwrite("GammaTransform.png", res);
-    imwrite("output.png", res);
     return res;
 }
-//方框滤波
+
 Mat Preprocess::BoxFilter(Mat src)
 {
     Mat res;
     boxFilter(src,res,-1,Size(3,3),Point(-1,-1),false,BORDER_DEFAULT);
-    imwrite("BoxFilter.png", res);
-    imwrite("output.png" , res) ;
     return res;
 }
-//均值滤波
+
 Mat Preprocess::MeanFilter(Mat src)
 {
     Mat res=Mat::zeros(src.size(),src.type());
@@ -95,11 +83,9 @@ Mat Preprocess::MeanFilter(Mat src)
             res.at<Vec3b>(y,x)[0]=B/9;
         }
     }
-    imwrite("MeanFilter.png",res);
-    imwrite("output.png",res);
     return res;
 }
-//中值滤波
+
 Mat Preprocess::MediumFilter(Mat src)
 {
     Mat res = src.clone();
@@ -121,45 +107,32 @@ Mat Preprocess::MediumFilter(Mat src)
             res.at<Vec3b>(y,x) = pixels[4];
         }
     }
-    imwrite("MediumFilter.png", res);
-    imwrite("output.png" ,res);
     return res;
 }
-//双边滤波
+
 Mat Preprocess::BilateralFilter(Mat src)
 {
     Mat res;
-    bilateralFilter(src, res, 33,100,100);
-    imwrite("BilateralFilter.png",res);
-    imwrite("output.png", res );
+    bilateralFilter(src, res, 33, 100, 100);
     return res;
 }
-//高斯滤波
+
 Mat Preprocess::GaussFilter(Mat src)
 {
-    Mat res;
-    GaussianBlur(src, res, Size(15,15), 0) ;
-    imwrite("MediumFiter.png",res);
-    imwrite("output.png", res);
-    return res;
+    GaussianBlur(src, src, Size(15,15), 0) ;
+    return src;
 }
-//腐蚀
+
 Mat Preprocess::Erosion(Mat src)
 {
-    Mat res;
     Mat kernel = getStructuringElement(MORPH_RECT,Size(3,3));
-    erode(src,res, kernel);
-    imwrite("Erosion.png",res);
-    imwrite("output.png", res) ;
-    return res;
+    erode(src,src, kernel);
+    return src;
 }
-//膨胀
+
 Mat Preprocess::Dilation(Mat src)
 {
-    Mat res(src.size(), src.type()) ;
     Mat kernel =getStructuringElement(MORPH_RECT,Size(3,3));
-    dilate(src,res , kernel);
-    imwrite("Dilate.png", res);
-    imwrite("output.png", res);
-    return res;
+    dilate(src,src,kernel);
+    return src;
 }

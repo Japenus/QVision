@@ -41,7 +41,7 @@ Mat Tools::ShowHistogram(Mat src)
     return res;
 }
 
-//固定闯值
+
 Mat Tools::FixThreshold(Mat img, int val)
 {
     Mat res(img.size(), CV_8UC1);
@@ -60,7 +60,8 @@ Mat Tools::FixThreshold(Mat img, int val)
     }
     return res;
 }
-//自适应闽值
+
+
 Mat Tools::AdaptThreshold(Mat src ,int block,double C)
 {
     Mat gray=process.GrayTransform(src);
@@ -68,7 +69,8 @@ Mat Tools::AdaptThreshold(Mat src ,int block,double C)
     adaptiveThreshold(gray,res,255,ADAPTIVE_THRESH_MEAN_C,THRESH_BINARY,block,C);
     return res;
 }
-//区域生长
+
+
 Mat Tools::RegionGrow(Mat& src, Point seedPoint, int threshold, Mat& visited)
 {
     Mat res = Mat::zeros(src.size(), CV_8U);
@@ -126,8 +128,6 @@ Mat Tools::Edgescharr(Mat src)
     res=ThresholdProcess(res,30);
     Mat kernel = getStructuringElement(MORPH_RECT,Size(3,3));
     morphologyEx(res,res,MORPH_CLOSE,kernel);
-    imwrite("output.png", res);
-    imwrite("scharr.png", res);
     return res;
 }
 Mat Tools::ThresholdProcess(Mat src,int val,int type)
@@ -160,8 +160,6 @@ Mat Tools::ShowOutline(Mat src,int val)
     {
         drawContours(src, contours,i,QVGreen,1,LINE_8,hierarchy);
     }
-    imwrite("output.png", src);
-    imwrite("findContour.png",src);
     return src;
 }
 
@@ -309,9 +307,6 @@ Mat Tools::PersTransform(Mat src,Mat target)
         return Mat();
     }
     warpPerspective(target, transformed,hMatrix,src.size());
-    namedWindow("Perspective Transform",0);
-    imshow("Perspective Transform", transformed);
-    imwrite("output.png", output);
     waitKey(0);
     return transformed;
 }
@@ -644,13 +639,77 @@ QSqlDatabase Tools::SqlServer()
 }
 
 
+QSqlDatabase Tools::MySql()
+{
+    QCoreApplication::addLibraryPath("path/to/mysql/driver");
+    QString info = "";
+    QSqlDatabase qDB = QSqlDatabase::addDatabase("QMYSQL");/*MySQL*/
+    QString hostName = "localhost";
+    class QString databaseName = "mysql";
+    QString userName = "root";
+    QString password = "Locaserylory0621";
+
+    qDB.setHostName(hostName);
+    qDB.setDatabaseName(databaseName);
+    qDB.setUserName(userName);
+    qDB.setPassword(password);
+
+    if (!qDB.open())
+    {
+        info = qDB.lastError().text();
+        QMessageBox::critical(0, QObject::tr("无法连接数据库:"), info);
+    }
+    else
+    {
+        QMessageBox::information(nullptr, tr("提示"), tr("数据库连接成功！"));
+    }
+
+    return qDB;
+}
+
+QSqlDatabase Tools::SQLite()
+{
+    QString info = "";
+    QSqlDatabase qDB = QSqlDatabase::addDatabase("QSQLITE"); // SQLite
+    QString databaseName = "C:/Users/Jerrylee/Desktop/Project/DataBase/SQLite/test.db";
+    qDB.setDatabaseName(databaseName);
+    if (!qDB.open())
+    {
+        info = qDB.lastError().text();
+        QMessageBox::critical(0, QObject::tr("无法连接数据库:"), info);
+    }
+    else
+    {
+        QMessageBox::information(nullptr, tr("提示"), tr("数据库连接成功！"));
+    }
+    return qDB;
+}
+
+
 QStringList Tools::GetTables(QSqlDatabase *qDB)
 {
     QStringList tables;
-
     if (qDB->isOpen())
     {
         tables = qDB->tables();
+    }
+    return tables;
+}
+
+QStringList Tools::GetTables(QSqlDatabase *qDB,QString databaseName)
+{
+    QStringList tables;
+    if (qDB->isOpen())
+    {
+        QStringList allTables = qDB->tables();
+        for (auto& table : allTables)
+        {
+            // QString dbName = qDB->record(table).value("TABLE_SCHEMA").toString();
+            // if (dbName == databaseName)
+            // {
+            //     tables.append(table);
+            // }
+        }
     }
     return tables;
 }

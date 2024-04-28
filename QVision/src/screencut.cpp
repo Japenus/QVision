@@ -17,10 +17,8 @@ ScreenCut::ScreenCut(QWidget *parent)
 
 void ScreenCut::CutArea(QPixmap &pix)
 {
-    QImage image = pix.toImage();
     CurrentArea=ft.QPixmap2Mat(pix);
-    QString filePath = QFileDialog::getSaveFileName(this, tr("Save Area"), "Screen1.jpg", tr("Images (*.png *.jpg *.bmp)"));
-    if (!filePath.isEmpty()) image.save(filePath);
+    imwrite("output.png",CurrentArea);
 }
 
 

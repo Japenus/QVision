@@ -15,31 +15,28 @@ Mat ImgAlgorithm::GetFeature(Mat src)
     Mat descriptors;
     sift->detectAndCompute(gray,Mat(), keypoints, descriptors, false);
     drawKeypoints(src, keypoints, res, QVGreen);
-    imwrite("output.png", res);
-    imwrite("SIFT.png", res);
     QMessageBox::information(nullptr,QString("提示"),QString("特征点数量: %1").arg(keypoints.size()));
     waitKey(0);
     return res;
 }
 
+
 Mat ImgAlgorithm::FloodFill(Mat src)
 {
-    Point seedPoint(50,50);//指定种子点
-    Scalar newVal(0,255,0); //填充的新像素值
+    Point seedPoint(50,50);
+    Scalar newVal(0,255,0);
     Rect rect;
-    Scalar loDiff(120,120,120); //填充的低阀值
-    Scalar upDiff(20,20,20);//填充的高闽值
-    int flags = 4;//像素连接方式
-    int connectivity = 4;//像素连接方式
+    Scalar loDiff(120,120,120);
+    Scalar upDiff(20,20,20);
+    int flags = 4;
+    int connectivity = 4;
     int numFilled = floodFill(src, seedPoint, newVal, &rect, loDiff, upDiff, flags|connectivity<<8);
     QMessageBox::information(nullptr,QString("提示"),QString("漫水填充像素数量:%1").arg(numFilled));
-    imwrite("output.png", src);
-    imwrite("floodfill.png", src);
     waitKey(0);
     destroyAllWindows();
     return src;
 }
-//仿射变换
+
 int ImgAlgorithm::WrapAffine(Mat src)
 {
     vector<Point2f> srcPoints;
@@ -55,12 +52,12 @@ int ImgAlgorithm::WrapAffine(Mat src)
     Mat Matrix = getAffineTransform(srcPoints, dstPoints);
     Mat res;
     warpAffine(src,res, Matrix, src.size());
-    imwrite("output.png", res);
-    imwrite("wrapAffine.png", res);
     waitKey(0);
     destroyAllWindows();
     return 0;
 }
+
+
 Mat ImgAlgorithm::SURF(Mat src)
 {
     Mat res,descriptors;
@@ -71,8 +68,6 @@ Mat ImgAlgorithm::SURF(Mat src)
     //kaze->detectAndCompute(src,noArray(), keypoints,descriptors);
     akaze->detectAndCompute(src,noArray(),keypoints,descriptors);
     drawKeypoints(src, keypoints, res);
-    imwrite("output.png", res );
-    imwrite("SURF.png", res );
     QMessageBox::information(nullptr,QString("提示"),QString("关键点数量:%1").arg(keypoints.size()));
     waitKey(0);
     return res;
@@ -98,8 +93,6 @@ int ImgAlgorithm::MatchKPoint(Mat temp, Mat src)
     matcher->match(des1, des2,matches , noArray());
     drawMatches(temp , kp1, src, kp2, matches , res);
     QMessageBox::information(nullptr, QString("提示"),QString("关键点数量:%1").arg(matches.size()));
-    imwrite("MatchkPoint.png",res);
-    imwrite("output.png",res);
     waitKey(0);
     destroyAllWindows();
     return 0;
@@ -145,8 +138,6 @@ Mat ImgAlgorithm::HoughTriangle(Mat src)
         p2.y = cvRound(y0-1000* (a));
         line(src, p1, p2,Scalar(0,255,0), 2);
     }
-    imwrite("output.png",src);
-    imwrite("HoughTriangle.png",src);
     waitKey(0);
     return src;
 }
@@ -176,8 +167,6 @@ Mat ImgAlgorithm::HoughRectangle(Mat src)
         p2.y = cvRound(y0 -1000*(a));
         line(res, p1, p2,QVGreen,2,LINE_AA);
     }
-    imwrite("Houghline.png", res);
-    imwrite("output.png", res);
     waitKey(0);
     destroyAllWindows();
     return res;
@@ -189,7 +178,7 @@ Mat ImgAlgorithm::HoughCircle(Mat src)
     Mat gray = Process.GrayTransform(src);
     Mat blur = Process.GaussFilter(gray);
     vector<Vec3f> circles;
-    HoughCircles(blur, circles, HOUGH_GRADIENT, 1, blur.rows/static_cast<double>(10), 100, 100, 0,1);
+    HoughCircles(blur, circles, HOUGH_GRADIENT, 1, blur.rows/4, 100, 30, 30,100);
     for(int i = 0; i < circles.size(); ++i)
     {
         Point center(cvRound(circles[i][0]), cvRound(circles[i][1]));
@@ -198,8 +187,6 @@ Mat ImgAlgorithm::HoughCircle(Mat src)
         circle(src,center, radius, Scalar(0,255,0),5,8,0);
     }
     QMessageBox::information(nullptr,QString("提示"),QString("检测到圆的数量:%1").arg(circles.size()));
-    imwrite("Houghcircle.png",src);
-    imwrite("output.png",src);
     waitKey(0);
     destroyAllWindows();
     return src;
@@ -209,15 +196,13 @@ Mat ImgAlgorithm::HoughEllipse(Mat src)
 {
     Mat gray = Process.GrayTransform(src);
     vector<Vec3f> ellipses;
-    HoughCircles(gray,ellipses, HOUGH_GRADIENT,1, gray.rows/8,100,5010,100);
+    HoughCircles(gray,ellipses, HOUGH_GRADIENT,1, gray.rows/4,120,60,10,100);
     for (int i =0 ; i < ellipses.size(); ++i)
     {
         Point center(cvRound(ellipses[i][0]),cvRound(ellipses[i][1]));
-        ellipse(src, center, Size(cvRound(ellipses[i][2]), cvRound(ellipses[i][2])),0 ,0, 360, Scalar(0,255,0));
+        ellipse(src, center, Size(cvRound(ellipses[i][2]), cvRound(ellipses[i][2])),0 ,0, 360, QVCyan,5,LINE_8);
     }
     QMessageBox::information(nullptr,QString("提示"),QString("检测到椭圆的数量:%1").arg(ellipses.size()));
-    imwrite("output.png", src);
-    imwrite("Houghellipse.png",src);
     waitKey(0);
     return src;
 }
@@ -491,7 +476,6 @@ Mat ImgAlgorithm::ShiTomasiDetect(Mat src)
         circle(src, corners[i], 10, Scalar(0,255, 0), 2);
     }
     QMessageBox::information(nullptr,QString("提示"),QString("检测到角点数量:%1").arg(corners.size()));
-    imwrite("output.png", src);
     waitKey(0);
     return src;
 }
@@ -507,7 +491,7 @@ Mat ImgAlgorithm::HarrisDetect(Mat src)
     int val = 245;
     src.convertTo(res,CV_8U);
     for(int i = 0; i < corners.rows; ++i){
-        for (int j = 0; i< corners.cols; ++i){
+        for (int j = 0; j< corners.cols; ++j){
             float response = static_cast<int>(corners.at<float>(i,j));
             if (response > val)
             {
@@ -517,7 +501,6 @@ Mat ImgAlgorithm::HarrisDetect(Mat src)
         }
     }
     QMessageBox::information(nullptr, QString("提示"),tr("检测到角点数量:%1").arg(HarrisRes.size()));
-    imwrite("output.png",src);
     waitKey(0);
     destroyAllWindows();
     return res;
@@ -534,7 +517,6 @@ Mat ImgAlgorithm::FASTDetect(Mat src)
     detector->detect(gray, keypoints);
     drawKeypoints(src, keypoints,res,QVGreen,DrawMatchesFlags::DEFAULT);
     QMessageBox::information(nullptr,QString("提示"),QString("检测到角点数量:%1").arg(keypoints.size()));
-    imwrite("output.png", src);
     waitKey(0);
     return res;
 }
@@ -560,7 +542,6 @@ Mat ImgAlgorithm::ORBDetect(Mat src)
     }
     drawKeypoints(src, keypoints, res, QVGreen);
     QMessageBox::information(nullptr,QString("提示"),QString("检测到角点数量:%1").arg(keypoints.size()));
-    imwrite("output.png", src);
     waitKey(0);
     return res;
 }
@@ -578,7 +559,6 @@ Mat ImgAlgorithm::BRISKDetect(Mat src)
     orb->detect(src, keypoints);
     drawKeypoints(src, keypoints,res,QVGreen,DrawMatchesFlags::DEFAULT);
     QMessageBox::information(nullptr, QString("提示"),QString("检测到角点数量:%1").arg(keypoints.size()));
-    imwrite("output.png", src);
     waitKey(0);
     return res;
 }
@@ -588,19 +568,17 @@ Mat ImgAlgorithm::BRISKDetect(Mat src)
 Mat ImgAlgorithm::MSERDetect(Mat src)
 {
     Mat gray = Process.GrayTransform(src);
-    Ptr<MSER> mser = MSER::create();
+    vector<Rect> areaBox;
     vector<vector<Point>> regions;
-    vector<Rect> mserBoundingBoxes;
-    mser->detectRegions(gray, regions,mserBoundingBoxes);
+    Ptr<MSER> mser = MSER::create();
+    mser->detectRegions(gray, regions,areaBox);
     Mat res = src.clone();
-    for(const auto& region : regions){
-        for (const auto& point : region){
-        circle(res, point, 20, QVGreen,5);
+    for(auto& r : regions){
+        for (auto& p : r){
+            circle(res, p, 1, QVGreen,1,LINE_8);
         }
     }
-
     QMessageBox::information(nullptr,QString("提示"),QString("检测到角点数量:%1").arg(regions.size()));
-    imwrite("output.png", src);
     waitKey(0);
     return res;
 }
@@ -618,7 +596,6 @@ Mat ImgAlgorithm::GFTTDetect(Mat src)
     gftt->detect(src, keypoints);
     drawKeypoints(src,keypoints,res,QVGreen,DrawMatchesFlags::DEFAULT);
     QMessageBox::information(nullptr, QString("提示"), QString("检测到角点数量:%1").arg(keypoints.size()));
-    imwrite("output.png", src);
     waitKey(0);
     return res;
 }
