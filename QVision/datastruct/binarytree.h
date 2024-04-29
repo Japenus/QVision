@@ -5,6 +5,7 @@ class BinaryTree
 {
 public:
     BinaryTree();
+    //
 };
 
 #endif // BINARYTREE_H

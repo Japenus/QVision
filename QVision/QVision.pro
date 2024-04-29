@@ -19,8 +19,6 @@ LIBS +=-L$$PWD/library -lopencv_world480 -lleptonica-1.84.0 -ltesseract53
 INCLUDEPATH+=$$PWD/src
 INCLUDEPATH+=$$PWD/dialog
 HEADERS += \
-    datastruct/global.h \
-    datastruct/linklist.h \
     qvision.h \
     dialog/GuilDlg.h \
     dialog/CannyDlg.h \
@@ -52,10 +50,11 @@ HEADERS += \
     src/fileoperation.h \
     src/formattransfer.h \
     src/networkcommunication.h \
+    datastruct/global.h \
+    datastruct/LinkList.h \
     datastruct/BinaryTree.h \
 
 SOURCES += \
-    datastruct/linklist.cpp \
     main.cpp \
     qvision.cpp \
     dialog/GuilDlg.cpp \
@@ -85,6 +84,7 @@ SOURCES += \
     src/fileoperation.cpp \
     src/formattransfer.cpp \
     src/networkcommunication.cpp \
+    datastruct/LinkList.cpp \
     datastruct/BinaryTree.cpp \
 
 FORMS += \
