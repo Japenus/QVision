@@ -8,10 +8,13 @@ class DataBase:public QMainWindow
 public:
     Tools ts;
     DataBase(QWidget *parent = nullptr);
+    void showCurData();
 private slots:
     void addItem();
     void findItem();
     void clearTips();
+    void insert();
+    void closeWin();
     void updateItem();
     void deleteItem();
     void ConnectMySQL();
@@ -22,30 +25,43 @@ private slots:
     void ConnectSQLServer();
 private:
     QString temp;
-    int fixHeight=30;
+    QString sql;
     QLabel *tip1;
     QLabel *tip2;
+
     QSqlDatabase qDB;
+    int fixHeight=30;
+    int curSelectedRow;
+    bool isUpdate=false;
+    QString selectedData;
+    int curSelectedColumn;
+
     QStringList qslist;
     QStringList geTable;
-    QTextEdit *showInfo;
-    QTableView *dataList;
-    QPushButton *disConn;
-    QTableWidgetItem *item;
-    QPushButton *cleanTips;
     QStringList tablElement;
-    QStandardItem *tableCols;
+
+    QPushButton *disConn;
+    QPushButton *cleanTips;
     QPushButton *addDataItem;
     QPushButton *delDataItem;
-    QPushButton *fixDataItem;
+    QPushButton *refreshItem;
     QPushButton *findDataItem;
-    QComboBox *databaseListBox;
+    QPushButton *closeCurWin;
+    QPushButton *insertNullRow;
     QPushButton *databaseLists;
-    QComboBox *datatableListsBox;
     QPushButton *datatableLists;
 
+    QComboBox *databaseListBox;
+    QComboBox *datatableListsBox;
+
+    QTextEdit *showInfo;
+    QTableView *dataList;
+    QTableWidgetItem *item;
+    QStandardItem *tableCols;
+    QModelIndexList curDataIndex;
     QStandardItemModel *tableData;
     QList<QList<QString>> dataItem;
+    // QItemSelectionModel *selectedItem;
 };
 
 #endif // DATABASE_H

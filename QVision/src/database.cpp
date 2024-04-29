@@ -21,8 +21,10 @@ DataBase::DataBase(QWidget *parent):QMainWindow(parent)
     tip2->setAlignment(Qt::AlignCenter);
     addDataItem= new QPushButton("添加");
     delDataItem= new QPushButton("删除");
-    fixDataItem = new QPushButton("修改");
+    refreshItem = new QPushButton("更新");
     findDataItem = new QPushButton("查找");
+    closeCurWin = new QPushButton("关闭");
+    insertNullRow = new QPushButton("插入");
     cleanTips = new QPushButton("清除");
     disConn = new QPushButton("断开");
     databaseLists = new QPushButton("数据库列表");
@@ -49,10 +51,12 @@ DataBase::DataBase(QWidget *parent):QMainWindow(parent)
     //style
     addDataItem->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
     delDataItem->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
-    fixDataItem->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
+    refreshItem->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
     findDataItem->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
     cleanTips->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
     disConn->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
+    insertNullRow->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
+    closeCurWin->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
     databaseListBox->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
     datatableListsBox->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
 
@@ -73,15 +77,17 @@ DataBase::DataBase(QWidget *parent):QMainWindow(parent)
     QHBoxLayout *Row4 = new QHBoxLayout;
     QHBoxLayout *Row5 = new QHBoxLayout;
     QHBoxLayout *Row6 = new QHBoxLayout;
+    QHBoxLayout *Row7 = new QHBoxLayout;
     QWidget *central=new QWidget;
 
     Row->addWidget(databaseLists);Row->addWidget(datatableLists);
     Row1->addWidget(tip1);Row1->addWidget(tip2);
     Row2->addWidget(dataList);Row2->addWidget(showInfo);
     Row3->addWidget(addDataItem);Row3->addWidget(delDataItem);
-    Row4->addWidget(fixDataItem);Row4->addWidget(findDataItem);
+    Row4->addWidget(refreshItem);Row4->addWidget(findDataItem);
     Row5->addWidget(disConn);Row5->addWidget(cleanTips);
     Row6->addWidget(databaseListBox);Row6->addWidget(datatableListsBox);
+    Row7->addWidget(insertNullRow);Row7->addWidget(closeCurWin);
 
     MainStruct->addLayout(Row);
     MainStruct->addLayout(Row1);
@@ -90,6 +96,7 @@ DataBase::DataBase(QWidget *parent):QMainWindow(parent)
     MainStruct->addLayout(Row3);
     MainStruct->addLayout(Row4);
     MainStruct->addLayout(Row5);
+    MainStruct->addLayout(Row7);
     MainStruct->setStretch(0,10);
 
     central->setLayout(MainStruct);
@@ -102,10 +109,13 @@ DataBase::DataBase(QWidget *parent):QMainWindow(parent)
     connect(datatableLists, &QPushButton::clicked, this, &DataBase::curDataTables);
     connect(addDataItem, &QPushButton::clicked, this, &DataBase::addItem);
     connect(delDataItem, &QPushButton::clicked, this, &DataBase::deleteItem);
-    connect(fixDataItem, &QPushButton::clicked, this, &DataBase::updateItem);
+    connect(refreshItem, &QPushButton::clicked, this, &DataBase::updateItem);
     connect(findDataItem, &QPushButton::clicked, this, &DataBase::findItem);
     connect(disConn, &QPushButton::clicked, this, &DataBase::disConnection);
     connect(cleanTips, &QPushButton::clicked, this, &DataBase::clearTips);
+
+    connect(insertNullRow, &QPushButton::clicked, this, &DataBase::insert);
+    connect(closeCurWin, &QPushButton::clicked, this, &DataBase::closeWin);
 
     resize(w/2,h/2);
     setWindowIcon(icon);
@@ -170,9 +180,11 @@ void DataBase::curDatabases()
 
 void DataBase::curDataTables()
 {
-    if(qDB.isOpen()){
+    if(qDB.isOpen())
+    {
         geTable=ts.GetTables(&qDB);
-        for(int i=0;i<geTable.size();i++){
+        for(int i=0;i<geTable.size();i++)
+        {
             temp=geTable.at(i);
             showInfo->setText("获取表名:"+geTable.at(i));
             datatableListsBox->addItem(geTable.at(i));
@@ -180,14 +192,17 @@ void DataBase::curDataTables()
             qslist<<tablElement;
             tableData->setHorizontalHeaderLabels(qslist);
             dataItem=ts.GetTableData(&qDB,geTable.at(i));
-            for(int i = 0; i < dataItem.size(); i++){
+            for(int i = 0; i < dataItem.size(); i++)
+            {
                 QList<QStandardItem*> rowData;
-                for(int j = 0; j < dataItem[i].size(); j++){
+                for(int j = 0; j < dataItem[i].size(); j++)
+                {
                     rowData.append(new QStandardItem(dataItem[i][j]));
                 }
                 int rowNum = tableData->rowCount();
                 tableData->insertRow(rowNum);
-                for(int col = 0; col < rowData.size(); col++){
+                for(int col = 0; col < rowData.size(); col++)
+                {
                     tableData->setItem(rowNum, col, rowData.at(col));
                 }
             }
@@ -198,11 +213,28 @@ void DataBase::curDataTables()
     }
 }
 
+void DataBase::showCurData()
+{
+    curDataIndex=dataList->selectionModel()->selectedIndexes();
+    for(auto &index:curDataIndex){
+        curSelectedRow=index.row();
+        curSelectedColumn=index.column();
+    }
+    selectedData = tableData->data(tableData->index(curSelectedRow, curSelectedColumn)).toString();
+}
+
 void DataBase::addItem()
 {
     if(qDB.isOpen()){
-        QString res=ts.AddData(&qDB,temp);
-        showInfo->setText(res);
+        QString lastRowData1 = tableData->index(tableData->rowCount() - 1, 0).data().toString();
+        QString lastRowData2 = tableData->index(tableData->rowCount() - 1, 1).data().toString();
+        QString lastRowData3 = tableData->index(tableData->rowCount() - 1, 2).data().toString();
+        QString lastRowData4 = tableData->index(tableData->rowCount() - 1, 3).data().toString();
+        QString sql = QString("insert into userData(userName,gender,age,userId) values('%1','%2','%3','%4')")
+                          .arg(lastRowData1).arg(lastRowData2).arg(lastRowData3).arg(lastRowData4);
+        QSqlQuery query;
+        query.exec(sql);
+        showInfo->setText("添加成功");
     }else{
         showInfo->setText("未连接");
     }
@@ -211,8 +243,16 @@ void DataBase::addItem()
 void DataBase::deleteItem()
 {
     if(qDB.isOpen()){
-        QString res=ts.DelData(&qDB,temp);
-        showInfo->setText(res);
+        curDataIndex=dataList->selectionModel()->selectedIndexes();
+        for(auto &index:curDataIndex){
+            curSelectedRow=index.row();
+            curSelectedColumn=index.column();
+        }
+        selectedData = tableData->data(tableData->index(curSelectedRow, curSelectedColumn)).toString();
+        sql = QString("delete from userData where userName = '%1'").arg(selectedData);
+        QSqlQuery query;
+        query.exec(sql);
+        showInfo->setText("已删除("+selectedData+")");
     }else{
         showInfo->setText("未连接");
     }
@@ -221,8 +261,10 @@ void DataBase::deleteItem()
 void DataBase::updateItem()
 {
     if(qDB.isOpen()){
-        QString res=ts.UpdateData(&qDB,temp);
-        showInfo->setText(res);
+        qslist.clear();
+        tableData->clear();
+        curDataTables();
+        showInfo->setText("数据更新成功");
     }else{
         showInfo->setText("未连接");
     }
@@ -231,8 +273,7 @@ void DataBase::updateItem()
 void DataBase::findItem()
 {
     if(qDB.isOpen()){
-        QString res=ts.FindData(&qDB,temp);
-        showInfo->setText(res);
+        showInfo->setText("res");
     }else{
         showInfo->setText("未连接");
     }
@@ -241,9 +282,31 @@ void DataBase::disConnection()
 {
     if(qDB.isOpen()){
         qDB.close();
+        qslist.clear();
+        tableData->clear();
+        datatableListsBox->clear();
         showInfo->setText("连接已关闭");
     }
 }
+
+
+void DataBase::insert()
+{
+    if(qDB.isOpen()){
+        int rowCount = tableData->rowCount();
+        tableData->insertRow(rowCount);
+        showInfo->setText("添加空行成功");
+    }else{
+        showInfo->setText("未连接");
+    }
+}
+
+void DataBase::closeWin()
+{
+    this->close();
+}
+
+
 void DataBase::clearTips()
 {
     showInfo->clear();

@@ -39,10 +39,6 @@ public:
     Mat RotateScale(Mat src, double angle, double scale);
     double CalcIOU(const Rect& rectA, const Rect& rectB);
     Mat AdaptThreshold(Mat src, int blocksize, double C);
-    QString AddData(QSqlDatabase *db, QString& tableName);
-    QString DelData(QSqlDatabase *db, QString& tableName);
-    QString FindData(QSqlDatabase *db, QString& tableName);
-    QString UpdateData(QSqlDatabase *db, QString& tableName);
     void MatchImgPath(QRegularExpression re,QString context);
     void MatchRegExp(QRegularExpression &regExp,QString &Str);
     Mat ThresholdProcess(Mat src,int val,int maxVal,int type);
