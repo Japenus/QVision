@@ -12,7 +12,6 @@ public:
     Preprocess process;
     Scalar PickColor();
     QSqlDatabase MySql();
-    QSqlDatabase SQLite();
     int Pyramid(Mat src);
     Rect GetCoordinate();
     void MakeBig(Mat src);
@@ -27,6 +26,7 @@ public:
     Mat ShowOutline(Mat src,int val);
     Mat FixThreshold(Mat img, int val);
     int Statistic(Mat img, int pixval);
+    QSqlDatabase SQLite(QString dbfile);
     Mat ThresholdProcess(Mat src,int val);
     Mat PersTransform(Mat src,Mat target);
     Mat EdgeCanny(Mat src,int low,int high);

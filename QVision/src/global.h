@@ -13,6 +13,7 @@
 #include <QPainter>
 #include <core.hpp>
 #include <QSpinBox>
+#include <QToolBox>
 #include <QLineEdit>
 #include <baseapi.h>
 #include <QTextEdit>
@@ -31,6 +32,7 @@
 #include <QPushButton>
 #include <QHeaderView>
 #include <QVBoxLayout>
+#include <QInputDialog>
 #include <QAudioDevice>
 #include <allheaders.h>
 #include <QHostAddress>

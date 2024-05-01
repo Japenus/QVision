@@ -18,7 +18,7 @@ ScreenCut::ScreenCut(QWidget *parent)
 void ScreenCut::CutArea(QPixmap &pix)
 {
     CurrentArea=ft.QPixmap2Mat(pix);
-    imwrite("output.png",CurrentArea);
+    imwrite("ScreenShot.png",CurrentArea);
 }
 
 

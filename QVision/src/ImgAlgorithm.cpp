@@ -275,7 +275,6 @@ Mat ImgAlgorithm::MatchTemp(Mat src, Mat target, int thresVal)
     putText(src,"Correlation:" + Correlation, Point(matchLoc.x, rb.y+20),16,0.8,QVGreen,1,8);
     putText(src,"PSNR:"+psnRatio,Point(matchLoc.x,rb.y + 45),16,0.8,QVGreen,1,16);
     imwrite("matchTemplate"+ to_string(matchRes)+".png",src);
-    imwrite("output.png",src);
     matchRes++;
     waitKey(0);
     destroyAllWindows();
@@ -328,7 +327,6 @@ Mat ImgAlgorithm::FeaturePointMatch(Mat m1, Mat m2)
     QMessageBox::information(nullptr, QString("提示"),QString("已匹配关键点:%1(个)").arg(best.size()));
     QMessageBox::information(nullptr,QString("提示"),QString("特征点匹配耗时:%1(ms)").arg(duration.count()));
     imwrite("featureMatch"+to_string(matchRes)+".png",res);
-    imwrite("output.png",res);
     matchRes++;
     waitKey(0);
     return res;
@@ -366,7 +364,6 @@ Mat ImgAlgorithm::UpgradeMatchTemp(Mat temp, Mat src,int a,double b,double c, do
     auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);
     QMessageBox::information(nullptr,QString("提示"),QString("改进模板匹配用时:%1(ms)").arg(duration.count()));
     imwrite("UpgradeTemplate"+ to_string(matchRes) +".png",src);
-    imwrite("output.png", src);
     matchRes++;
     waitKey(0);
     return src;
@@ -414,7 +411,6 @@ NullCoord:
     QMessageBox::information(nullptr, QString("提示"),QString("Ballard匹配用时:%1(ms)").arg(duration.count()));
     QMessageBox::information(nullptr, QString("提示"),QString("目标区域:%1(个)").arg(Positions.size()));
     imwrite("HoughBallard"+ to_string(matchRes) +".png",src);
-    imwrite("output.png", src);
     waitKey(0);
     matchRes++;
     return src;
@@ -458,7 +454,6 @@ Mat ImgAlgorithm::HoughGuil(Mat src, Mat temp, double mindist, int level, double
     QMessageBox::information(nullptr,QString("提示"),QString("广义霍夫(Guil)匹配用时:%1(ms)").arg(duration.count()));
     QMessageBox::information(nullptr,QString("提示"),QString("检测到的目标区域:%1(个)").arg(Positions.size()));
     imwrite("HoughGuil"+ to_string(matchRes) +".png",src);
-    imwrite("output.png", src);
     matchRes++;
     waitKey(0);
     return src;
@@ -621,7 +616,7 @@ Mat ImgAlgorithm::DetectFaceFromImg(Mat src)
         }
         namedWindow("show res",0);
         imshow("show res", src) ;
-        imwrite("output"+ to_string(recongizedNum) +".png",src);
+        imwrite("DetectFace"+ to_string(recongizedNum) +".png",src);
         recongizedNum++;
         QMessageBox::information(nullptr,QString("提示"),QString("检测到人脸个数为:%1").arg(faces.size()));
         waitKey(0);
@@ -664,7 +659,6 @@ Mat ImgAlgorithm::SelfModel(Mat src,QString modelPath)
             rectangle(src,objs[i], QVGreen,2,8,0);
         }
         imwrite("findObj" + to_string(recongizedNum) + ".png",src);
-        imwrite("output.png",src);
         recongizedNum++;
         QMessageBox::information(nullptr,QString("提示"),QString("检测到目标数量:%1").arg(objs.size()));
         waitKey(0);

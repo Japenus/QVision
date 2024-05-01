@@ -41,8 +41,8 @@ private:
     QTextEdit *recvData;
     QTextEdit *curStatus;
 
-    QTcpServer *tcpServer;
     QTcpSocket *Socket;
+    QTcpServer *tcpServer;
     QHostAddress ipAddress;
     QList<QTcpSocket*> clientLists;
 };

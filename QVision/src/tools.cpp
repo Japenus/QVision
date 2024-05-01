@@ -152,13 +152,13 @@ Mat Tools::ShowOutline(Mat src,int val)
 {
     Mat gray,bin;
     gray = process.GrayTransform(src);
-    bin = ThresholdProcess(gray, val,255,0);
+    bin = ThresholdProcess(gray,val,255,0);
     vector<vector<Point>> contours;
     vector<Vec4i> hierarchy;
     findContours(bin,contours,hierarchy,RETR_TREE,CHAIN_APPROX_SIMPLE);//CHAIN_APPROX_SIMp1E
     for(int i = 0; i < contours.size(); i++)
     {
-        drawContours(src, contours,i,QVGreen,1,LINE_8,hierarchy);
+        drawContours(src, contours,i,QVGreen,2,LINE_8,hierarchy);
     }
     return src;
 }
@@ -212,7 +212,6 @@ static void CoverArea(int e, int x,int y, int flags, void* recData)
             Mat curArea = (*src)(Area);
             namedWindow("Area Cover",0);
             imshow("Area Cover", curArea);
-            imwrite("output.png", curArea);
             imwrite("CoverArea.png", curArea);
         }
     }
@@ -245,7 +244,6 @@ static void fillEvent(int e, int x, int y, int flags, void* recData)
         polylines(res,VArea,true,fillColor,2,LINE_8);
         imshow("Mark Area", res);
         imwrite("FillArea.png", res);
-        imwrite("output.png", res);
         shapes.clear();
         VArea.clear();
         clickCount = 0;
@@ -487,7 +485,6 @@ Mat Tools::RotateScale(Mat src, double angle, double scale)
     Point2f center(src.cols/2,src.rows);
     Mat rotMat=getRotationMatrix2D(center,angle,scale);
     warpAffine(src,res,rotMat,Size(src.cols,src.rows),INTER_LINEAR,BORDER_CONSTANT,QVBlack);
-    imwrite("output.png",res);
     imwrite("Rotated"+to_string(rotated) + ".png", res);
     rotated++;
     waitKey(0);
@@ -667,12 +664,11 @@ QSqlDatabase Tools::MySql()
     return qDB;
 }
 
-QSqlDatabase Tools::SQLite()
+QSqlDatabase Tools::SQLite(QString dbfile)
 {
     QString info = "";
     QSqlDatabase qDB = QSqlDatabase::addDatabase("QSQLITE"); // SQLite
-    QString databaseName = "C:/Users/Jerrylee/Desktop/Project/DataBase/SQLite/test.db";
-    qDB.setDatabaseName(databaseName);
+    qDB.setDatabaseName(dbfile);
     if (!qDB.open())
     {
         info = qDB.lastError().text();

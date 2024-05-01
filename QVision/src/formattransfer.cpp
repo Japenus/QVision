@@ -149,3 +149,8 @@ Mat FormatTransfer::QPixmap2Mat(QPixmap &datatype)
     cvtColor(res, res, COLOR_BGRA2BGR);
     return res;
 }
+
+QString FormatTransfer::Int2QString(int data)
+{
+    return QString::number(data);
+}

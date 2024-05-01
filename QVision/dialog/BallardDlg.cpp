@@ -1,5 +1,4 @@
 #include "BallardDlg.h"
-
 BallardDlg::BallardDlg(QWidget *parent):QDialog(parent)
 {
     minDistBox=new QSpinBox(this);
@@ -26,15 +25,15 @@ BallardDlg::BallardDlg(QWidget *parent):QDialog(parent)
     minDistBox->setRange(0,10000);
     minDistBox->setSingleStep(10);
 
-    levelBox->setValue(360);
+    levelBox->setValue(80);
     levelBox->setRange(0,10000);
-    levelBox->setSingleStep(10);
+    levelBox->setSingleStep(100);
 
     dpBox->setValue(1);
     dpBox->setRange(0,5);
     dpBox->setSingleStep(1);
 
-    buffersizeBox->setValue(1000);
+    buffersizeBox->setValue(50);
     buffersizeBox->setRange(0,10000);
     buffersizeBox->setSingleStep(100);
 
@@ -46,7 +45,7 @@ BallardDlg::BallardDlg(QWidget *parent):QDialog(parent)
     cannylowBox->setRange(0,255);
     cannylowBox->setSingleStep(10);
 
-    cannyhighBox->setValue(120);
+    cannyhighBox->setValue(90);
     cannyhighBox->setRange(0,255);
     cannyhighBox->setSingleStep(10);
     cannyhighBox->setFixedWidth(200);

@@ -50,6 +50,7 @@ NetworkCommunication::NetworkCommunication(QWidget *parent):QMainWindow(parent)
     tip4->setFixedWidth(80);
     tip5->setFixedWidth(80);
     tip6->setFixedWidth(80);
+    recvData->setReadOnly(true);
     curStatus->setFixedHeight(30);
     curStatus->setReadOnly(true);
     tip1->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
@@ -62,6 +63,7 @@ NetworkCommunication::NetworkCommunication(QWidget *parent):QMainWindow(parent)
     disconnectBtn->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
     sendBtn->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
     stopBtn->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
+    curStatus->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
 
     sendData->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
     recvData->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");

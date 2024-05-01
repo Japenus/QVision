@@ -1,33 +1,37 @@
 #ifndef DATABASE_H
 #define DATABASE_H
-#include <QTabWidget>
 #include "tools.h"
 #include "global.h"
+#include "formattransfer.h"
 class DataBase:public QMainWindow
 {
 public:
     Tools ts;
+    FormatTransfer ft;
     DataBase(QWidget *parent = nullptr);
     void showCurData();
 private slots:
+    void insert();
     void addItem();
+    void closeWin();
     void findItem();
     void clearTips();
-    void insert();
-    void closeWin();
     void updateItem();
     void deleteItem();
+    void curDatabases();
     void ConnectMySQL();
     void ConnectSQLite();
-    void curDatabases();
     void disConnection();
     void curDataTables();
+    void OpenSQLiteFile();
     void ConnectSQLServer();
 private:
-    QString temp;
     QString sql;
+    QString temp;
     QLabel *tip1;
     QLabel *tip2;
+    QString dbPath;
+    QString searchField;
 
     QSqlDatabase qDB;
     int fixHeight=30;

@@ -1,10 +1,9 @@
 #include "qvision.h"
 #include "ui_qvision.h"
-
 QVision::QVision(QWidget *parent): QMainWindow(parent), ui(new Ui::QVision)
 {
-    QIcon icon("Spyder.png");
     ui->setupUi(this);
+    QIcon icon("Spyder.png");
     QRect DeviceSize=QGuiApplication::screens().at(0)->geometry();
     int w=DeviceSize.width();
     int h=DeviceSize.height();
@@ -18,6 +17,8 @@ QVision::QVision(QWidget *parent): QMainWindow(parent), ui(new Ui::QVision)
     histRes= new QPushButton("Hist");
     bigSrc = new QPushButton("Make Big");
     bigRes = new QPushButton("Make Big");
+    closeApp = new QPushButton("Close");
+    openSider = new QPushButton("Create Task");
 
     tip1->setFixedHeight(3*fixPara);
     tip2->setFixedHeight(3*fixPara);
@@ -35,6 +36,9 @@ QVision::QVision(QWidget *parent): QMainWindow(parent), ui(new Ui::QVision)
     histRes->setStyleSheet("border: 1px solid brown;padding: 5px;color: blue;border-radius: 10px;font-weight: bold;");
     histSrc->setStyleSheet("border: 1px solid brown;padding: 5px;color: blue;;border-radius: 10px;font-weight: bold;");
 
+    openSider->setStyleSheet("border: 1px solid brown;padding: 5px;color: blue;border-radius: 10px;font-weight: bold;");
+    closeApp->setStyleSheet("border: 1px solid brown;padding: 5px;color: blue;;border-radius: 10px;font-weight: bold;");
+
     srcBox->setMaximumSize(w,h);srcBox->setMinimumSize(w/4,h/3);
     resBox->setMaximumSize(w,h);resBox->setMinimumSize(w/4,h/3);
     srcBox->setScaledContents(true);resBox->setScaledContents(true);
@@ -46,28 +50,33 @@ QVision::QVision(QWidget *parent): QMainWindow(parent), ui(new Ui::QVision)
     QHBoxLayout *Row2 = new QHBoxLayout;
     QHBoxLayout *Row3 = new QHBoxLayout;
     QHBoxLayout *Row4 = new QHBoxLayout;
-    QWidget *central=new QWidget;
+    QHBoxLayout *Row5 = new QHBoxLayout;
+    appFace=new QWidget;
 
     Row1->addWidget(tip1);Row1->addWidget(tip2);
     Row2->addWidget(srcBox);Row2->addWidget(resBox);
     Row3->addWidget(histSrc);Row3->addWidget(histRes);
     Row4->addWidget(bigSrc);Row4->addWidget(bigRes);
+    Row5->addWidget(openSider);Row5->addWidget(closeApp);
 
     MainStruct->addLayout(Row1);
     MainStruct->addLayout(Row2);
     MainStruct->addLayout(Row3);
     MainStruct->addLayout(Row4);
+    MainStruct->addLayout(Row5);
     MainStruct->setStretch(0,10);
     MainStruct->setSpacing(fixPara);
     MainStruct->setContentsMargins(fixPara, fixPara, fixPara, fixPara);
 
-    central->setLayout(MainStruct);
-    setCentralWidget(central);
+    appFace->setLayout(MainStruct);
+    setCentralWidget(appFace);
 
     connect(histSrc,&QPushButton::clicked,this,&QVision::on_srcHist_clicked);
     connect(histRes,&QPushButton::clicked,this,&QVision::on_resHist_clicked);
     connect(bigSrc,&QPushButton::clicked,this,&QVision::on_bigSrc_clicked);
     connect(bigRes,&QPushButton::clicked,this,&QVision::on_bigRes_clicked);
+    connect(openSider,&QPushButton::clicked,this,&QVision::showSider);
+    connect(closeApp,&QPushButton::clicked,this,&QVision::closeQVision);
 
     QImage SrcImg=QImage(Src.data,Src.cols,Src.rows,Src.step,QImage::Format_RGB888).rgbSwapped();
     QImage ResImg=QImage(Dst.data,Dst.cols,Dst.rows,Dst.step,QImage::Format_RGB888).rgbSwapped();
@@ -208,7 +217,7 @@ Mat QVision::QPixmap2Mat(QPixmap &datatype)
     QImage image = datatype.toImage();
     if(image.isNull())
     {
-        qDebug() << "Failed to convert";
+        QMessageBox::warning(this,tr("警告"),tr("转换失败"));
         return Mat();
     }
     Mat res(image.height(), image.width(), CV_8UC4, image.bits(), image.bytesPerLine());
@@ -245,6 +254,27 @@ void QVision::on_bigRes_clicked()
     if(!resBox->pixmap()) return;
     tools.MakeBig(Dst);
     Show();
+}
+
+
+void QVision::showSider()
+{
+    siderBar.setWindowTitle("自动化流程");
+    QLabel *page1 = new QLabel("页面 1 的内容");
+    QLabel *page2 = new QLabel("页面 2 的内容");
+    QLabel *page3 = new QLabel("页面 3 的内容");
+    siderBar.addItem(page1, "菜单项 1");
+    // siderBar.addItem(appFace, "菜单项 1");
+    siderBar.addItem(page2, "菜单项 2");
+    siderBar.addItem(page3, "菜单项 3");
+    siderBar.resize(300,400);
+    siderBar.show();
+}
+
+
+void QVision::closeQVision()
+{
+    QApplication::quit();
 }
 
 //预处理
@@ -409,7 +439,6 @@ void QVision::on_actionThreshold_Process_triggered()
         TD.thresval=type;
         TD.threstype =val;
         Dst=tools.ThresholdProcess(Src,val,type);
-        imwrite("output.png",Dst);
         Show();
     }
 }

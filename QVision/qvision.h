@@ -68,7 +68,27 @@ public:
     QString getFilepath();
     QString getOutputpath();
     Mat QPixmap2Mat(QPixmap &pix);
+
+private:
+    QWidget *appFace;
+    QLabel *tip1;
+    QLabel *tip2;
+    int fixPara=10;
+    QLabel *srcBox;
+    QLabel *resBox;
+    Mat Src,Dst,Res;
+    Ui::QVision *ui;
+    QToolBox siderBar;
+    QPushButton *bigSrc;
+    QPushButton *bigRes;
+    QPushButton *histRes;
+    QPushButton *histSrc;
+    QPushButton *closeApp;
+    QPushButton *openSider;
+
 private slots:
+    void showSider();
+    void closeQVision();
     void on_bigSrc_clicked();
     void on_bigRes_clicked();
     void on_srcHist_clicked();
@@ -157,18 +177,5 @@ private slots:
     void on_actionEraser_triggered();
     void on_actionRectangle_triggered();
     void on_actionLaunch_2_triggered();
-
-private:
-    int fixPara=10;
-    Mat Src,Dst,Res;
-    QLabel *tip1;
-    QLabel *tip2;
-    QLabel *srcBox;
-    QLabel *resBox;
-    Ui::QVision *ui;
-    QPushButton *histSrc;
-    QPushButton *histRes;
-    QPushButton *bigSrc;
-    QPushButton *bigRes;
 };
 #endif // QVISION_H

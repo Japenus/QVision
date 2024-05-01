@@ -3,10 +3,15 @@ DataBase::DataBase(QWidget *parent):QMainWindow(parent)
 {
     QIcon icon("Spyder.png");
     QMenuBar *menubar = new QMenuBar();
+    QMenu *menulist0 = menubar->addMenu("Open");
     QMenu *menulist = menubar->addMenu("Connection");
     QAction *connSqlServer = new QAction("SQL Server", this);
+    QAction *SQLiteFile = new QAction("SQLite File", this);
     QAction *connMySql = new QAction("MySQL", this);
     QAction *connSQLite = new QAction("SQLite", this);
+    menulist0->addSeparator();
+    menulist0->addAction(SQLiteFile);
+
     menulist->addSeparator();
     menulist->addAction(connSqlServer);
     menulist->addAction(connSQLite);
@@ -105,6 +110,7 @@ DataBase::DataBase(QWidget *parent):QMainWindow(parent)
     connect(connMySql,&QAction::triggered,this,&DataBase::ConnectMySQL);
     connect(connSQLite,&QAction::triggered,this,&DataBase::ConnectSQLite);
     connect(connSqlServer,&QAction::triggered,this,&DataBase::ConnectSQLServer);
+    connect(SQLiteFile,&QAction::triggered,this,&DataBase::OpenSQLiteFile);
     connect(databaseLists, &QPushButton::clicked, this, &DataBase::curDatabases);
     connect(datatableLists, &QPushButton::clicked, this, &DataBase::curDataTables);
     connect(addDataItem, &QPushButton::clicked, this, &DataBase::addItem);
@@ -123,13 +129,26 @@ DataBase::DataBase(QWidget *parent):QMainWindow(parent)
 }
 
 
+void DataBase::OpenSQLiteFile()
+{
+    dbPath=QFileDialog::getOpenFileName(nullptr,tr("Choose File"),".db",tr("DataBase (*.db *.sqlite3)"));
+    if(!dbPath.isNull()){
+        databaseListBox->insertItem(0, dbPath);
+        showInfo->setText("已添加数据库文件");
+    }else{
+        showInfo->setText("添加数据库文件失败");
+        return;
+    }
+}
+
+
 void DataBase::ConnectSQLServer()
 {
     if(!qDB.isOpen()){
         qDB=ts.SqlServer();
         showInfo->setText("已连接");
     }else{
-        showInfo->setText("<warning>重复的连接");
+        showInfo->setText("重复的连接");
     }
 }
 
@@ -144,7 +163,7 @@ void DataBase::ConnectMySQL()
             return;
         }
     }else{
-        showInfo->setText("<warning>重复的连接");
+        showInfo->setText("重复的连接");
     }
 }
 
@@ -152,15 +171,19 @@ void DataBase::ConnectMySQL()
 void DataBase::ConnectSQLite()
 {
     if(!qDB.isOpen()){
-        qDB=ts.SQLite();
-        if(qDB.isOpen()){
-            showInfo->setText("已连接");
+        if(!dbPath.isNull()){
+            qDB=ts.SQLite(dbPath);
+            if(qDB.isOpen()){
+                showInfo->setText("已连接");
+            }else{
+                showInfo->setText("配置错误");
+                return;
+            }
         }else{
-            showInfo->setText("配置错误");
-            return;
+            showInfo->setText("先选择SQLite数据库文件");
         }
     }else{
-        showInfo->setText("<warning>重复的连接");
+        showInfo->setText("重复的连接");
     }
 }
 
@@ -221,6 +244,7 @@ void DataBase::showCurData()
         curSelectedColumn=index.column();
     }
     selectedData = tableData->data(tableData->index(curSelectedRow, curSelectedColumn)).toString();
+    qInfo()<<selectedData;
 }
 
 void DataBase::addItem()
@@ -272,12 +296,40 @@ void DataBase::updateItem()
 
 void DataBase::findItem()
 {
-    if(qDB.isOpen()){
-        showInfo->setText("res");
+    if(qDB.isOpen())
+    {
+        searchField = QInputDialog::getText(nullptr, "查找", "请输入姓名：", QLineEdit::Normal, "", nullptr, Qt::WindowFlags());
+        if(!searchField.isEmpty())
+        {
+            QSqlQuery query;
+            QStringList searchList;
+            sql=QString("select * from userData where userName='%1'").arg(searchField);
+            QList<QStandardItem*> items = tableData->findItems(searchField, Qt::MatchExactly, 0);
+            for (auto &d : items)
+            {
+                int rowIndex = d->row();
+                int columnIndex = d->column();
+                searchList.append("<行" + ft.Int2QString(rowIndex+1) + ",列" + ft.Int2QString(columnIndex+1) + ">");
+            }
+            if (!searchList.isEmpty()) {
+                temp=searchField + "在表中的位置:" + searchList.join(",");
+            } else {
+                showInfo->setText("未找到:" + searchField);
+            }
+            if (query.exec(sql) && query.next()) {
+                QString recordInDB = query.value("userName").toString();
+                showInfo->setText(temp+",数据库中存在记录:" + recordInDB);
+            } else {
+                showInfo->setText("未找到数据:" + searchField);
+            }
+        }else{
+            showInfo->setText("未输入查询字段");
+        }
     }else{
         showInfo->setText("未连接");
     }
 }
+
 void DataBase::disConnection()
 {
     if(qDB.isOpen()){
@@ -286,6 +338,8 @@ void DataBase::disConnection()
         tableData->clear();
         datatableListsBox->clear();
         showInfo->setText("连接已关闭");
+    }else{
+        showInfo->setText("无连接");
     }
 }
 
