@@ -572,21 +572,6 @@ void QVision::BigRes()
 }
 
 
-void QVision::showSider()
-{
-    siderBar.setWindowTitle("自动化流程");
-    QLabel *page1 = new QLabel("页面 1 的内容");
-    QLabel *page2 = new QLabel("页面 2 的内容");
-    QLabel *page3 = new QLabel("页面 3 的内容");
-    siderBar.addItem(page1,"CRD.show()");
-    // siderBar.addItem(appFace, "菜单项 1");
-    siderBar.addItem(page2, "菜单项 2");
-    siderBar.addItem(page3, "菜单项 3");
-    siderBar.resize(300,400);
-    siderBar.show();
-}
-
-
 void QVision::closeQVision()
 {
     QApplication::quit();
@@ -1260,6 +1245,7 @@ void QVision::TesseractOCR()
     CRD.show();
 }
 
+
 void QVision::CaptureLine()
 {
     DD.DetectLine();
@@ -1432,4 +1418,157 @@ void QVision::JueJin()
 {
     QUrl url("https://juejin.cn/user/2080717187580488");
     QDesktopServices::openUrl(url);
+}
+
+//others
+
+void QVision::showSider()
+{
+    siderBar.setWindowTitle("工具箱");
+    QPushButton *scanwifi=new QPushButton("wifi扫描",this);
+    QPushButton *deviceInfo=new QPushButton("设备信息",this);
+    QPushButton *remoteSignIn=new QPushButton("远程登录",this);
+    QPushButton *qtChart=new QPushButton("显示图表",this);
+    QPushButton *searchIp=new QPushButton("ip查询",this);
+    connect(scanwifi,&QPushButton::clicked,this,&QVision::ScanNearWifi);
+    connect(deviceInfo,&QPushButton::clicked,this,&QVision::GetDeviceInfo);
+    connect(remoteSignIn,&QPushButton::clicked,this,&QVision::RemoteLogin);
+    connect(qtChart,&QPushButton::clicked,this,&QVision::DisplayQtChart);
+    connect(searchIp,&QPushButton::clicked,this,&QVision::SearchLocation);
+
+    siderBar.addItem(scanwifi,"抽屉1");
+    siderBar.addItem(deviceInfo,"抽屉2");
+    siderBar.addItem(remoteSignIn, "抽屉3");
+    siderBar.addItem(qtChart, "抽屉4");
+    siderBar.addItem(searchIp, "抽屉5");
+    siderBar.resize(300,400);
+    siderBar.show();
+}
+
+void QVision::ScanNearWifi()
+{
+    QList<QNetworkInterface> interfaces = QNetworkInterface::allInterfaces();
+
+    foreach (const QNetworkInterface &interface, interfaces) {
+        if (interface.type() == QNetworkInterface::Wifi) {
+            QMessageBox::information(this,tr("WiFi"),tr("SSID:%1").arg(interface.humanReadableName()));
+        }
+    }
+}
+
+void QVision::RemoteLogin()
+{
+    QString host = QInputDialog::getText(this, "远程登录", "主机名:");
+    QString computerName = QInputDialog::getText(this, "远程登录", "用户名:");
+    QString password = QInputDialog::getText(this, "远程登录", "密码:", QLineEdit::Password);
+    QProcess mstscProcess;
+    QStringList arguments;
+    arguments << "/v:" + computerName;
+    mstscProcess.start("mstsc", arguments);
+
+    if (!mstscProcess.waitForStarted()) {
+        QMessageBox::information(nullptr, "提示", "创建mstsc进程失败!");
+        return;
+    }
+
+    if (!mstscProcess.waitForFinished()) {
+        qDebug() << "Failed to finish mstsc process";
+        QMessageBox::information(nullptr, "提示", "无法完成mstsc进程!");
+        return;
+    }else{
+        QMessageBox::information(nullptr, "提示", "远程桌面连接成功!");
+    }
+}
+
+void QVision::GetDeviceInfo()
+{
+    QString deviceInfo;
+
+    QList<QNetworkInterface> interfaces = QNetworkInterface::allInterfaces();
+    foreach (QNetworkInterface interface, interfaces) {
+        deviceInfo += "Interface name: " + interface.name() + "\n";
+        deviceInfo += "MAC address: " + interface.hardwareAddress() + "\n";
+    }
+
+    foreach (QHostAddress address, QNetworkInterface::allAddresses()) {
+        if (address.protocol() == QAbstractSocket::IPv4Protocol && address != QHostAddress(QHostAddress::LocalHost)) {
+            deviceInfo += "IP address: " + address.toString() + "\n";
+        }
+    }
+
+    deviceInfo += "Operating system: " + QSysInfo::prettyProductName() + "\n";
+    deviceInfo += "Architecture: " + QSysInfo::currentCpuArchitecture() + "\n";
+    deviceInfo += "Kernel type: " + QSysInfo::kernelType() + "\n";
+    deviceInfo += "Kernel version: " + QSysInfo::kernelVersion() + "\n";
+
+    QMessageBox::information(nullptr, "Device Information", deviceInfo);
+}
+
+void QVision::AdjustLightness()
+{
+    // QScreen *screen = QGuiApplication::primaryScreen();
+
+    // qreal currentBrightness = screen->brightness();
+
+    // QMessageBox::information(this,tr("提示"),tr("当前亮度:%1").arg(currentBrightness));
+    // qreal newBrightness = currentBrightness - 10;
+
+    // screen->setBrightness(newBrightness);
+
+    // MessageBox::information(this,tr("提示"),tr("调整后亮度:%1").arg(newBrightness));
+    QMessageBox::information(this,tr("提示"),tr("调整亮度"));
+}
+
+void QVision::SearchLocation()
+{
+    QString res;
+    QNetworkAccessManager manager;
+    QNetworkRequest request;
+    QString ipAddress = QInputDialog::getText(this, "ip查询", "ip地址:");
+    QUrl url("http://ip-api.com/json/" + ipAddress);
+    request.setUrl(url);
+
+    QNetworkReply *reply = manager.get(request);
+
+    QEventLoop loop;
+    connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+    loop.exec();
+
+    if (reply->error() == QNetworkReply::NoError) {
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(reply->readAll());
+        QJsonObject jsonObj = jsonDoc.object();
+
+        QString country = jsonObj["country"].toString();
+        QString city = jsonObj["city"].toString();
+        QString region = jsonObj["regionName"].toString();
+
+        res="IP Address: "+ipAddress;
+        res+="Country: "+country;
+        res+="City: "+city;
+        res+="Region: "+region;
+        QMessageBox::information(this,tr("查询结果"),tr("详细信息:%1").arg(res));
+    } else {
+        QMessageBox::warning(this,tr("警告"),tr("错误:%1").arg(reply->errorString()));
+    }
+    reply->deleteLater();
+}
+
+void QVision::DisplayQtChart()
+{
+    // QtCharts::QBarSeries *series = new QtCharts::QBarSeries();
+    // QtCharts::QBarSet *set = new QtCharts::QBarSet("Data");
+    // *set << 1 << 2 << 3 << 4 << 5;
+    // series->append(set);
+
+    // QtCharts::QChart *chart = new QtCharts::QChart();
+    // chart->addSeries(series);
+    // chart->setTitle("Simple Bar Chart");
+    // chart->createDefaultAxes();
+    // chart->legend()->setVisible(true);
+
+    // QtCharts::QChartView *chartView = new QtCharts::QChartView(chart);
+    // chartView->setRenderHint(QPainter::Antialiasing);
+
+    // chartView->show();
+    QMessageBox::information(this,tr("提示"),tr("图表"));
 }

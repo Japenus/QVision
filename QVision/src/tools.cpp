@@ -74,13 +74,13 @@ Mat Tools::AdaptThreshold(Mat src ,int block,double C)
 Mat Tools::RegionGrow(Mat& src, Point seedPoint, int threshold, Mat& visited)
 {
     Mat res = Mat::zeros(src.size(), CV_8U);
-    std::vector<Point> stack;
+    vector<Point> stack;
     stack.push_back(seedPoint);
     while (!stack.empty()) {
         Point currentPoint = stack.back();
         stack.pop_back();
         res.at<uchar>(currentPoint) = 255;
-        std::vector<Point> neighbors = {
+        vector<Point> neighbors = {
             Point(currentPoint.x + 1, currentPoint.y),Point(currentPoint.x - 1, currentPoint.y),
             Point(currentPoint.x, currentPoint.y + 1),Point(currentPoint.x, currentPoint.y - 1)
         };
@@ -88,7 +88,7 @@ Mat Tools::RegionGrow(Mat& src, Point seedPoint, int threshold, Mat& visited)
             if (neighbor.x >= 0 && neighbor.x < src.cols &&
                 neighbor.y >= 0 && neighbor.y < src.rows &&
                 visited.at<uchar>(neighbor) == 0 &&
-                std::abs(static_cast<int>(src.at<uchar>(currentPoint)) - static_cast<int>(src.at<uchar>(neighbor))) < threshold) {
+                abs(static_cast<int>(src.at<uchar>(currentPoint)) - static_cast<int>(src.at<uchar>(neighbor))) < threshold) {
                 stack.push_back(neighbor);
                 visited.at<uchar>(neighbor) = 1;
             }
@@ -504,6 +504,33 @@ int Tools::Pyramid(Mat src)
     return 0;
 }
 
+void Tools::recognizeFace()
+{
+    // VideoCapture cap(0);
+    // if (!cap.isOpened()) {
+    //     QMessageBox::information(this,tr("提示"),tr("无法打开摄像头"));
+    //     return ;
+    // }
+    // while (true) {
+    //     Mat frame;
+    //     cap >> frame;
+    //     detector = dlib::get_frontal_face_detector();
+    //     dlib::deserialize("shape_predictor_68_face_landmarks.dat") >> predictor;
+
+    //     dlib::cv_image<dlib::bgr_pixel> img(frame);
+    //     vector<dlib::rectangle> faces = detector(img);
+
+    //     for (dlib::rectangle face : faces) {
+    //         rectangle(frame, Point(face.left(), face.top()), Point(face.right(), face.bottom()), QVGreen, 2);
+    //     }
+
+    //     namedWindow("Face Recognition",0);
+    //     imshow("Face Recognition", frame);
+    //     if (waitKey(1) == 27) {
+    //         break;
+    //     }
+    // }
+}
 
 Scalar Tools::PickColor()
 {

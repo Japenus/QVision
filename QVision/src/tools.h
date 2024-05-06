@@ -13,6 +13,7 @@ public:
     Scalar PickColor();
     QSqlDatabase MySql();
     int Pyramid(Mat src);
+    void recognizeFace();
     Rect GetCoordinate();
     void MakeBig(Mat src);
     Mat EdgeSobel(Mat src);
@@ -52,6 +53,10 @@ public:
     void DrawRotRect(Mat whichimg,const Point2f& rCenter,const Size2f& rSize,float rAngle, Scalar rColor,int rwidth);
     vector<pair<Rect, double>> TotalArea(const Mat& src, const Mat& temp,double step,double min, double max,int threshold);
     void SetHoughParas(Ptr<GeneralizedHoughGuil> guil,double a, int b, double c, double d, int e, int f, int g, int h, int i, int j, int k,float l,float m,double n,int o,int p,float q);
+
+// private:
+//     dlib::frontal_face_detector detector;
+//     dlib::shape_predictor predictor;
 };
 
 #endif // TOOLS_H

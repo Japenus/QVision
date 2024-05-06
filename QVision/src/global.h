@@ -8,6 +8,7 @@
 #include <QTimer>
 #include <QObject>
 #include <QScreen>
+// #include <QtCharts>
 #include <QMenuBar>
 #include <QProcess>
 #include <QPainter>
@@ -32,6 +33,7 @@
 #include <QPushButton>
 #include <QHeaderView>
 #include <QVBoxLayout>
+#include <QJsonObject>
 #include <QInputDialog>
 #include <QAudioDevice>
 #include <allheaders.h>
@@ -49,12 +51,21 @@
 #include <QElapsedTimer>
 #include <QSplashScreen>
 #include <QNetworkReply>
+#include <QJsonDocument>
 #include <QPlainTextEdit>
 #include <QGuiApplication>
 #include <QTableWidgetItem>
 #include <QDesktopServices>
+#include <QNetworkInterface>
 #include <QRegularExpression>
 #include <QNetworkAccessManager>
+
+
+// #include "include/dlib/opencv.h"
+// #include "include/dlib/image_processing.h"
+// #include "include/dlib/image_processing/frontal_face_detector.h"
+
+
 using namespace cv;
 using namespace std;
 using namespace tesseract;

@@ -2,13 +2,16 @@ QT += core gui sql network multimedia multimediawidgets
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 CONFIG += c++17
 
-INCLUDEPATH+=include/opencv2
-INCLUDEPATH+=include/tesseract
-INCLUDEPATH+=include/leptonica
-LIBS +=-L$$PWD/library -lopencv_world480 -lleptonica-1.84.0 -ltesseract53
+INCLUDEPATH +=$$PWD/src \
+              $$PWD/dialog \
+              include/opencv2 \
+              include/tesseract \
+              include/leptonica \
 
-INCLUDEPATH+=$$PWD/src
-INCLUDEPATH+=$$PWD/dialog
+
+LIBS +=-L$$PWD/lib -lopencv_world480 -lleptonica-1.84.0 -ltesseract53
+
+
 HEADERS += \
     qvision.h \
     dialog/GuilDlg.h \
