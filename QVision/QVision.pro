@@ -2,15 +2,6 @@ QT += core gui sql network multimedia multimediawidgets
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 CONFIG += c++17
 
-# OPENCV_PATH=C:\Users\Jerrylee\Desktop\File\Project\QVision\lib
-# OPENCV_LIB_PATH=$$files($$OPENCV_PATH/*.lib)
-# for(lib,OPENCV_LIB_PATH)
-# {
-#     libName = $$basename(lib)
-#     libName = $$replace(libName,"\\.lib$","")
-#     LIBS += -L$$OPENCV_PATH -l$$libName
-# }
-
 INCLUDEPATH+=include/opencv2
 INCLUDEPATH+=include/tesseract
 INCLUDEPATH+=include/leptonica
@@ -36,13 +27,13 @@ HEADERS += \
     dialog/TemplateMatchDlg.h \
     dialog/StatisticPixelDlg.h \
     dialog/UpgradeTempMatchDlg.h \
-    src/subpixels.h \
     src/tools.h \
     src/color.h \
     src/Dialog.h \
     src/global.h \
     src/database.h \
     src/screencut.h \
+    src/subpixels.h \
     src/Preprocess.h \
     src/multimedia.h \
     src/ImgAlgorithm.h \
@@ -74,9 +65,9 @@ SOURCES += \
     dialog/TemplateMatchDlg.cpp \
     dialog/StatisticPixelDlg.cpp \
     dialog/UpgradeTempMatchDlg.cpp \
-    src/subpixels.cpp \
     src/tools.cpp \
     src/database.cpp \
+    src/subpixels.cpp \
     src/screencut.cpp \
     src/preprocess.cpp \
     src/multimedia.cpp \
@@ -89,12 +80,17 @@ SOURCES += \
     datastruct/LinkList.cpp \
     datastruct/BinaryTree.cpp \
 
-FORMS += \
-    qvision.ui
-
 DISTFILES += \
     icon/21.png \
     icon/sample1.jpg \
+    icon/sample2.jpg \
+    icon/sample3.jpg \
+    icon/sample4.jpg \
+    icon/sample5.jpg \
+    icon/sample6.jpg \
+    icon/sample7.jpg \
+    icon/sample8.jpg \
+    icon/sample9.jpg \
     icon/sample10.jpg \
     icon/sample11.jpg \
     icon/sample12.jpg \
@@ -105,12 +101,4 @@ DISTFILES += \
     icon/sample17.jpg \
     icon/sample18.jpg \
     icon/sample19.jpg \
-    icon/sample2.jpg \
     icon/sample20.jpg \
-    icon/sample3.jpg \
-    icon/sample4.jpg \
-    icon/sample5.jpg \
-    icon/sample6.jpg \
-    icon/sample7.jpg \
-    icon/sample8.jpg \
-    icon/sample9.jpg

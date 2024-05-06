@@ -1,8 +1,8 @@
 #ifndef COLOR_H
 #define COLOR_H
 #pragma once
-#include<opencv.hpp>
 #include<QColor>
+#include<opencv.hpp>
 using namespace cv;
 const Scalar QVBlack(0,0,0);
 const Scalar QVRed(0,0,255);
