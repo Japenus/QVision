@@ -7,6 +7,7 @@
 #include "screencut.h"
 #include "multimedia.h"
 #include "Preprocess.h"
+#include "remotelogin.h"
 #include "ImgAlgorithm.h"
 #include "imgcalculate.h"
 #include "dynamicdetect.h"
@@ -26,6 +27,7 @@ public:
     Tools tools;
     ScreenCut SC;
     MultiMedia MM;
+    RemoteLogin RL;
     ImgAlgorithm IA;
     ImgCalculate IC;
     fileOperation FO;
@@ -64,6 +66,7 @@ public:
     Mat QPixmap2Mat(QPixmap &pix);
 
 private:
+    bool flag=false;
     QLabel *tip1;
     QLabel *tip2;
     int fixPara=10;
@@ -77,7 +80,13 @@ private:
     QPushButton *histRes;
     QPushButton *histSrc;
     QPushButton *closeApp;
+
     QPushButton *openSider;
+    QPushButton *qtChart;
+    QPushButton *scanwifi;
+    QPushButton *searchIp;
+    QPushButton *deviceInfo;
+    QPushButton *remoteSignIn;
 
 private slots:
     void Add();
@@ -136,7 +145,7 @@ private slots:
     void ShowOutline();
     void RotateScale();
     void Subtraction();
-    void RemoteLogin();
+    void RemotelogIn();
     void ScanNearWifi();
     void TesseractOCR();
     void closeQVision();

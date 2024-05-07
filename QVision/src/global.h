@@ -21,6 +21,7 @@
 #include <QComboBox>
 #include <QSqlError>
 #include <QSqlQuery>
+#include <QAxWidget>
 #include <QSqlRecord>
 #include <QTcpServer>
 #include <QTableView>

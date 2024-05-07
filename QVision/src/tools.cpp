@@ -326,7 +326,7 @@ static void func(int e,int x,int y,int flags, void* userdata)
     }
     else if (e==EVENT_MOUSEWHEEL)
     {
-        QMessageBox::information(nullptr,"提示",QString("右键保存此区域"));
+        QMessageBox::information(nullptr,"提示","右键保存此区域");
     }
     else if (e == EVENT_MOUSEMOVE)
     {
@@ -342,7 +342,7 @@ static void func(int e,int x,int y,int flags, void* userdata)
     {
         cutting = false;
     }
-    else if (e == EVENT_RBUTTONDOWN)
+    else if (e == EVENT_RBUTTONUP)
     {
         if (LT != Point(-1,-1) && RB != Point(-1,-1))
         {
@@ -363,10 +363,11 @@ void Tools::MakeBig(Mat src)
     {
         namedWindow("Bigger Image",0);
         imshow("Bigger Image", src);
-        setMouseCallback("Bigger Image", func,&src);
+        setMouseCallback("Bigger Image",func,&src);
         waitKey(0);
     }
 }
+
 Rect Tools::GetCoordinate()
 {
     Rect whereTemp;
@@ -385,9 +386,9 @@ void Tools::SetHoughParas(Ptr<GeneralizedHoughBallard> ballard,double a,int b,do
     ballard->setCannyHighThresh(g);
 }
 
-void Tools::SetHoughParas(Ptr<GeneralizedHoughGuil> guil,double mindist, int level, double dp, double xi, int buffersize,
-                          int cannylow,int cannyhigh,int minangle, int maxangle, int anglestep, int anglethreshold,
-                          float minscale,float maxscale,double angleeplise,int scalestep,int scalethreshold,float positionthreshold)
+void Tools::SetHoughParas(Ptr<GeneralizedHoughGuil> guil,double mindist, int level, double dp, double xi,
+    int buffersize,int cannylow,int cannyhigh,int minangle, int maxangle, int anglestep, int anglethreshold,
+    float minscale,float maxscale,double angleeplise,int scalestep,int scalethreshold,float positionthreshold)
 {
     guil->setMinDist(mindist);
     guil->setLevels(level);

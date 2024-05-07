@@ -242,7 +242,7 @@ QVision::QVision(QWidget *parent): QMainWindow(parent)
     bigSrc = new QPushButton("Make Big");
     bigRes = new QPushButton("Make Big");
     closeApp = new QPushButton("Close");
-    openSider = new QPushButton("Create Task");
+    openSider = new QPushButton("ToolBox");
 
     tip1->setFixedHeight(3*fixPara);tip1->setAlignment(Qt::AlignCenter);
     tip2->setFixedHeight(3*fixPara);tip2->setAlignment(Qt::AlignCenter);
@@ -418,6 +418,7 @@ void QVision::openImg()
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open Image"), "png", tr("Type (*.png *.jpg *.bmp)"));
     Src=imread(fileName.toStdString());
     if (!fileName.isEmpty()) {
+        flag=true;
         QImage image(fileName);
         srcBox->setPixmap(QPixmap::fromImage(image));
     }
@@ -438,7 +439,7 @@ void QVision::exitQVision()
 
 bool QVision::IsImgOpen()
 {
-    if(Src.empty())
+    if(!flag)
     {
         QMessageBox::information(this,tr("Tips"),tr("UnSelected Image!"));
         return false;
@@ -477,15 +478,6 @@ QString QVision::getFolder()
 void QVision::Show()
 {
     QImage img;
-    Mat tmp=imread("output.png");
-    if(!tmp.empty()){
-        img = QImage(tmp.data, tmp.cols, tmp.rows, tmp.step, QImage::Format_BGR888);
-        QPixmap showcut = QPixmap::fromImage(img);
-        resBox->setPixmap(showcut);
-        resBox->setScaledContents(true);
-        resBox->show();
-    }
-
     if(!Dst.empty()){
         if (Dst.channels() == 1)
         {
@@ -542,8 +534,10 @@ Mat QVision::QPixmap2Mat(QPixmap &datatype)
 
 void QVision::SrcHist()
 {
-    if(!srcBox->pixmap()) return;
-    Dst=tools.ShowHistogram(Src);
+    if(!IsImgOpen()) return;
+    QPixmap pixmap = srcBox->pixmap();
+    Src = QPixmap2Mat(pixmap);
+    tools.ShowHistogram(Src);
 }
 
 
@@ -558,17 +552,15 @@ void QVision::ResHist()
 
 void QVision::BigSrc()
 {
-    if(!srcBox->pixmap()) return;
+    if(!IsImgOpen()) return;
     tools.MakeBig(Src);
-    Show();
 }
 
 
 void QVision::BigRes()
 {
-    if(!resBox->pixmap()) return;
+    if(!IsImgOpen()) return;
     tools.MakeBig(Dst);
-    Show();
 }
 
 
@@ -866,7 +858,7 @@ void QVision::WakeUpQQ()
     QString where = "D:/QQ/QQ.exe";
     process.start(where);
     if(process.waitForFinished(-1)){
-        qDebug()<< "finished";
+        QMessageBox::information(this,tr("提示"),tr("进程已完成"));
     }
 }
 
@@ -1425,14 +1417,14 @@ void QVision::JueJin()
 void QVision::showSider()
 {
     siderBar.setWindowTitle("工具箱");
-    QPushButton *scanwifi=new QPushButton("wifi扫描",this);
-    QPushButton *deviceInfo=new QPushButton("设备信息",this);
-    QPushButton *remoteSignIn=new QPushButton("远程登录",this);
-    QPushButton *qtChart=new QPushButton("显示图表",this);
-    QPushButton *searchIp=new QPushButton("ip查询",this);
+    scanwifi=new QPushButton("wifi扫描",this);
+    deviceInfo=new QPushButton("设备信息",this);
+    remoteSignIn=new QPushButton("远程登录",this);
+    qtChart=new QPushButton("显示图表",this);
+    searchIp=new QPushButton("ip查询",this);
     connect(scanwifi,&QPushButton::clicked,this,&QVision::ScanNearWifi);
     connect(deviceInfo,&QPushButton::clicked,this,&QVision::GetDeviceInfo);
-    connect(remoteSignIn,&QPushButton::clicked,this,&QVision::RemoteLogin);
+    connect(remoteSignIn,&QPushButton::clicked,this,&QVision::RemotelogIn);
     connect(qtChart,&QPushButton::clicked,this,&QVision::DisplayQtChart);
     connect(searchIp,&QPushButton::clicked,this,&QVision::SearchLocation);
 
@@ -1456,28 +1448,9 @@ void QVision::ScanNearWifi()
     }
 }
 
-void QVision::RemoteLogin()
+void QVision::RemotelogIn()
 {
-    QString host = QInputDialog::getText(this, "远程登录", "主机名:");
-    QString computerName = QInputDialog::getText(this, "远程登录", "用户名:");
-    QString password = QInputDialog::getText(this, "远程登录", "密码:", QLineEdit::Password);
-    QProcess mstscProcess;
-    QStringList arguments;
-    arguments << "/v:" + computerName;
-    mstscProcess.start("mstsc", arguments);
-
-    if (!mstscProcess.waitForStarted()) {
-        QMessageBox::information(nullptr, "提示", "创建mstsc进程失败!");
-        return;
-    }
-
-    if (!mstscProcess.waitForFinished()) {
-        qDebug() << "Failed to finish mstsc process";
-        QMessageBox::information(nullptr, "提示", "无法完成mstsc进程!");
-        return;
-    }else{
-        QMessageBox::information(nullptr, "提示", "远程桌面连接成功!");
-    }
+    RL.show();
 }
 
 void QVision::GetDeviceInfo()
