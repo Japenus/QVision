@@ -483,7 +483,7 @@ void Tools::DrawRotRect(Mat whichimg,const Point2f& rCenter,const Size2f& rSize,
 Mat Tools::RotateScale(Mat src, double angle, double scale)
 {
     Mat res;
-    Point2f center(src.cols/2,src.rows);
+    Point2f center(src.cols/2,src.rows/2);
     Mat rotMat=getRotationMatrix2D(center,angle,scale);
     warpAffine(src,res,rotMat,Size(src.cols,src.rows),INTER_LINEAR,BORDER_CONSTANT,QVBlack);
     imwrite("Rotated"+to_string(rotated) + ".png", res);

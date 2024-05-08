@@ -47,12 +47,16 @@ Mat ImgCalculate::Divide(Mat src)
 
 Mat ImgCalculate::LineStretch(Mat src)
 {
-    Mat res;
+    Mat graySrc=prepro.GrayTransform(src);
     double minVal, maxVal;
-    minMaxLoc(prepro.GrayTransform(src),&minVal,&maxVal);
-    prepro.GrayTransform(src).convertTo(res, -1, 255.0/(maxVal - minVal),-minVal * 255);
+    minMaxLoc(graySrc, &minVal, &maxVal);
+    Mat res,stretched = (graySrc - minVal) * (255.0 / (maxVal - minVal));
+    threshold(stretched, res, 0, 255, THRESH_TOZERO);
+    threshold(res, res, 255, 255, THRESH_TRUNC);
+
     return res;
 }
+
 //拉普拉斯变换(图像锐化)
 Mat ImgCalculate::LaplacianTransform(Mat src)
 {
@@ -61,6 +65,7 @@ Mat ImgCalculate::LaplacianTransform(Mat src)
     res.convertTo(res, CV_8U);
     return res;
 }
+
 //傅里叶变换(作用:频率分析、滤波、频域处理、图像恢复、特征提取)
 Mat ImgCalculate::FourierTransform(Mat src)
 {

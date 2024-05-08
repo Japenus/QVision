@@ -8,17 +8,18 @@ class RotScaleDlg:public QDialog
     Q_OBJECT
 public:
     RotScaleDlg(QWidget *parent=nullptr);
-    int getValue(int which);
-    void setValue(int a,int b);
+    double getValue();
+    double getDValue();
+    void setValue(double rot,double scal);
 public:
-    int rotate;
-    int scale;
+    double rotate;
+    double scale;
 private slots:
     void onOkClicked();
     void onCancelClicked();
 private:
-    QSpinBox*rotateBox;
-    QSpinBox *scaleBox;
+    QDoubleSpinBox *rotateBox;
+    QDoubleSpinBox *scaleBox;
     QLabel *tip1;
     QLabel *tip2;
     QPushButton *okBtn;

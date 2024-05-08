@@ -2,8 +2,8 @@
 
 RotScaleDlg::RotScaleDlg(QWidget *parent):QDialog(parent)
 {
-    rotateBox=new QSpinBox(this);
-    scaleBox=new QSpinBox(this);
+    rotateBox=new QDoubleSpinBox(this);
+    scaleBox=new QDoubleSpinBox(this);
     okBtn=new QPushButton("ok",this);
     cancelBtn=new QPushButton("cancel",this);
 
@@ -12,11 +12,11 @@ RotScaleDlg::RotScaleDlg(QWidget *parent):QDialog(parent)
 
     rotateBox->setValue(90);
     rotateBox->setRange(0,360);
-    rotateBox->setSingleStep(5);
+    rotateBox->setSingleStep(10);
 
-    scaleBox->setValue(1);
-    scaleBox->setRange(-5,5);
-    scaleBox->setSingleStep(1);
+    scaleBox->setValue(0.5);
+    scaleBox->setRange(0,10);
+    scaleBox->setSingleStep(0.1);
 
     QVBoxLayout *Mainstruct = new QVBoxLayout(this);
     QHBoxLayout *subRow1=new QHBoxLayout(this);
@@ -37,20 +37,21 @@ RotScaleDlg::RotScaleDlg(QWidget *parent):QDialog(parent)
     setWindowTitle("Rotate And scale");
 
 }
-int RotScaleDlg::getValue(int para)
+
+double RotScaleDlg::getValue()
 {
-    if(para==1){
-        return rotate;
-    }else if(para==2){
-        return scale;
-    }else{
-        return -1;
-    }
+    return rotate;
 }
-void RotScaleDlg::setValue(int a,int b)
+
+double RotScaleDlg::getDValue()
 {
-   rotate=a;
-   scale=b;
+    return scale;
+}
+
+void RotScaleDlg::setValue(double rot,double scal)
+{
+    rotate=rot;
+    scale=scal;
 }
 void RotScaleDlg::onOkClicked()
 {

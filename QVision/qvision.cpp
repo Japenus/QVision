@@ -823,8 +823,8 @@ void QVision::RotateScale()
     if(!IsImgOpen())return;
     if(RSD.exec()== QDialog::Accepted)
     {
-        int rotate=RSD.getValue(1);
-        int scale=RSD.getValue(2);
+        double rotate=RSD.getValue();
+        double scale=RSD.getDValue();
         RSD.setValue(rotate,scale);
         RSD.rotate = rotate;
         RSD.scale = scale;
@@ -1417,23 +1417,39 @@ void QVision::JueJin()
 void QVision::showSider()
 {
     siderBar.setWindowTitle("工具箱");
-    scanwifi=new QPushButton("wifi扫描",this);
-    deviceInfo=new QPushButton("设备信息",this);
-    remoteSignIn=new QPushButton("远程登录",this);
-    qtChart=new QPushButton("显示图表",this);
-    searchIp=new QPushButton("ip查询",this);
-    connect(scanwifi,&QPushButton::clicked,this,&QVision::ScanNearWifi);
-    connect(deviceInfo,&QPushButton::clicked,this,&QVision::GetDeviceInfo);
-    connect(remoteSignIn,&QPushButton::clicked,this,&QVision::RemotelogIn);
-    connect(qtChart,&QPushButton::clicked,this,&QVision::DisplayQtChart);
-    connect(searchIp,&QPushButton::clicked,this,&QVision::SearchLocation);
+    QWidget *drawer1 = new QWidget(this);
+    QWidget *drawer2 = new QWidget(this);
 
-    siderBar.addItem(scanwifi,"抽屉1");
-    siderBar.addItem(deviceInfo,"抽屉2");
-    siderBar.addItem(remoteSignIn, "抽屉3");
-    siderBar.addItem(qtChart, "抽屉4");
-    siderBar.addItem(searchIp, "抽屉5");
-    siderBar.resize(300,400);
+    QVBoxLayout *layout = new QVBoxLayout(drawer1);
+    QHBoxLayout *row1 = new QHBoxLayout();
+    QHBoxLayout *row2 = new QHBoxLayout();
+
+    scanwifi = new QPushButton("wifi扫描", drawer1);
+    deviceInfo = new QPushButton("设备信息", drawer1);
+    remoteSignIn = new QPushButton("远程登录", drawer1);
+    qtChart = new QPushButton("显示图表", drawer1);
+    searchIp = new QPushButton("ip查询", drawer1);
+
+    row1->addWidget(scanwifi);
+    row1->addWidget(deviceInfo);
+
+    row2->addWidget(remoteSignIn);
+    row2->addWidget(qtChart);
+    row2->addWidget(searchIp);
+
+    layout->addLayout(row1);
+    layout->addLayout(row2);
+
+    siderBar.addItem(drawer1, "Drawer1");
+    siderBar.addItem(drawer2, "Drawer2");
+
+    connect(scanwifi, &QPushButton::clicked, this, &QVision::ScanNearWifi);
+    connect(deviceInfo, &QPushButton::clicked, this, &QVision::GetDeviceInfo);
+    connect(remoteSignIn, &QPushButton::clicked, this, &QVision::RemotelogIn);
+    connect(qtChart, &QPushButton::clicked, this, &QVision::DisplayQtChart);
+    connect(searchIp, &QPushButton::clicked, this, &QVision::SearchLocation);
+
+    siderBar.resize(300, 400);
     siderBar.show();
 }
 
@@ -1459,22 +1475,22 @@ void QVision::GetDeviceInfo()
 
     QList<QNetworkInterface> interfaces = QNetworkInterface::allInterfaces();
     foreach (QNetworkInterface interface, interfaces) {
-        deviceInfo += "Interface name: " + interface.name() + "\n";
-        deviceInfo += "MAC address: " + interface.hardwareAddress() + "\n";
+        deviceInfo += "接口名称: " + interface.name() + "\n";
+        deviceInfo += "MAC地址: " + interface.hardwareAddress() + "\n";
     }
 
     foreach (QHostAddress address, QNetworkInterface::allAddresses()) {
         if (address.protocol() == QAbstractSocket::IPv4Protocol && address != QHostAddress(QHostAddress::LocalHost)) {
-            deviceInfo += "IP address: " + address.toString() + "\n";
+            deviceInfo += "IP地址: " + address.toString() + "\n";
         }
     }
 
-    deviceInfo += "Operating system: " + QSysInfo::prettyProductName() + "\n";
-    deviceInfo += "Architecture: " + QSysInfo::currentCpuArchitecture() + "\n";
-    deviceInfo += "Kernel type: " + QSysInfo::kernelType() + "\n";
-    deviceInfo += "Kernel version: " + QSysInfo::kernelVersion() + "\n";
+    deviceInfo += "操作系统: " + QSysInfo::prettyProductName() + "\n";
+    deviceInfo += "处理器架构: " + QSysInfo::currentCpuArchitecture() + "\n";
+    deviceInfo += "内核类型: " + QSysInfo::kernelType() + "\n";
+    deviceInfo += "内核版本: " + QSysInfo::kernelVersion() + "\n";
 
-    QMessageBox::information(nullptr, "Device Information", deviceInfo);
+    QMessageBox::information(nullptr, "设备信息", deviceInfo);
 }
 
 void QVision::AdjustLightness()
@@ -1498,11 +1514,11 @@ void QVision::SearchLocation()
     QNetworkAccessManager manager;
     QNetworkRequest request;
     QString ipAddress = QInputDialog::getText(this, "ip查询", "ip地址:");
+    if(ipAddress.isNull()) QMessageBox::warning(this,tr("警告"),tr("ip为空!")); return;
+
     QUrl url("http://ip-api.com/json/" + ipAddress);
     request.setUrl(url);
-
     QNetworkReply *reply = manager.get(request);
-
     QEventLoop loop;
     connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
     loop.exec();
@@ -1511,14 +1527,37 @@ void QVision::SearchLocation()
         QJsonDocument jsonDoc = QJsonDocument::fromJson(reply->readAll());
         QJsonObject jsonObj = jsonDoc.object();
 
+        QString stat = jsonObj["status"].toString();
+        QString contin = jsonObj["continent"].toString();
+        QString contrycode = jsonObj["contryCode"].toString();
+        QString curren = jsonObj["currency"].toString();
+        QString timezo = jsonObj["timezone"].toString();
+        QString netisp = jsonObj["isp"].toString();
+        QString iscellphone = jsonObj["mobile"].toString();
+        QString isproxy = jsonObj["proxy"].toString();
+        QString host = jsonObj["hosting"].toString();
+        QString latitude = jsonObj["lat"].toString();
+        QString longtitude = jsonObj["lon"].toString();
         QString country = jsonObj["country"].toString();
         QString city = jsonObj["city"].toString();
         QString region = jsonObj["regionName"].toString();
+        QString street = jsonObj["district"].toString();
 
-        res="IP Address: "+ipAddress;
-        res+="Country: "+country;
-        res+="City: "+city;
-        res+="Region: "+region;
+        res+="查询状态:"+stat;
+        res+="<经度>"+latitude;
+        res+="<纬度>"+longtitude;
+        res+="<位于洲>"+contin;
+        res+="<国家>"+country;
+        res+="<城市>"+city;
+        res+="<地区>"+region;
+        res+="<街道>"+street;
+        res+="<货币>"+curren;
+        res+="<时区>"+timezo;
+        res+="<运营商>"+netisp;
+        res+="<是否手机>"+iscellphone;
+        res+="<使用代理>"+isproxy;
+        res+="<是否主机>"+host;
+        res+="<国家代码>"+contrycode;
         QMessageBox::information(this,tr("查询结果"),tr("详细信息:%1").arg(res));
     } else {
         QMessageBox::warning(this,tr("警告"),tr("错误:%1").arg(reply->errorString()));

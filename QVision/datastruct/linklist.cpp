@@ -1,6 +1,10 @@
 #include "linklist.h"
 
-Node::Node(int val):data(val),next(nullptr){}
+Node::Node(int val)
+{
+    data=val;
+    next=nullptr;
+}
 
 LinkList::LinkList():head(nullptr){}
 
