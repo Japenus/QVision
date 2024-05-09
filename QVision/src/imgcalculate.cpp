@@ -53,7 +53,6 @@ Mat ImgCalculate::LineStretch(Mat src)
     Mat res,stretched = (graySrc - minVal) * (255.0 / (maxVal - minVal));
     threshold(stretched, res, 0, 255, THRESH_TOZERO);
     threshold(res, res, 255, 255, THRESH_TRUNC);
-
     return res;
 }
 

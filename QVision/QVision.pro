@@ -17,7 +17,9 @@ LIBS +=-L$$PWD/lib -lopencv_world480 -lleptonica-1.84.0 -ltesseract53
 
 
 HEADERS += \
+    algorithm/Global.h \
     qvision.h \
+    algorithm/Sort.h \
     dialog/GuilDlg.h \
     dialog/CannyDlg.h \
     dialog/RenameDlg.h \
@@ -57,6 +59,7 @@ HEADERS += \
 SOURCES += \
     main.cpp \
     qvision.cpp \
+    algorithm/Sort.cpp \
     dialog/GuilDlg.cpp \
     dialog/CannyDlg.cpp \
     dialog/RenameDlg.cpp \

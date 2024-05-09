@@ -1421,14 +1421,24 @@ void QVision::showSider()
     QWidget *drawer2 = new QWidget(this);
 
     QVBoxLayout *layout = new QVBoxLayout(drawer1);
+    QVBoxLayout *drawer2Layout = new QVBoxLayout(drawer2);
     QHBoxLayout *row1 = new QHBoxLayout();
     QHBoxLayout *row2 = new QHBoxLayout();
 
+    searchIp = new QPushButton("ip查询", drawer1);
+    qtChart = new QPushButton("显示图表", drawer1);
     scanwifi = new QPushButton("wifi扫描", drawer1);
     deviceInfo = new QPushButton("设备信息", drawer1);
     remoteSignIn = new QPushButton("远程登录", drawer1);
-    qtChart = new QPushButton("显示图表", drawer1);
-    searchIp = new QPushButton("ip查询", drawer1);
+
+    heapS = new QPushButton("堆排序", drawer2);
+    shellS = new QPushButton("希尔排序", drawer2);
+    bubbleS = new QPushButton("冒泡排序", drawer2);
+    insertS = new QPushButton("插入排序", drawer2);
+    selectS = new QPushButton("选择排序", drawer2);
+    quickS = new QPushButton("快速排序", drawer2);
+    mergeS = new QPushButton("归并排序", drawer2);
+
 
     row1->addWidget(scanwifi);
     row1->addWidget(deviceInfo);
@@ -1440,25 +1450,108 @@ void QVision::showSider()
     layout->addLayout(row1);
     layout->addLayout(row2);
 
+    drawer2Layout->addWidget(heapS);
+    drawer2Layout->addWidget(shellS);
+    drawer2Layout->addWidget(bubbleS);
+    drawer2Layout->addWidget(insertS);
+    drawer2Layout->addWidget(selectS);
+    drawer2Layout->addWidget(quickS);
+    drawer2Layout->addWidget(mergeS);
+
     siderBar.addItem(drawer1, "Drawer1");
     siderBar.addItem(drawer2, "Drawer2");
 
     connect(scanwifi, &QPushButton::clicked, this, &QVision::ScanNearWifi);
-    connect(deviceInfo, &QPushButton::clicked, this, &QVision::GetDeviceInfo);
-    connect(remoteSignIn, &QPushButton::clicked, this, &QVision::RemotelogIn);
     connect(qtChart, &QPushButton::clicked, this, &QVision::DisplayQtChart);
     connect(searchIp, &QPushButton::clicked, this, &QVision::SearchLocation);
+    connect(remoteSignIn, &QPushButton::clicked, this, &QVision::RemotelogIn);
+    connect(deviceInfo, &QPushButton::clicked, this, &QVision::GetDeviceInfo);
+
+
+    connect(heapS, &QPushButton::clicked, this, &QVision::heapSort);
+    connect(shellS, &QPushButton::clicked, this, &QVision::shellSort);
+    connect(quickS, &QPushButton::clicked, this, &QVision::quickSort);
+    connect(mergeS, &QPushButton::clicked, this, &QVision::mergeSort);
+    connect(bubbleS, &QPushButton::clicked, this, &QVision::bubbleSort);
+    connect(insertS, &QPushButton::clicked, this, &QVision::insertSort);
+    connect(selectS, &QPushButton::clicked, this, &QVision::selectSort);
+
 
     siderBar.resize(300, 400);
     siderBar.show();
 }
 
+
+void QVision::heapSort()
+{
+    QVector<int> array;
+    array.append({5,2,6,1,8,9,3,7,4});
+    qInfo()<<"原始数组:"<<array;
+    S.heapSort(array);
+    qInfo()<<"排序后:"<<array;
+}
+
+void QVision::shellSort()
+{
+    QVector<int> array;
+    array.append({5,2,6,1,8,9,3,7,4});
+    qInfo() << "原始数组:" << array;
+    S.shellSort(array);
+    qInfo()<<"排序后:"<<array;
+}
+
+void QVision::quickSort()
+{
+    QVector<int> array;
+    array.append({5,2,6,1,8,9,3,7,4});
+    qInfo() << "原始数组:" << array;
+    S.quickSort(array,0,array.size()-1);
+    qInfo()<<"排序后:"<<array;
+}
+
+void QVision::mergeSort()
+{
+    QVector<int> array;
+    array.append({5,2,6,1,8,9,3,7,4});
+    qInfo() << "原始数组:" << array;
+    S.mergeSort(array, 0, array.size() - 1);
+    qInfo() << "排序后:" << array;
+}
+
+void QVision::bubbleSort()
+{
+    QVector<int> array;
+    array.append({5,2,6,1,8,9,3,7,4});
+    qInfo() << "原始数组:" << array;
+    S.bubblesort(array);
+    qInfo()<<"排序后:"<<array;
+}
+
+void QVision::insertSort()
+{
+    QVector<int> array;
+    array.append({5,2,6,1,8,9,3,7,4});
+    qInfo() << "原始数组:" << array;
+    S.insertSort(array);
+    qInfo()<<"排序后:"<<array;
+}
+
+void QVision::selectSort()
+{
+    QVector<int> array;
+    array.append({5,2,6,1,8,9,3,7,4});
+    qInfo() << "原始数组:" << array;
+    S.selectSort(array);
+    qInfo()<<"排序后:"<<array;
+}
+
 void QVision::ScanNearWifi()
 {
     QList<QNetworkInterface> interfaces = QNetworkInterface::allInterfaces();
-
-    foreach (const QNetworkInterface &interface, interfaces) {
-        if (interface.type() == QNetworkInterface::Wifi) {
+    foreach (const QNetworkInterface &interface, interfaces)
+    {
+        if (interface.type() == QNetworkInterface::Wifi)
+        {
             QMessageBox::information(this,tr("WiFi"),tr("SSID:%1").arg(interface.humanReadableName()));
         }
     }
@@ -1472,7 +1565,6 @@ void QVision::RemotelogIn()
 void QVision::GetDeviceInfo()
 {
     QString deviceInfo;
-
     QList<QNetworkInterface> interfaces = QNetworkInterface::allInterfaces();
     foreach (QNetworkInterface interface, interfaces) {
         deviceInfo += "接口名称: " + interface.name() + "\n";
@@ -1489,7 +1581,6 @@ void QVision::GetDeviceInfo()
     deviceInfo += "处理器架构: " + QSysInfo::currentCpuArchitecture() + "\n";
     deviceInfo += "内核类型: " + QSysInfo::kernelType() + "\n";
     deviceInfo += "内核版本: " + QSysInfo::kernelVersion() + "\n";
-
     QMessageBox::information(nullptr, "设备信息", deviceInfo);
 }
 

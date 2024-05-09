@@ -12,6 +12,7 @@
 #include "imgcalculate.h"
 #include "dynamicdetect.h"
 #include "fileOperation.h"
+#include "algorithm/Sort.h"
 #include "networkcommunication.h"
 class QVision : public QMainWindow
 {
@@ -23,6 +24,8 @@ public:
     // void dragEnterEvent(QDragEnterEvent *event);
     ~QVision();
 public:
+
+    Sort S;
     DataBase DB;
     Tools tools;
     ScreenCut SC;
@@ -88,6 +91,14 @@ private:
     QPushButton *deviceInfo;
     QPushButton *remoteSignIn;
 
+    QPushButton *bubbleS;
+    QPushButton *heapS;
+    QPushButton *quickS;
+    QPushButton *selectS;
+    QPushButton *mergeS;
+    QPushButton *insertS;
+    QPushButton *shellS;
+
 private slots:
     void Add();
     void SURF();
@@ -147,6 +158,15 @@ private slots:
     void Subtraction();
     void RemotelogIn();
     void ScanNearWifi();
+
+    void heapSort();
+    void shellSort();
+    void quickSort();
+    void mergeSort();
+    void bubbleSort();
+    void insertSort();
+    void selectSort();
+
     void TesseractOCR();
     void closeQVision();
     void LogTransform();
