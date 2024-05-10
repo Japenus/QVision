@@ -110,6 +110,7 @@ QVision::QVision(QWidget *parent): QMainWindow(parent)
     QAction *CaptureT = new QAction("Capture Triangle", this);
     QAction *CustomizeM = new QAction("Customize Model", this);
     QAction *CaptureH = new QAction("Capture HumanEyes", this);
+    QAction *CaptureSD = new QAction("Capture SelfDefine", this);
     QAction *CaptureCC = new QAction("Capture Character", this);
     QAction *CaptureHH = new QAction("Capture HumanFace", this);
 
@@ -217,6 +218,7 @@ QVision::QVision(QWidget *parent): QMainWindow(parent)
     tab7_1->addAction(CaptureT);
     tab7_1->addAction(CaptureE);
     tab7_1->addAction(CaptureCC);
+    tab7_1->addAction(CaptureSD);
     tab7_1->addAction(CaptureS);
     tab7_1->addAction(CaptureH);
     tab7_1->addAction(CaptureHH);
@@ -379,6 +381,7 @@ QVision::QVision(QWidget *parent): QMainWindow(parent)
     connect(CaptureCC,&QAction::triggered,this,&QVision::CaptureCharacter);
     connect(CustomizeM,&QAction::triggered,this,&QVision::SelfDefineModel);
     connect(CaptureHH,&QAction::triggered,this,&QVision::CaptureHumanFace);
+    connect(CaptureSD,&QAction::triggered,this,&QVision::CaptureArbitaryShape);
 
     connect(CSDN,&QAction::triggered,this,&QVision::CSDN);
     connect(TcpIp,&QAction::triggered,this,&QVision::TCPIP);
@@ -581,7 +584,9 @@ void QVision::GrayTransform()
 void QVision::LogTransform()
 {
     if(!IsImgOpen()) return;
-    Dst=pretreat.LogTransform(Src,10);
+    bool ok;
+    int log=QInputDialog::getInt(this,tr("设置值"),tr("Log:"),5,0,100,1,&ok);
+    if(ok) Dst=pretreat.LogTransform(Src,log);
     Show(Dst);
 }
 
@@ -597,7 +602,9 @@ void QVision::LinearTransform()
 void QVision::GammaTransform()
 {
     if(!IsImgOpen()) return;
-    Dst=pretreat.GammaTransform(Src,1.2);
+    bool ok;
+    double gamma = QInputDialog::getDouble(this, tr("设置值"), tr("gamma:"), 2.0, 0, 10, 2, &ok);
+    if(ok) Dst = pretreat.GammaTransform(Src, gamma);
     Show(Dst);
 }
 
@@ -691,10 +698,11 @@ void QVision::Scharr()
 void QVision::RegionGrow()
 {
     if(!IsImgOpen()) return;
-    int threshold = 10;
+    bool ok;
+    int threshold=QInputDialog::getInt(this,tr("设置阈值"),tr("value:"),100,0,255,10,&ok);
     Point seedPoint(10, 10);
     Mat visited = Mat::zeros(Src.size(), CV_8U);
-    Dst = tools.RegionGrow(Src, seedPoint, threshold, visited);
+    if(ok) Dst = tools.RegionGrow(Src, seedPoint, threshold, visited);
     Show(Dst);
 }
 
@@ -715,8 +723,9 @@ void QVision::FixThreshold()
 void QVision::ShowOutline()
 {
     if(!IsImgOpen()) return;
-    int val=80;
-    Dst=tools.ShowOutline(Src,val);
+    bool ok;
+    int val=QInputDialog::getInt(this,tr("设置阈值"),tr("value:"),100,0,255,10,&ok);
+    if(ok) Dst=tools.ShowOutline(Src,val);
     Show();
 }
 
@@ -740,8 +749,9 @@ void QVision::AdaptThreshold()
 {
     if(!IsImgOpen()) return;
     int size=15;
-    double c=2.0;
-    Dst=tools.AdaptThreshold(Src,size,c);
+    bool ok;
+    double para = QInputDialog::getDouble(this, tr("设置系数"), tr("x:"), 2.0, 0, 10, 2, &ok);
+    if(ok) Dst=tools.AdaptThreshold(Src,size,para);
     Show();
 }
 
@@ -1278,6 +1288,12 @@ void QVision::CaptureHumanEyes()
 void QVision::CaptureHumanFace()
 {
     DD.DetectFace();
+}
+
+void QVision::CaptureArbitaryShape()
+{
+    QString usermodelPath=QFileDialog::getOpenFileName(this,"获取模型","eg.xml","选择模型(*.xml)");
+    DD.DetectByUserCreateModel(usermodelPath);
 }
 
 //文件操作

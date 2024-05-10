@@ -18,6 +18,7 @@ public:
     void DetectEllpise();
     void DetectTriangle();
     void DetectCharacter();
+    void DetectByUserCreateModel(const QString &modelPath);
     double angle(Point pt1, Point pt2, Point pt0);
 };
 

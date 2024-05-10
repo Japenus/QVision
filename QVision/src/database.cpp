@@ -336,6 +336,7 @@ void DataBase::disConnection()
         qDB.close();
         qslist.clear();
         tableData->clear();
+        databaseListBox->clear();
         datatableListsBox->clear();
         showInfo->setText("连接已关闭");
     }else{

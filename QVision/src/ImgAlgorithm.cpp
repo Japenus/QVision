@@ -584,7 +584,7 @@ Mat ImgAlgorithm::GFTTDetect(Mat src)
 {
     Mat res;
     int maxCorners = 0;
-    double qualityLevel= 0.01;//角点的最小特征值闯值
+    double qualityLevel= 0.01;
     double mnDistance=10;
     Ptr<GFTTDetector> gftt = GFTTDetector::create(maxCorners,qualityLevel,mnDistance);
     vector<KeyPoint> keypoints;
@@ -595,7 +595,7 @@ Mat ImgAlgorithm::GFTTDetect(Mat src)
     return res;
 }
 
-//从图片中辨别人脸
+
 Mat ImgAlgorithm::DetectFaceFromImg(Mat src)
 {
     Mat equal;
@@ -614,8 +614,6 @@ Mat ImgAlgorithm::DetectFaceFromImg(Mat src)
         {
             rectangle(src, faces[i], QVGreen,2,8,0);
         }
-        namedWindow("show res",0);
-        imshow("show res", src) ;
         imwrite("DetectFace"+ to_string(recongizedNum) +".png",src);
         recongizedNum++;
         QMessageBox::information(nullptr,QString("提示"),QString("检测到人脸个数为:%1").arg(faces.size()));

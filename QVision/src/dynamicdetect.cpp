@@ -136,6 +136,7 @@ void DynamicDetect::DetectTriangle()
     capture.release();
     destroyAllWindows();
 }
+
 double DynamicDetect::angle(Point pt1, Point pt2, Point pt0)
 {
     double dx1 = pt1.x - pt0.x;
@@ -144,6 +145,7 @@ double DynamicDetect::angle(Point pt1, Point pt2, Point pt0)
     double dy2 = pt2.y - pt0.y;
     return (dx1 * dx2 + dy1 * dy2) / sqrt((dx1 * dx1 + dy1 * dy1) * (dx2 * dx2 + dy2 * dy2) + 1e-10);
 }
+
 void DynamicDetect::DetectSquare()
 {
     VideoCapture capture(0);
@@ -285,6 +287,47 @@ void DynamicDetect::DetectFace()
             rectangle(frame,faces[i], QVGreen,2);
         }
         imshow("Detect Face",frame);
+        if(key ==27)
+        {
+            break;
+        }
+        else if (key != 27 && key!= -1)
+        {
+            QMessageBox::information(nullptr,QString("提示"),QString("按ESC退出"));
+        }
+    }
+    capture.release();
+    destroyAllWindows();
+}
+
+
+void DynamicDetect::DetectByUserCreateModel(const QString &modelPath)
+{
+    VideoCapture capture(0);
+    CascadeClassifier usermodel;
+    if(!usermodel.load(modelPath.toStdString()))
+    {
+        QMessageBox::information(nullptr,QString("提示"),QString("导入模型失败!"));
+        return;
+    }
+    if(!capture.isOpened()){
+        QMessageBox::information(nullptr,QString("提示"),QString("无法打开摄像头!"));
+        return;
+    }
+    namedWindow("User Model",0);
+    while (true)
+    {
+        Mat frame,gray;
+        int key = waitKey(10);
+        vector<Rect> shapes;
+        capture.read(frame);
+        gray = Process.GrayTransform(frame);
+        usermodel.detectMultiScale(gray,shapes,1.1,3,0,Size(30,30));
+        for (int i = 0; i < shapes.size(); i++)
+        {
+            rectangle(frame,shapes[i], QVGreen,2);
+        }
+        imshow("User Model",frame);
         if(key ==27)
         {
             break;

@@ -204,6 +204,7 @@ private slots:
     void UpgradeTempMatch();
     void CalculateDistance();
     void FeaturePointMatch();
+    void CaptureArbitaryShape();
     void PerspectiveTransform();
 };
 #endif // QVISIONH

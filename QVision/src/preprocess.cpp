@@ -102,7 +102,6 @@ Mat Preprocess::MediumFilter(Mat src)
                     pixels[index++] = src.at<Vec3b>(y + i,x + j);
                 }
             }
-            //对9个像素进行排序,取中值作为当前像素的值
             sort(pixels,pixels + 9,[](const Vec3b& a, const Vec3b& b) {return (a[0] + a[1] + a[2]) < (b[0] + b[1] + b[2]);});
             res.at<Vec3b>(y,x) = pixels[4];
         }

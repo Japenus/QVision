@@ -17,11 +17,11 @@ LIBS +=-L$$PWD/lib -lopencv_world480 -lleptonica-1.84.0 -ltesseract53
 
 
 HEADERS += \
-    algorithm/Global.h \
     qvision.h \
     algorithm/Sort.h \
     dialog/GuilDlg.h \
     dialog/CannyDlg.h \
+    algorithm/Global.h \
     dialog/RenameDlg.h \
     dialog/ResizeDlg.h \
     dialog/BallardDlg.h \

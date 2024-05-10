@@ -158,7 +158,7 @@ Mat Tools::ShowOutline(Mat src,int val)
     findContours(bin,contours,hierarchy,RETR_TREE,CHAIN_APPROX_SIMPLE);//CHAIN_APPROX_SIMp1E
     for(int i = 0; i < contours.size(); i++)
     {
-        drawContours(src, contours,i,QVGreen,2,LINE_8,hierarchy);
+        drawContours(src, contours,i,QVCyan,2,LINE_8,hierarchy);
     }
     return src;
 }
@@ -539,13 +539,13 @@ Scalar Tools::PickColor()
     int r=defaultColor.red();
     int g=defaultColor.green();
     int b=defaultColor.blue();
-    Scalar Default(r,g,b);
+    Scalar Default(b,g,r);
     QColor selectColor=QColorDialog::getColor(defaultColor,nullptr,tr("Choose Color"));
     if(selectColor.isValid()){
         r=selectColor.red();
         g=selectColor.green();
         b=selectColor.blue();
-        Scalar res(r,g,b);
+        Scalar res(b,g,r);
         return res;
     }else{
         return Default;
