@@ -13,6 +13,7 @@
 #include "dynamicdetect.h"
 #include "fileOperation.h"
 #include "algorithm/Sort.h"
+#include "coordinatesystem.h"
 #include "networkcommunication.h"
 class QVision : public QMainWindow
 {
@@ -23,41 +24,8 @@ public:
     // void dropEvent(QDropEvent *event);
     // void dragEnterEvent(QDragEnterEvent *event);
     ~QVision();
+    static QVision & ins(){static QVision qv;return qv;}
 public:
-
-    Sort S;
-    DataBase DB;
-    Tools tools;
-    ScreenCut SC;
-    MultiMedia MM;
-    RemoteLogin RL;
-    ImgAlgorithm IA;
-    ImgCalculate IC;
-    fileOperation FO;
-    Preprocess pretreat;
-
-    GuilDlg GD;
-    CannyDlg CD;
-    RenameDlg RD;
-    BallardDlg BD;
-    DynamicDetect DD;
-
-    ResizeDlg RDlg;
-    AreaFillDlg AFD;
-    RotScaleDlg RSD;
-    ThresholdDlg TD;
-    CharRecogDlg CRD;
-
-    CalcuDistDlg CDD;
-    WriteDataDlg WDD;
-    NetSpyderDlg NSDlg;
-    FixThresholdDlg FTD;
-
-    TemplateMatchDlg TMD;
-    StatisticPixelDlg SPD;
-    UpgradeTempMatchDlg UTD;
-    NetworkCommunication NC;
-
     void Show();
     bool IsImgOpen();
     void Show(Mat src);
@@ -88,6 +56,7 @@ private:
     QPushButton *qtChart;
     QPushButton *scanwifi;
     QPushButton *searchIp;
+    QPushButton *showCoord;
     QPushButton *deviceInfo;
     QPushButton *remoteSignIn;
 
@@ -206,5 +175,6 @@ private slots:
     void FeaturePointMatch();
     void CaptureArbitaryShape();
     void PerspectiveTransform();
+    void ShowCoordinateSystem();
 };
 #endif // QVISIONH

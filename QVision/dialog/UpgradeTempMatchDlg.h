@@ -11,6 +11,7 @@ public:
     int getValue();
     double getValue(int whichpara);
     void setValue(int a,double b,double c,double d,double e,double f);
+    static UpgradeTempMatchDlg& ins(){static UpgradeTempMatchDlg g;return g;}
 public:
     int ImgThres;
     double ScaleStep;

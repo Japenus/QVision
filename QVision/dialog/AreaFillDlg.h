@@ -1,15 +1,16 @@
 #ifndef AreaFillDlg_H
 #define AreaFillDlg_H
 #include <QObject>
-#include"tools.h"
-#include"global.h"
+#include "tools.h"
+#include "global.h"
 class AreaFillDlg:public QDialog
 {
     Q_OBJECT
 public:
-    AreaFillDlg(QWidget *parent=nullptr);
     int getValue(int para);
     void setValue(int size,int num);
+    AreaFillDlg(QWidget *parent=nullptr);
+    static AreaFillDlg& ins(){static AreaFillDlg g;return g;}
 public:
     int PointSize;
     int PointNum;
@@ -17,10 +18,10 @@ private slots:
     void onOkClicked();
     void onCancelClicked();
 private:
-    QSpinBox *sizeBox;
-    QSpinBox *numBox;
-    QLabel *tip1;
     QLabel *tip2;
+    QLabel *tip1;
+    QSpinBox *numBox;
+    QSpinBox *sizeBox;
     QPushButton *okBtn;
     QPushButton *cancelBtn;
 };

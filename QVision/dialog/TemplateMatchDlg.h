@@ -7,9 +7,10 @@ class TemplateMatchDlg:public QDialog
 {
     Q_OBJECT
 public:
-    TemplateMatchDlg(QWidget *parent=nullptr);
     int getValue();
     void setValue(int val);
+    TemplateMatchDlg(QWidget *parent=nullptr);
+    static TemplateMatchDlg& ins() {static TemplateMatchDlg s;return s;}
 public:
     int thresh;
 private slots:

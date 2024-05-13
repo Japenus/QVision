@@ -9,6 +9,8 @@ class ImgAlgorithm:public QObject
 {
     Q_OBJECT
 public:
+    static ImgAlgorithm & ins(){static ImgAlgorithm i;return i;}
+public:
     Tools tools;
     CannyDlg CD;
     ThresholdDlg TD;

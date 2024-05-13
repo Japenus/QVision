@@ -7,8 +7,9 @@ class BallardDlg:public QDialog
 {
     Q_OBJECT
 public:
-    BallardDlg(QWidget *parent=nullptr);
     int getValue(int which);
+    BallardDlg(QWidget *parent=nullptr);
+    static BallardDlg& ins(){static BallardDlg g;return g;}
     void setValue(int a,int b,double c,int d,int e,int f,int g);
 public:
     int mindist;

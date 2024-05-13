@@ -17,6 +17,7 @@ LIBS +=-L$$PWD/lib -lopencv_world480 -lleptonica-1.84.0 -ltesseract53
 
 
 HEADERS += \
+    algorithm/beizercurve.h \
     qvision.h \
     algorithm/Sort.h \
     dialog/GuilDlg.h \
@@ -55,8 +56,10 @@ HEADERS += \
     datastruct/Global.h \
     datastruct/LinkList.h \
     datastruct/BinaryTree.h \
+    src/CoordinateSystem.h
 
 SOURCES += \
+    algorithm/beizercurve.cpp \
     main.cpp \
     qvision.cpp \
     algorithm/Sort.cpp \
@@ -91,6 +94,7 @@ SOURCES += \
     src/Networkcommunication.cpp \
     datastruct/LinkList.cpp \
     datastruct/BinaryTree.cpp \
+    src/CoordinateSystem.cpp
 
 DISTFILES += \
     icon/21.png \

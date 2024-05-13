@@ -6,6 +6,7 @@ class RemoteLogin:public QMainWindow
     Q_OBJECT
 public:
     RemoteLogin(QWidget *parent = nullptr);
+    static RemoteLogin& ins(){static RemoteLogin s;return s;}
     ~RemoteLogin();
 private slots:
     void closeCon();

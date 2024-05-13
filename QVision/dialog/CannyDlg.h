@@ -7,9 +7,10 @@ class CannyDlg:public QDialog
 {
     Q_OBJECT
 public:
-    CannyDlg(QWidget *parent=nullptr);
     int getValue(int whichval);
     void setValue(int h,int l);
+    CannyDlg(QWidget *parent=nullptr);
+    static CannyDlg& ins(){static CannyDlg g;return g;}
 public:
     int high,low;
 private slots:

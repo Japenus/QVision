@@ -8,6 +8,7 @@ class DynamicDetect
 {
 public:
     Tools tool;
+    static DynamicDetect & ins(){static DynamicDetect d;return d;}
     ImgAlgorithm IAM;
     Preprocess Process;
     void DetectEye();

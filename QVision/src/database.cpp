@@ -145,7 +145,7 @@ void DataBase::OpenSQLiteFile()
 void DataBase::ConnectSQLServer()
 {
     if(!qDB.isOpen()){
-        qDB=ts.SqlServer();
+        qDB=Tools::ins().SqlServer();
         showInfo->setText("已连接");
     }else{
         showInfo->setText("重复的连接");
@@ -155,7 +155,7 @@ void DataBase::ConnectSQLServer()
 void DataBase::ConnectMySQL()
 {
     if(!qDB.isOpen()){
-        qDB=ts.MySql();
+        qDB=Tools::ins().MySql();
         if(qDB.isOpen()){
             showInfo->setText("已连接");
         }else{
@@ -172,7 +172,7 @@ void DataBase::ConnectSQLite()
 {
     if(!qDB.isOpen()){
         if(!dbPath.isNull()){
-            qDB=ts.SQLite(dbPath);
+            qDB=Tools::ins().SQLite(dbPath);
             if(qDB.isOpen()){
                 showInfo->setText("已连接");
             }else{
@@ -191,7 +191,7 @@ void DataBase::curDatabases()
 {
     if(qDB.isOpen()){
         databaseListBox->clear();
-        QStringList databases=ts.GetDataBases(&qDB);
+        QStringList databases=Tools::ins().GetDataBases(&qDB);
         for(int i=0;i<databases.size();i++){
             showInfo->setText(databases.at(i));
             databaseListBox->addItem(databases.at(i));
@@ -205,16 +205,16 @@ void DataBase::curDataTables()
 {
     if(qDB.isOpen())
     {
-        geTable=ts.GetTables(&qDB);
+        geTable=Tools::ins().GetTables(&qDB);
         for(int i=0;i<geTable.size();i++)
         {
             temp=geTable.at(i);
             showInfo->setText("获取表名:"+geTable.at(i));
             datatableListsBox->addItem(geTable.at(i));
-            tablElement=ts.GetTableFields(&qDB,geTable.at(i));
+            tablElement=Tools::ins().GetTableFields(&qDB,geTable.at(i));
             qslist<<tablElement;
             tableData->setHorizontalHeaderLabels(qslist);
-            dataItem=ts.GetTableData(&qDB,geTable.at(i));
+            dataItem=Tools::ins().GetTableData(&qDB,geTable.at(i));
             for(int i = 0; i < dataItem.size(); i++)
             {
                 QList<QStandardItem*> rowData;
@@ -309,7 +309,7 @@ void DataBase::findItem()
             {
                 int rowIndex = d->row();
                 int columnIndex = d->column();
-                searchList.append("<行" + ft.Int2QString(rowIndex+1) + ",列" + ft.Int2QString(columnIndex+1) + ">");
+                searchList.append("<行" + FormatTransfer::ins().Int2QString(rowIndex+1) + ",列" + FormatTransfer::ins().Int2QString(columnIndex+1) + ">");
             }
             if (!searchList.isEmpty()) {
                 temp=searchField + "在表中的位置:" + searchList.join(",");

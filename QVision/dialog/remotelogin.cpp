@@ -59,38 +59,19 @@ RemoteLogin::RemoteLogin(QWidget *parent):QMainWindow(parent)
     setWindowTitle("Remote Connection");
 }
 
-RemoteLogin::~RemoteLogin()
-{
 
-}
-
-void RemoteLogin::closeCon()
-{
-    connectedWin->clear();
-}
-
-void RemoteLogin::exitApp()
-{
-    this->close();
-}
 
 void RemoteLogin::buildCon()
 {
-    QString host = QInputDialog::getText(this, "远程登录", "主机名:");
-    QString computerName = QInputDialog::getText(this, "远程登录", "用户名:");
-    QString password = QInputDialog::getText(this, "远程登录", "密码:", QLineEdit::Password);
+    // QString host = QInputDialog::getText(this, "远程登录", "主机名:");
+    QString computerName = QInputDialog::getText(this, "远程登录", "主机名:");
+    // QString password = QInputDialog::getText(this, "远程登录", "密码:", QLineEdit::Password);
     QProcess mstscProcess;
     QStringList arguments;
     arguments << "/v:" + computerName;
     mstscProcess.start("mstsc", arguments);
-
-    if (!mstscProcess.waitForStarted()) {
-        QMessageBox::information(nullptr, "提示", "创建mstsc进程失败!");
-        return;
-    }
-
-    if (!mstscProcess.waitForFinished()) {
-        QMessageBox::information(nullptr, "提示", "无法完成mstsc进程!");
+    if (!mstscProcess.waitForStarted()||!mstscProcess.waitForFinished()) {
+        QMessageBox::information(nullptr, "提示", "建立连接失败!");
         return;
     }else{
         QMessageBox::information(nullptr, "提示", "远程桌面连接成功!");
@@ -115,4 +96,25 @@ void RemoteLogin::createRemoteCon()
     connectedWin->setProperty("UserName", userName);
     connectedWin->setProperty("ClearTextPassword", passWord);
     connectedWin->dynamicCall("Connect()");
+}
+
+RemoteLogin::~RemoteLogin()
+{
+    delete connectedWin;
+    delete buildConn;
+    delete exitLogin;
+    delete remoteConn;
+    delete closeRemote;
+}
+
+
+void RemoteLogin::exitApp()
+{
+    this->close();
+}
+
+
+void RemoteLogin::closeCon()
+{
+    connectedWin->close();
 }

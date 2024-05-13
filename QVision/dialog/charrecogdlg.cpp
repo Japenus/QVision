@@ -92,12 +92,12 @@ void CharRecogDlg::getPicture()
 
 void CharRecogDlg::MakeBig()
 {
-    T.MakeBig(charImg);
+    Tools::ins().MakeBig(charImg);
 }
 
 void CharRecogDlg::Recognize()
 {
-    QString ouTxt = T.CharRecognize(picPath);
+    QString ouTxt = Tools::ins().CharRecognize(picPath);
     ShowResult->setText(ouTxt);
 }
 

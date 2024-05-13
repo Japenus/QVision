@@ -6,6 +6,7 @@ class Sort
 public:
     Sort();
     ~Sort();
+    static Sort& ins(){static Sort s;return s;}
 public:
     void swapData(int &num1,int &num2);
     void heapSort(QVector<int> &array);

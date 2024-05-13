@@ -7,9 +7,10 @@ class StatisticPixelDlg:public QDialog
 {
     Q_OBJECT
 public:
-    StatisticPixelDlg(QWidget *parent=nullptr);
     int getValue();
     void setValue(int val);
+    StatisticPixelDlg(QWidget *parent=nullptr);
+    static StatisticPixelDlg& ins() {static StatisticPixelDlg s;return s;}
 public:
     int pixelval;
 private slots:

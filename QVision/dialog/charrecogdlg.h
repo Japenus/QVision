@@ -7,11 +7,11 @@ class CharRecogDlg:public QDialog
 {
     Q_OBJECT
 public:
-    Tools T;
     QString picPath;
     QString getPath();
     void setPath(QString pic);
     CharRecogDlg(QWidget *parent=nullptr);
+    static CharRecogDlg& ins(){static CharRecogDlg g;return g;}
 private slots:
     void Clean();
     void MakeBig();

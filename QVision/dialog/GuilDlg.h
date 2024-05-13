@@ -7,10 +7,11 @@ class GuilDlg:public QDialog
 {
     Q_OBJECT
 public:
-    GuilDlg(QWidget *parent=nullptr);
     int getValue(int which);
-    double getDValue(int which);
     float getFValue(int which);
+    double getDValue(int which);
+    GuilDlg(QWidget *parent=nullptr);
+    static GuilDlg& ins(){static GuilDlg g;return g;}
     void setValue(int Mindist,int Level,double Dp,double Xi,int Buffersize,int Cannylow,int Cannyhigh,int Minangle,int Maxangle,int Anglestep,
                   int Anglethreshold,float Minscale,float Maxscale,float Angleplise,double Scalestep,int Scalethreshold,int Posthreshold);
 public:

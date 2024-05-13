@@ -4,6 +4,7 @@
 class FormatTransfer
 {
 public:
+    static FormatTransfer & ins(){static FormatTransfer f;return f;}
     Mat Pix2Mat(Pix *datatype);
     Pix* Mat2Pix(Mat datatype);
     QImage Pix2QImage(Pix *datatype);

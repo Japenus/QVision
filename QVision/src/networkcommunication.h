@@ -7,6 +7,7 @@ public:
     NetworkCommunication(QWidget *parent = nullptr);
     ~NetworkCommunication();
     void log();
+    static NetworkCommunication & ins(){static NetworkCommunication n;return n;}
 protected:
     void keyPressEvent(QKeyEvent *event) override;
 private slots:

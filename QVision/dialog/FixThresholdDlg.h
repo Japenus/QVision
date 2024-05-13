@@ -7,9 +7,10 @@ class FixThresholdDlg:public QDialog
 {
     Q_OBJECT
 public:
-    FixThresholdDlg(QWidget *parent=nullptr);
     int getValue();
     void setValue(int val);
+    FixThresholdDlg(QWidget *parent=nullptr);
+    static FixThresholdDlg& ins(){static FixThresholdDlg g;return g;}
 public:
     int Val;
 private slots:

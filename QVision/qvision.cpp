@@ -540,7 +540,7 @@ void QVision::SrcHist()
     if(!IsImgOpen()) return;
     QPixmap pixmap = srcBox->pixmap();
     Src = QPixmap2Mat(pixmap);
-    tools.ShowHistogram(Src);
+    Tools::ins().ShowHistogram(Src);
 }
 
 
@@ -549,21 +549,21 @@ void QVision::ResHist()
     if(!resBox->pixmap()) return;
     QPixmap pixmap = resBox->pixmap();
     Dst = QPixmap2Mat(pixmap);
-    tools.ShowHistogram(Dst);
+    Tools::ins().ShowHistogram(Dst);
 }
 
 
 void QVision::BigSrc()
 {
     if(!IsImgOpen()) return;
-    tools.MakeBig(Src);
+    Tools::ins().MakeBig(Src);
 }
 
 
 void QVision::BigRes()
 {
     if(!IsImgOpen()) return;
-    tools.MakeBig(Dst);
+    Tools::ins().MakeBig(Dst);
 }
 
 
@@ -576,7 +576,7 @@ void QVision::closeQVision()
 void QVision::GrayTransform()
 {
     if(!IsImgOpen()) return;
-    Dst=pretreat.GrayTransform(Src);
+    Dst=Preprocess::ins().GrayTransform(Src);
     Show(Dst);
 }
 
@@ -586,7 +586,7 @@ void QVision::LogTransform()
     if(!IsImgOpen()) return;
     bool ok;
     int log=QInputDialog::getInt(this,tr("设置值"),tr("Log:"),5,0,100,1,&ok);
-    if(ok) Dst=pretreat.LogTransform(Src,log);
+    if(ok) Dst=Preprocess::ins().LogTransform(Src,log);
     Show(Dst);
 }
 
@@ -594,7 +594,7 @@ void QVision::LogTransform()
 void QVision::LinearTransform()
 {
     if(!IsImgOpen()) return;
-    Dst=pretreat.LinearTransform(Src);
+    Dst=Preprocess::ins().LinearTransform(Src);
     Show(Dst);
 }
 
@@ -604,7 +604,7 @@ void QVision::GammaTransform()
     if(!IsImgOpen()) return;
     bool ok;
     double gamma = QInputDialog::getDouble(this, tr("设置值"), tr("gamma:"), 2.0, 0, 10, 2, &ok);
-    if(ok) Dst = pretreat.GammaTransform(Src, gamma);
+    if(ok) Dst = Preprocess::ins().GammaTransform(Src, gamma);
     Show(Dst);
 }
 
@@ -612,7 +612,7 @@ void QVision::GammaTransform()
 void QVision::BoxFilter()
 {
     if(!IsImgOpen()) return;
-    Dst=pretreat.BoxFilter(Src);
+    Dst=Preprocess::ins().BoxFilter(Src);
     Show(Dst);
 }
 
@@ -620,7 +620,7 @@ void QVision::BoxFilter()
 void QVision::MeanFilter()
 {
     if(!IsImgOpen()) return;
-    Dst=pretreat.MeanFilter(Src);
+    Dst=Preprocess::ins().MeanFilter(Src);
     Show(Dst);
 }
 
@@ -628,7 +628,7 @@ void QVision::MeanFilter()
 void QVision::MediumFilter()
 {
     if(!IsImgOpen()) return;
-    Dst=pretreat.MediumFilter(Src);
+    Dst=Preprocess::ins().MediumFilter(Src);
     Show(Dst);
 }
 
@@ -636,14 +636,14 @@ void QVision::MediumFilter()
 void QVision::BilateralFilter()
 {
     if(!IsImgOpen()) return;
-    Dst=pretreat.BilateralFilter(Src);
+    Dst=Preprocess::ins().BilateralFilter(Src);
     Show(Dst);
 }
 
 void QVision::GaussFilter()
 {
     if(!IsImgOpen()) return;
-    Dst=pretreat.GaussFilter(Src);
+    Dst=Preprocess::ins().GaussFilter(Src);
     Show(Dst);
 }
 
@@ -651,7 +651,7 @@ void QVision::GaussFilter()
 void QVision::Dilation()
 {
     if(!IsImgOpen()) return;
-    Dst=pretreat.Dilation(Src);
+    Dst=Preprocess::ins().Dilation(Src);
     Show(Dst);
 }
 
@@ -659,7 +659,7 @@ void QVision::Dilation()
 void QVision::Erosion()
 {
     if(!IsImgOpen()) return;
-    Dst=pretreat.Erosion(Src);
+    Dst=Preprocess::ins().Erosion(Src);
     Show(Dst);
 }
 
@@ -667,7 +667,7 @@ void QVision::Erosion()
 void QVision::Sobel()
 {
     if(!IsImgOpen()) return;
-    Dst=tools.EdgeSobel(Src);
+    Dst=Tools::ins().EdgeSobel(Src);
     Show();
 }
 
@@ -675,13 +675,13 @@ void QVision::Sobel()
 void QVision::Canny()
 {
     if(!IsImgOpen()) return;
-    if(CD.exec()== QDialog::Accepted){
-        int L=CD.getValue(0);
-        int H=CD.getValue(1);
-        CD.setValue(H,L);
-        CD.low= CD.getValue(0);
-        CD.high =CD.getValue(1);
-        Dst = tools.EdgeCanny(Src,L,H);
+    if(CannyDlg::ins().exec()== QDialog::Accepted){
+        int L=CannyDlg::ins().getValue(0);
+        int H=CannyDlg::ins().getValue(1);
+        CannyDlg::ins().setValue(H,L);
+        CannyDlg::ins().low= CannyDlg::ins().getValue(0);
+        CannyDlg::ins().high =CannyDlg::ins().getValue(1);
+        Dst = Tools::ins().EdgeCanny(Src,L,H);
         Show();
     }
 }
@@ -690,7 +690,7 @@ void QVision::Canny()
 void QVision::Scharr()
 {
     if(!IsImgOpen()) return;
-    Dst=tools.Edgescharr(Src);
+    Dst=Tools::ins().Edgescharr(Src);
     Show();
 }
 
@@ -702,7 +702,7 @@ void QVision::RegionGrow()
     int threshold=QInputDialog::getInt(this,tr("设置阈值"),tr("value:"),100,0,255,10,&ok);
     Point seedPoint(10, 10);
     Mat visited = Mat::zeros(Src.size(), CV_8U);
-    if(ok) Dst = tools.RegionGrow(Src, seedPoint, threshold, visited);
+    if(ok) Dst = Tools::ins().RegionGrow(Src, seedPoint, threshold, visited);
     Show(Dst);
 }
 
@@ -710,11 +710,11 @@ void QVision::RegionGrow()
 void QVision::FixThreshold()
 {
     if(!IsImgOpen()) return;
-    if(FTD.exec()== QDialog::Accepted){
-        int val=FTD.getValue();
-        FTD.setValue(val);
-        FTD.Val=val;
-        Dst = tools.FixThreshold(Src, val);
+    if(FixThresholdDlg::ins().exec()== QDialog::Accepted){
+        int val=FixThresholdDlg::ins().getValue();
+        FixThresholdDlg::ins().setValue(val);
+        FixThresholdDlg::ins().Val=val;
+        Dst = Tools::ins().FixThreshold(Src, val);
         Show();
     }
 }
@@ -725,7 +725,7 @@ void QVision::ShowOutline()
     if(!IsImgOpen()) return;
     bool ok;
     int val=QInputDialog::getInt(this,tr("设置阈值"),tr("value:"),100,0,255,10,&ok);
-    if(ok) Dst=tools.ShowOutline(Src,val);
+    if(ok) Dst=Tools::ins().ShowOutline(Src,val);
     Show();
 }
 
@@ -733,13 +733,13 @@ void QVision::ShowOutline()
 void QVision::ThresholdProcess()
 {
     if(!IsImgOpen()) return;
-    if(TD.exec()== QDialog::Accepted){
-        int type=TD.getValue(1);
-        int val=TD.getValue(2);
-        TD.setValue(val,type);
-        TD.thresval=type;
-        TD.threstype =val;
-        Dst=tools.ThresholdProcess(Src,val,type);
+    if(ThresholdDlg::ins().exec()== QDialog::Accepted){
+        int type=ThresholdDlg::ins().getValue(1);
+        int val=ThresholdDlg::ins().getValue(2);
+        ThresholdDlg::ins().setValue(val,type);
+        ThresholdDlg::ins().thresval=type;
+        ThresholdDlg::ins().threstype =val;
+        Dst=Tools::ins().ThresholdProcess(Src,val,type);
         Show();
     }
 }
@@ -751,7 +751,7 @@ void QVision::AdaptThreshold()
     int size=15;
     bool ok;
     double para = QInputDialog::getDouble(this, tr("设置系数"), tr("x:"), 2.0, 0, 10, 2, &ok);
-    if(ok) Dst=tools.AdaptThreshold(Src,size,para);
+    if(ok) Dst=Tools::ins().AdaptThreshold(Src,size,para);
     Show();
 }
 
@@ -759,7 +759,7 @@ void QVision::AdaptThreshold()
 void QVision::AreaCover()
 {
     if(!IsImgOpen()) return;
-    Dst=tools.AreaCover(Src);
+    Dst=Tools::ins().AreaCover(Src);
     Show();
 }
 
@@ -767,14 +767,14 @@ void QVision::AreaCover()
 void QVision::AreaFill()
 {
     if(!IsImgOpen()) return;
-    Scalar fill=tools.PickColor();
-    if(AFD.exec()== QDialog::Accepted){
-        int setNum=AFD.getValue(1);
-        int setSize=AFD.getValue(2);
-        AFD.setValue(setSize,setNum);
-        AFD.PointSize = setSize;
-        AFD.PointNum = setNum;
-        Dst=tools.AreaFill(Src,fill,setSize,setNum);
+    Scalar fill=Tools::ins().PickColor();
+    if(AreaFillDlg::ins().exec()== QDialog::Accepted){
+        int setNum=AreaFillDlg::ins().getValue(1);
+        int setSize=AreaFillDlg::ins().getValue(2);
+        AreaFillDlg::ins().setValue(setSize,setNum);
+        AreaFillDlg::ins().PointSize = setSize;
+        AreaFillDlg::ins().PointNum = setNum;
+        Dst=Tools::ins().AreaFill(Src,fill,setSize,setNum);
         Show();
     }
 }
@@ -783,11 +783,11 @@ void QVision::AreaFill()
 void QVision::StatisticPixels()
 {
     if(!IsImgOpen())return;
-    if(SPD.exec()== QDialog::Accepted){
-        int pixval=SPD.getValue();
-        SPD.setValue(pixval);
-        SPD.pixelval = pixval;
-        int num = tools.Statistic(Src,pixval);
+    if(StatisticPixelDlg::ins().exec()== QDialog::Accepted){
+        int pixval=StatisticPixelDlg::ins().getValue();
+        StatisticPixelDlg::ins().setValue(pixval);
+        StatisticPixelDlg::ins().pixelval=pixval;
+        int num = Tools::ins().Statistic(Src,pixval);
         QMessageBox::information(this,tr("提示"),tr("该像素值数量:%1").arg(num));
     }
 }
@@ -803,7 +803,7 @@ void QVision::PerspectiveTransform()
         QMessageBox::information(this,tr("提示"),tr("用户已取消"));
         return;
     }else{
-        Dst=tools.PersTransform(SI, TGI);
+        Dst=Tools::ins().PersTransform(SI, TGI);
         Show();
     }
 }
@@ -811,18 +811,18 @@ void QVision::PerspectiveTransform()
 
 void QVision::CalculateDistance()
 {
-    if(CDD.exec()== QDialog::Accepted)
+    if(CalcuDistDlg::ins().exec()== QDialog::Accepted)
     {
-        int curx1=CDD.getValue(1);
-        int cury1=CDD.getValue(2);
-        int curx2=CDD.getValue(3);
-        int cury2=CDD.getValue(4);
-        CDD.setValue(curx1,cury1,curx2,cury2);
-        CDD.x1 = curx1;
-        CDD.y1 = cury1;
-        CDD.x2 = curx2;
-        CDD.y2 = cury2;
-        int res=tools.CalcDist(curx1,cury1,curx2,cury2);
+        int curx1=CalcuDistDlg::ins().getValue(1);
+        int cury1=CalcuDistDlg::ins().getValue(2);
+        int curx2=CalcuDistDlg::ins().getValue(3);
+        int cury2=CalcuDistDlg::ins().getValue(4);
+        CalcuDistDlg::ins().setValue(curx1,cury1,curx2,cury2);
+        CalcuDistDlg::ins().x1 = curx1;
+        CalcuDistDlg::ins().y1 = cury1;
+        CalcuDistDlg::ins().x2 = curx2;
+        CalcuDistDlg::ins().y2 = cury2;
+        int res=Tools::ins().CalcDist(curx1,cury1,curx2,cury2);
         QMessageBox::information(this,tr("提示"),tr("两点间距离为:%1").arg(res));
     }
 }
@@ -831,14 +831,14 @@ void QVision::CalculateDistance()
 void QVision::RotateScale()
 {
     if(!IsImgOpen())return;
-    if(RSD.exec()== QDialog::Accepted)
+    if(RotScaleDlg::ins().exec()== QDialog::Accepted)
     {
-        double rotate=RSD.getValue();
-        double scale=RSD.getDValue();
-        RSD.setValue(rotate,scale);
-        RSD.rotate = rotate;
-        RSD.scale = scale;
-        Dst=tools.RotateScale(Src,rotate,scale);
+        double rotate=RotScaleDlg::ins().getValue();
+        double scale=RotScaleDlg::ins().getDValue();
+        RotScaleDlg::ins().setValue(rotate,scale);
+        RotScaleDlg::ins().rotate = rotate;
+        RotScaleDlg::ins().scale = scale;
+        Dst=Tools::ins().RotateScale(Src,rotate,scale);
         Show();
     }
 }
@@ -847,18 +847,18 @@ void QVision::RotateScale()
 void QVision::ImagePyramid()
 {
     if(!IsImgOpen()) return;
-    tools.Pyramid(Src);
+    Tools::ins().Pyramid(Src);
 }
 
 
 void QVision::PickColor()
 {
-    tools.PickColor();
+    Tools::ins().PickColor();
 }
 
 void QVision::CaptureScreen()
 {
-    SC.show();
+    ScreenCut::ins().show();
     Show();
 }
 
@@ -881,7 +881,7 @@ void QVision::Eraser()
 void QVision::Divide()
 {
     if(!IsImgOpen()) return;
-    Dst=IC.Divide(Src);
+    Dst=ImgCalculate::ins().Divide(Src);
     Show();
 }
 
@@ -889,7 +889,7 @@ void QVision::Divide()
 void QVision::OpenCalculate()
 {
     if(!IsImgOpen()) return;
-    Dst=IC.OnCalc(Src);
+    Dst=ImgCalculate::ins().OnCalc(Src);
     Show();
 }
 
@@ -897,7 +897,7 @@ void QVision::OpenCalculate()
 void QVision::CloseCalculate()
 {
     if(!IsImgOpen()) return;
-    Dst=IC.OffCalc(Src);
+    Dst=ImgCalculate::ins().OffCalc(Src);
     Show();
 }
 
@@ -905,7 +905,7 @@ void QVision::CloseCalculate()
 void QVision::Multipy()
 {
     if(!IsImgOpen()) return;
-    Dst=IC.Multipy(Src);
+    Dst=ImgCalculate::ins().Multipy(Src);
     Show();
 }
 
@@ -913,7 +913,7 @@ void QVision::Multipy()
 void QVision::LinearStretch()
 {
     if(!IsImgOpen()) return;
-    Dst=IC.LineStretch(Src);
+    Dst=ImgCalculate::ins().LineStretch(Src);
     Show();
 }
 
@@ -926,7 +926,7 @@ void QVision::Add()
     Mat s2=imread(m2.toStdString());
     if(s1.empty()||s2.empty()) return;
     if(s1.size()!=s2.size()) return;
-    Dst=IC.Add(s1,s2);
+    Dst=ImgCalculate::ins().Add(s1,s2);
     Show();
 }
 
@@ -939,7 +939,7 @@ void QVision::Subtraction()
     Mat s2=imread(m2.toStdString());
     if(s1.empty()||s2.empty()) return;
     if(s1.size()!=s2.size()) return;
-    Dst=IC.Subtraction(s1,s2);
+    Dst=ImgCalculate::ins().Subtraction(s1,s2);
     Show();
 }
 
@@ -947,7 +947,7 @@ void QVision::Subtraction()
 void QVision::Fourier()
 {
     if(!IsImgOpen()) return;
-    Dst=IC.FourierTransform(Src);
+    Dst=ImgCalculate::ins().FourierTransform(Src);
     Show();
 }
 
@@ -955,7 +955,7 @@ void QVision::Fourier()
 void QVision::Laplacian()
 {
     if(!IsImgOpen()) return;
-    Dst=IC.LaplacianTransform(Src);
+    Dst=ImgCalculate::ins().LaplacianTransform(Src);
     Show();
 }
 
@@ -963,7 +963,7 @@ void QVision::Laplacian()
 void QVision::SURF()
 {
     if(!IsImgOpen()) return;
-    Dst=IA.SURF(Src);
+    Dst=ImgAlgorithm::ins().SURF(Src);
     Show();
 }
 
@@ -971,7 +971,7 @@ void QVision::SURF()
 void QVision::FloodFill()
 {
     if(!IsImgOpen()) return;
-    Dst=IA.FloodFill(Src);
+    Dst=ImgAlgorithm::ins().FloodFill(Src);
     Show();
 }
 
@@ -979,7 +979,7 @@ void QVision::FloodFill()
 void QVision::ImageEqual()
 {
     if(!IsImgOpen()) return;
-    Dst=IA.HistEqual(Src);
+    Dst=ImgAlgorithm::ins().HistEqual(Src);
     Show();
 }
 
@@ -991,11 +991,11 @@ void QVision::TemplateMatch()
     if (temPath.isEmpty()||srcPath.isEmpty()) return;
     Mat src = imread(srcPath.toStdString());
     Mat temp = imread(temPath.toStdString());
-    if(TMD.exec()== QDialog::Accepted){
-        int curThresh=TMD.getValue();
-        TMD.setValue(curThresh);
-        TMD.thresh=curThresh;
-        Dst=IA.MatchTemp(src, temp, curThresh);
+    if(TemplateMatchDlg::ins().exec()== QDialog::Accepted){
+        int curThresh=TemplateMatchDlg::ins().getValue();
+        TemplateMatchDlg::ins().setValue(curThresh);
+        TemplateMatchDlg::ins().thresh=curThresh;
+        Dst=ImgAlgorithm::ins().MatchTemp(src, temp, curThresh);
         Show();
     }
 }
@@ -1008,7 +1008,7 @@ void QVision::FeaturePointMatch()
     if (temPath.isEmpty()||srcPath.isEmpty())return;
     Mat src1 = imread(temPath.toStdString());
     Mat src2 =imread(srcPath.toStdString());
-    Dst=IA.FeaturePointMatch(src1,src2);
+    Dst=ImgAlgorithm::ins().FeaturePointMatch(src1,src2);
     Save(Dst);
     Show();
 }
@@ -1021,20 +1021,20 @@ void QVision::UpgradeTempMatch()
     if (temPath.isEmpty()||srcPath.isEmpty()) return;
     Mat temp = imread(temPath.toStdString());
     Mat src = imread(srcPath.toStdString());
-    if(UTD.exec()== QDialog::Accepted){
-        int ImgThres=UTD.getValue();
-        double scalestep=UTD.getValue(1);
-        double overlapThres=UTD.getValue(2);
-        double MinscaleRatio=UTD.getValue(3);
-        double MaxscaleRatio=UTD.getValue(4);
-        double PreProcessThres=UTD.getValue(5);
-        UTD.ImgThres=ImgThres;
-        UTD.ScaleStep=scalestep;
-        UTD.OverlapThres=overlapThres;
-        UTD.MinScaleRatio=MinscaleRatio;
-        UTD.MaxScaleRatio=MaxscaleRatio;
-        UTD.PreProcessThres=PreProcessThres;
-        Dst=IA.UpgradeMatchTemp(temp, src, ImgThres, scalestep, MinscaleRatio, MaxscaleRatio,overlapThres,PreProcessThres);
+    if(UpgradeTempMatchDlg::ins().exec()== QDialog::Accepted){
+        int ImgThres=UpgradeTempMatchDlg::ins().getValue();
+        double scalestep=UpgradeTempMatchDlg::ins().getValue(1);
+        double overlapThres=UpgradeTempMatchDlg::ins().getValue(2);
+        double MinscaleRatio=UpgradeTempMatchDlg::ins().getValue(3);
+        double MaxscaleRatio=UpgradeTempMatchDlg::ins().getValue(4);
+        double PreProcessThres=UpgradeTempMatchDlg::ins().getValue(5);
+        UpgradeTempMatchDlg::ins().ImgThres=ImgThres;
+        UpgradeTempMatchDlg::ins().ScaleStep=scalestep;
+        UpgradeTempMatchDlg::ins().OverlapThres=overlapThres;
+        UpgradeTempMatchDlg::ins().MinScaleRatio=MinscaleRatio;
+        UpgradeTempMatchDlg::ins().MaxScaleRatio=MaxscaleRatio;
+        UpgradeTempMatchDlg::ins().PreProcessThres=PreProcessThres;
+        Dst=ImgAlgorithm::ins().UpgradeMatchTemp(temp, src, ImgThres, scalestep, MinscaleRatio, MaxscaleRatio,overlapThres,PreProcessThres);
         Save(Dst);
         Show();
     }
@@ -1044,7 +1044,7 @@ void QVision::UpgradeTempMatch()
 void QVision::Line()
 {
     if(!IsImgOpen()) return;
-    Dst=IA.HoughLine(Src);
+    Dst=ImgAlgorithm::ins().HoughLine(Src);
     Show();
 }
 
@@ -1052,7 +1052,7 @@ void QVision::Line()
 void QVision::Circle()
 {
     if(!IsImgOpen()) return;
-    Dst=IA.HoughCircle(Src);
+    Dst=ImgAlgorithm::ins().HoughCircle(Src);
     Show();
 }
 
@@ -1060,7 +1060,7 @@ void QVision::Circle()
 void QVision::Ellipse()
 {
     if(!IsImgOpen()) return;
-    Dst=IA.HoughEllipse(Src);
+    Dst=ImgAlgorithm::ins().HoughEllipse(Src);
     Show();
 }
 
@@ -1068,14 +1068,14 @@ void QVision::Ellipse()
 void QVision::Triangle()
 {
     if(!IsImgOpen()) return;
-    Dst=IA.HoughTriangle(Src);
+    Dst=ImgAlgorithm::ins().HoughTriangle(Src);
     Show();
 }
 
 void QVision::Rectangle()
 {
     if(!IsImgOpen()) return;
-    Dst=IA.HoughRectangle(Src);
+    Dst=ImgAlgorithm::ins().HoughRectangle(Src);
     Show();
 }
 
@@ -1086,25 +1086,24 @@ void QVision::Ballard()
     if (temPath.isEmpty()||srcPath.isEmpty()) return;
     Mat temp = imread(temPath.toStdString());
     Mat src = imread(srcPath.toStdString());
-    if(BD.exec()== QDialog::Accepted)
+    if(BallardDlg::ins().exec()== QDialog::Accepted)
     {
-        int mindist=BD.getValue(1);
-        int level=BD.getValue(2);
-        double dp=BD.getValue(3);
-        int buffersize=BD.getValue(4);
-        int vote=BD.getValue(5);
-        int cannylow=BD.getValue(6);
-        int cannyhigh=BD.getValue(7);
-        BD.setValue(mindist,level,dp,buffersize,vote,cannylow,cannyhigh);
-
-        BD.mindist=mindist;
-        BD.level=level;
-        BD.dp=dp;
-        BD.buffersize=buffersize;
-        BD.vote=vote;
-        BD.cannylow=cannylow;
-        BD.cannyhigh=cannyhigh;
-        Dst=IA.HoughBallard(src,temp,mindist,level,dp,buffersize,vote,cannylow,cannyhigh);
+        int mindist=BallardDlg::ins().getValue(1);
+        int level=BallardDlg::ins().getValue(2);
+        double dp=BallardDlg::ins().getValue(3);
+        int buffersize=BallardDlg::ins().getValue(4);
+        int vote=BallardDlg::ins().getValue(5);
+        int cannylow=BallardDlg::ins().getValue(6);
+        int cannyhigh=BallardDlg::ins().getValue(7);
+        BallardDlg::ins().setValue(mindist,level,dp,buffersize,vote,cannylow,cannyhigh);
+        BallardDlg::ins().mindist=mindist;
+        BallardDlg::ins().level=level;
+        BallardDlg::ins().dp=dp;
+        BallardDlg::ins().buffersize=buffersize;
+        BallardDlg::ins().vote=vote;
+        BallardDlg::ins().cannylow=cannylow;
+        BallardDlg::ins().cannyhigh=cannyhigh;
+        Dst=ImgAlgorithm::ins().HoughBallard(src,temp,mindist,level,dp,buffersize,vote,cannylow,cannyhigh);
         Save(Dst);
         Show();
     }
@@ -1118,52 +1117,52 @@ void QVision::Guil()
     QString srcPath=getFilepath();
     Mat temp = imread(temPath.toStdString());
     Mat src =imread(srcPath.toStdString());
-    if(GD.exec()== QDialog::Accepted)
+    if(GuilDlg::ins().exec()== QDialog::Accepted)
     {
-        int mindist=GD.getValue(MINDIST);
-        int level=GD.getValue(LEVEL);
-        double dp=GD.getDValue(DP);
-        double xi=GD.getDValue(XI);
-        int buffersize=GD.getValue(BUFFERSIZE);
-        int cannylow=GD.getValue(CANNYLOWTHRESHOLD);
-        int cannyhigh=GD.getValue(CANNYHIGHTHRESHOLD);
-        int minangle=GD.getValue(MINANGLE);
-        int maxangle=GD.getValue(MAXANGLE);
-        int anglestep=GD.getValue(ANGLESTEP);
-        int anglethreshold=GD.getValue(ANGLETHRESHOLD);
-        float minscale=GD.getFValue(MINSCALE);
-        float maxscale=GD.getFValue(MAXSCALE);
-        float angleplise=GD.getFValue(ANGLEEPSILON);
-        double scalestep=GD.getDValue(SCALESTEP);
-        int scalethreshold=GD.getValue(SCALETHRESHOLD);
-        int posthreshold=GD.getValue(POSITIONTHRESHOLD);
+        int mindist=GuilDlg::ins().getValue(MINDIST);
+        int level=GuilDlg::ins().getValue(LEVEL);
+        double dp=GuilDlg::ins().getDValue(DP);
+        double xi=GuilDlg::ins().getDValue(XI);
+        int buffersize=GuilDlg::ins().getValue(BUFFERSIZE);
+        int cannylow=GuilDlg::ins().getValue(CANNYLOWTHRESHOLD);
+        int cannyhigh=GuilDlg::ins().getValue(CANNYHIGHTHRESHOLD);
+        int minangle=GuilDlg::ins().getValue(MINANGLE);
+        int maxangle=GuilDlg::ins().getValue(MAXANGLE);
+        int anglestep=GuilDlg::ins().getValue(ANGLESTEP);
+        int anglethreshold=GuilDlg::ins().getValue(ANGLETHRESHOLD);
+        float minscale=GuilDlg::ins().getFValue(MINSCALE);
+        float maxscale=GuilDlg::ins().getFValue(MAXSCALE);
+        float angleplise=GuilDlg::ins().getFValue(ANGLEEPSILON);
+        double scalestep=GuilDlg::ins().getDValue(SCALESTEP);
+        int scalethreshold=GuilDlg::ins().getValue(SCALETHRESHOLD);
+        int posthreshold=GuilDlg::ins().getValue(POSITIONTHRESHOLD);
         qInfo()<<"minangle"<<minangle;
         qInfo()<<"maxangle"<<maxangle;
         qInfo()<<"minscale"<<minscale;
         qInfo()<<"maxscale"<<maxscale;
         qInfo()<<"scalestep"<<scalestep;
-        GD.setValue(mindist,level,dp,xi,buffersize,cannylow,cannyhigh,minangle,maxangle,anglestep,anglethreshold,
+        GuilDlg::ins().setValue(mindist,level,dp,xi,buffersize,cannylow,cannyhigh,minangle,maxangle,anglestep,anglethreshold,
                     minscale,maxscale,angleplise,scalestep,scalethreshold,posthreshold);
-        GD.mindist=mindist;
-        GD.level=level;
-        GD.dp=dp;
-        GD.xi=xi;
-        GD.buffersize=buffersize;
-        GD.cannylow=cannylow;
-        GD.cannyhigh=cannyhigh;
-        GD.minangle=minangle;
-        GD.maxangle=maxangle;
-        GD.anglestep=anglestep;
-        GD.anglethreshold=anglethreshold;
-        GD.minscale=minscale;
-        GD.maxscale=maxscale;
-        GD.angleplise=angleplise;
-        GD.scalestep=scalestep;
-        GD.scalethreshold=scalethreshold;
-        GD.posthreshold=posthreshold;
+        GuilDlg::ins().mindist=mindist;
+        GuilDlg::ins().level=level;
+        GuilDlg::ins().dp=dp;
+        GuilDlg::ins().xi=xi;
+        GuilDlg::ins().buffersize=buffersize;
+        GuilDlg::ins().cannylow=cannylow;
+        GuilDlg::ins().cannyhigh=cannyhigh;
+        GuilDlg::ins().minangle=minangle;
+        GuilDlg::ins().maxangle=maxangle;
+        GuilDlg::ins().anglestep=anglestep;
+        GuilDlg::ins().anglethreshold=anglethreshold;
+        GuilDlg::ins().minscale=minscale;
+        GuilDlg::ins().maxscale=maxscale;
+        GuilDlg::ins().angleplise=angleplise;
+        GuilDlg::ins().scalestep=scalestep;
+        GuilDlg::ins().scalethreshold=scalethreshold;
+        GuilDlg::ins().posthreshold=posthreshold;
         try
         {
-            Dst=IA.HoughGuil(src,temp,mindist,level,dp,xi,buffersize,cannylow,cannyhigh,minangle,maxangle,anglestep,
+            Dst=ImgAlgorithm::ins().HoughGuil(src,temp,mindist,level,dp,xi,buffersize,cannylow,cannyhigh,minangle,maxangle,anglestep,
                                anglethreshold,minscale,maxscale,angleplise,scalestep,scalethreshold,posthreshold);
         }
         catch(const exception& e)
@@ -1181,7 +1180,7 @@ void QVision::Guil()
 void QVision::ShiTomasi()
 {
     if(!IsImgOpen()) return;
-    Dst=IA.ShiTomasiDetect(Src);
+    Dst=ImgAlgorithm::ins().ShiTomasiDetect(Src);
     Show();
 }
 
@@ -1189,7 +1188,7 @@ void QVision::ShiTomasi()
 void QVision::Harris()
 {
     if(!IsImgOpen()) return;
-    Dst=IA.HarrisDetect(Src);
+    Dst=ImgAlgorithm::ins().HarrisDetect(Src);
     Show();
 }
 
@@ -1197,7 +1196,7 @@ void QVision::Harris()
 void QVision::Fast()
 {
     if(!IsImgOpen()) return;
-    Dst=IA.FASTDetect(Src);
+    Dst=ImgAlgorithm::ins().FASTDetect(Src);
     Show();
 }
 
@@ -1205,7 +1204,7 @@ void QVision::Fast()
 void QVision::Brisk()
 {
     if(!IsImgOpen()) return;
-    Dst=IA.BRISKDetect(Src);
+    Dst=ImgAlgorithm::ins().BRISKDetect(Src);
     Show();
 }
 
@@ -1213,7 +1212,7 @@ void QVision::Brisk()
 void QVision::Mser()
 {
     if(!IsImgOpen()) return;
-    Dst=IA.MSERDetect(Src);
+    Dst=ImgAlgorithm::ins().MSERDetect(Src);
     Show();
 }
 
@@ -1221,7 +1220,7 @@ void QVision::Mser()
 void QVision::GFTT()
 {
     if(!IsImgOpen()) return;
-    Dst=IA.GFTTDetect(Src);
+    Dst=ImgAlgorithm::ins().GFTTDetect(Src);
     Show();
 }
 
@@ -1231,86 +1230,86 @@ void QVision::SelfDefineModel()
 {
     if(!IsImgOpen()) return;
     QString modelPath=getModel();
-    Dst=IA.SelfModel(Src,modelPath);
+    Dst=ImgAlgorithm::ins().SelfModel(Src,modelPath);
     Show();
 }
 
 void QVision::RecongnizeFace()
 {
     if(!IsImgOpen()) return;
-    Dst=IA.DetectFaceFromImg(Src);
+    Dst=ImgAlgorithm::ins().DetectFaceFromImg(Src);
     Show();
 }
 
 void QVision::TesseractOCR()
 {
-    CRD.show();
+    CharRecogDlg::ins().show();
 }
 
 
 void QVision::CaptureLine()
 {
-    DD.DetectLine();
+    DynamicDetect::ins().DetectLine();
 }
 
 
 void QVision::CaptureCircle()
 {
-    DD.DetectCircle();
+    DynamicDetect::ins().DetectCircle();
 }
 
 
 void QVision::CaptureTriangle()
 {
-    DD.DetectTriangle();
+    DynamicDetect::ins().DetectTriangle();
 }
 
 void QVision::CaptureSquare()
 {
-    DD.DetectSquare();
+    DynamicDetect::ins().DetectSquare();
 }
 
 void QVision::CaptureEllpise()
 {
-    DD.DetectEllpise();
+    DynamicDetect::ins().DetectEllpise();
 }
 
 void QVision::CaptureCharacter()
 {
-    DD.DetectCharacter();
+    DynamicDetect::ins().DetectCharacter();
 }
 
 void QVision::CaptureHumanEyes()
 {
-    DD.DetectEye();
+    DynamicDetect::ins().DetectEye();
 }
 
 void QVision::CaptureHumanFace()
 {
-    DD.DetectFace();
+    DynamicDetect::ins().DetectFace();
 }
 
 void QVision::CaptureArbitaryShape()
 {
     QString usermodelPath=QFileDialog::getOpenFileName(this,"获取模型","eg.xml","选择模型(*.xml)");
-    DD.DetectByUserCreateModel(usermodelPath);
+    DynamicDetect::ins().DetectByUserCreateModel(usermodelPath);
 }
 
 //文件操作
 void QVision::RenameFile()
 {
-    if(RD.exec()== QDialog::Accepted)
+    if(RenameDlg::ins().exec()== QDialog::Accepted)
     {
-        QString dir = RD.getValue(1);
-        QString exten = RD.getValue(2);
-        QString prefix=RD.getValue(3);
-        int num = RD.getValue();
-        RD.setValue(num,dir,exten,prefix);
-        RD.incre=num;
-        RD.dir=dir;
-        RD.exten=exten;
-        RD.prefix=prefix;
-        int renamed=FO.RenameFile(dir,prefix,num,exten);
+        QString dir = RenameDlg::ins().getValue(1);
+        QString exten = RenameDlg::ins().getValue(2);
+        QString prefix=RenameDlg::ins().getValue(3);
+        int num = RenameDlg::ins().getValue();
+        RenameDlg::ins().setValue(num,dir,exten,prefix);
+        RenameDlg::ins().incre=num;
+        RenameDlg::ins().dir=dir;
+        RenameDlg::ins().exten=exten;
+        RenameDlg::ins().prefix=prefix;
+        int renamed=fileOperation::ins().RenameFile(dir,prefix,num,exten);
         QMessageBox::information(this,tr("提示"),tr("已重命名文件数:%1").arg(renamed));
     }
 }
@@ -1318,20 +1317,20 @@ void QVision::RenameFile()
 
 void QVision::WriteToData()
 {
-    if(WDD.exec()==QDialog::Accepted)
+    if(WriteDataDlg::ins().exec()==QDialog::Accepted)
     {
-        QString dir =WDD.getInfo(1);
-        QString context =WDD.getInfo(2);
-        QString other =WDD.getInfo(3);
-        int Num =WDD.getValue(1);
-        int Incre =WDD.getValue(2);
-        WDD.setValue(Num,Incre,dir,context,other);
-        WDD.wnum=Num;
-        WDD.increvar=Incre;
-        WDD.dir=dir;
-        WDD.context=context;
-        WDD.other=other;
-        FO.WriteToFile(dir,context,other,Num,Incre);
+        QString dir =WriteDataDlg::ins().getInfo(1);
+        QString context =WriteDataDlg::ins().getInfo(2);
+        QString other =WriteDataDlg::ins().getInfo(3);
+        int Num =WriteDataDlg::ins().getValue(1);
+        int Incre =WriteDataDlg::ins().getValue(2);
+        WriteDataDlg::ins().setValue(Num,Incre,dir,context,other);
+        WriteDataDlg::ins().wnum=Num;
+        WriteDataDlg::ins().increvar=Incre;
+        WriteDataDlg::ins().dir=dir;
+        WriteDataDlg::ins().context=context;
+        WriteDataDlg::ins().other=other;
+        fileOperation::ins().WriteToFile(dir,context,other,Num,Incre);
         QMessageBox::information(this,tr("提示"),tr("内容已写入"));
     }
 }
@@ -1341,7 +1340,7 @@ void QVision::OutputImgData()
 {
     QString dir=getFolder();
     QString savepath=getOutputpath();
-    FO.GetImgData(dir,savepath);
+    fileOperation::ins().GetImgData(dir,savepath);
 }
 
 
@@ -1350,13 +1349,13 @@ void QVision::ResizeImgSize()
     QString sourceDir = getFolder();
     QString outputDir = getFolder();
     if(outputDir!=""){
-        if(RDlg.exec()== QDialog::Accepted){
-            int W=RDlg.getValue(1);
-            int H=RDlg.getValue(2);
-            RDlg.setValue(W,H);
-            RDlg.w=W;
-            RDlg.h=H;
-            FO.ResizeImg(sourceDir,outputDir,W, H);
+        if(ResizeDlg::ins().exec()== QDialog::Accepted){
+            int W=ResizeDlg::ins().getValue(1);
+            int H=ResizeDlg::ins().getValue(2);
+            ResizeDlg::ins().setValue(W,H);
+            ResizeDlg::ins().w=W;
+            ResizeDlg::ins().h=H;
+            fileOperation::ins().ResizeImg(sourceDir,outputDir,W, H);
             QMessageBox::information(this,tr("提示"),tr("数据已写入!"));
         }
     }else{
@@ -1369,43 +1368,43 @@ void QVision::OutputFileInfo()
 {
     QString dir=getFolder();
     QString savepath=getOutputpath();
-    if(!dir.isNull()&&!savepath.isNull()) FO.ExportFiles(dir,savepath);
+    if(!dir.isNull()&&!savepath.isNull()) fileOperation::ins().ExportFiles(dir,savepath);
 }
 
 
 //网络
 void QVision::Spyder()
 {
-    if(NSDlg.exec()==QDialog::Accepted){
-        QString url=NSDlg.getValue(1);
-        QString keyword=NSDlg.getValue(2);
-        QString path=NSDlg.getValue(3);
-        QString html=NSDlg.getValue(4);
-        NSDlg.setValue(url,keyword,path,html);
-        NSDlg.url=url;
-        NSDlg.keyword=keyword;
-        NSDlg.savePath=path;
-        NSDlg.htmlCode=html;
+    if(NetSpyderDlg::ins().exec()==QDialog::Accepted){
+        QString url=NetSpyderDlg::ins().getValue(1);
+        QString keyword=NetSpyderDlg::ins().getValue(2);
+        QString path=NetSpyderDlg::ins().getValue(3);
+        QString html=NetSpyderDlg::ins().getValue(4);
+        NetSpyderDlg::ins().setValue(url,keyword,path,html);
+        NetSpyderDlg::ins().url=url;
+        NetSpyderDlg::ins().keyword=keyword;
+        NetSpyderDlg::ins().savePath=path;
+        NetSpyderDlg::ins().htmlCode=html;
     }
 }
 
 void QVision::TCPIP()
 {
-    NC.show();
+    NetworkCommunication::ins().show();
 }
 
 //多媒体
 void QVision::VideoPlayer()
 {
-    MM.resize(640,480);
-    MM.show();
+    MultiMedia::ins().resize(640,480);
+    MultiMedia::ins().show();
 }
 
 
 //数据库
 void QVision::Launch()
 {
-    DB.show();
+    DataBase::ins().show();
 }
 
 
@@ -1446,6 +1445,7 @@ void QVision::showSider()
     scanwifi = new QPushButton("wifi扫描", drawer1);
     deviceInfo = new QPushButton("设备信息", drawer1);
     remoteSignIn = new QPushButton("远程登录", drawer1);
+    showCoord = new QPushButton("坐标系", drawer1);
 
     heapS = new QPushButton("堆排序", drawer2);
     shellS = new QPushButton("希尔排序", drawer2);
@@ -1458,6 +1458,7 @@ void QVision::showSider()
 
     row1->addWidget(scanwifi);
     row1->addWidget(deviceInfo);
+    row1->addWidget(showCoord);
 
     row2->addWidget(remoteSignIn);
     row2->addWidget(qtChart);
@@ -1482,6 +1483,7 @@ void QVision::showSider()
     connect(searchIp, &QPushButton::clicked, this, &QVision::SearchLocation);
     connect(remoteSignIn, &QPushButton::clicked, this, &QVision::RemotelogIn);
     connect(deviceInfo, &QPushButton::clicked, this, &QVision::GetDeviceInfo);
+    connect(showCoord, &QPushButton::clicked, this, &QVision::ShowCoordinateSystem);
 
 
     connect(heapS, &QPushButton::clicked, this, &QVision::heapSort);
@@ -1503,7 +1505,7 @@ void QVision::heapSort()
     QVector<int> array;
     array.append({5,2,6,1,8,9,3,7,4});
     qInfo()<<"原始数组:"<<array;
-    S.heapSort(array);
+    Sort::ins().heapSort(array);
     qInfo()<<"排序后:"<<array;
 }
 
@@ -1512,7 +1514,7 @@ void QVision::shellSort()
     QVector<int> array;
     array.append({5,2,6,1,8,9,3,7,4});
     qInfo() << "原始数组:" << array;
-    S.shellSort(array);
+    Sort::ins().shellSort(array);
     qInfo()<<"排序后:"<<array;
 }
 
@@ -1521,7 +1523,7 @@ void QVision::quickSort()
     QVector<int> array;
     array.append({5,2,6,1,8,9,3,7,4});
     qInfo() << "原始数组:" << array;
-    S.quickSort(array,0,array.size()-1);
+    Sort::ins().quickSort(array,0,array.size()-1);
     qInfo()<<"排序后:"<<array;
 }
 
@@ -1530,7 +1532,7 @@ void QVision::mergeSort()
     QVector<int> array;
     array.append({5,2,6,1,8,9,3,7,4});
     qInfo() << "原始数组:" << array;
-    S.mergeSort(array, 0, array.size() - 1);
+    Sort::ins().mergeSort(array, 0, array.size() - 1);
     qInfo() << "排序后:" << array;
 }
 
@@ -1539,7 +1541,7 @@ void QVision::bubbleSort()
     QVector<int> array;
     array.append({5,2,6,1,8,9,3,7,4});
     qInfo() << "原始数组:" << array;
-    S.bubblesort(array);
+    Sort::ins().bubblesort(array);
     qInfo()<<"排序后:"<<array;
 }
 
@@ -1548,7 +1550,7 @@ void QVision::insertSort()
     QVector<int> array;
     array.append({5,2,6,1,8,9,3,7,4});
     qInfo() << "原始数组:" << array;
-    S.insertSort(array);
+    Sort::ins().insertSort(array);
     qInfo()<<"排序后:"<<array;
 }
 
@@ -1557,7 +1559,7 @@ void QVision::selectSort()
     QVector<int> array;
     array.append({5,2,6,1,8,9,3,7,4});
     qInfo() << "原始数组:" << array;
-    S.selectSort(array);
+    Sort::ins().selectSort(array);
     qInfo()<<"排序后:"<<array;
 }
 
@@ -1575,7 +1577,7 @@ void QVision::ScanNearWifi()
 
 void QVision::RemotelogIn()
 {
-    RL.show();
+    RemoteLogin::ins().show();
 }
 
 void QVision::GetDeviceInfo()
@@ -1690,4 +1692,9 @@ void QVision::DisplayQtChart()
 
     // chartView->show();
     QMessageBox::information(this,tr("提示"),tr("图表"));
+}
+
+void QVision::ShowCoordinateSystem()
+{
+    CoordinateSystem::ins().show();
 }

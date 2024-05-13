@@ -7,9 +7,10 @@ class CalcuDistDlg:public QDialog
 {
     Q_OBJECT
 public:
-    CalcuDistDlg(QWidget *parent=nullptr);
     int getValue(int para);
+    CalcuDistDlg(QWidget *parent=nullptr);
     void setValue(int a,int b,int c,int d);
+    static CalcuDistDlg& ins(){static CalcuDistDlg g;return g;}
 public:
     int x1;
     int y1;

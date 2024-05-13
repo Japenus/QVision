@@ -7,10 +7,11 @@ class RenameDlg:public QDialog
 {
     Q_OBJECT
 public:
-    RenameDlg(QWidget *parent=nullptr);
     int getValue();
     QString getValue(int which);
+    RenameDlg(QWidget *parent=nullptr);
     void setValue(int a,QString b,QString c,QString d);
+    static RenameDlg& ins(){static RenameDlg g;return g;}
 public:
    int incre;
    QString dir;

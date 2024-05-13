@@ -10,6 +10,7 @@ public:
     Mat CurrentArea;
     FormatTransfer ft;
     void CutArea(QPixmap &pix);
+    static ScreenCut & ins(){static ScreenCut s;return s;}
     explicit ScreenCut(QWidget *parent = nullptr);
 private:
     bool drawing;

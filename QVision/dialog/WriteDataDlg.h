@@ -10,6 +10,7 @@ public:
     WriteDataDlg(QWidget *parent=nullptr);
     int getValue(int which);QString getInfo(int which);
     void setValue(int a,int b,QString c,QString d,QString e);
+    static WriteDataDlg& ins(){static WriteDataDlg g;return g;}
 public:
     int wnum;
     int increvar;

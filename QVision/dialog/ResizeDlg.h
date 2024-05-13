@@ -7,9 +7,10 @@ class ResizeDlg:public QDialog
 {
     Q_OBJECT
 public:
-    ResizeDlg(QWidget *parent=nullptr);
     int getValue(int which);
     void setValue(int a,int b);
+    ResizeDlg(QWidget *parent=nullptr);
+    static ResizeDlg& ins(){static ResizeDlg g;return g;}
 public:
     int w;
     int h;

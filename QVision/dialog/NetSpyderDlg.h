@@ -7,8 +7,9 @@ class NetSpyderDlg:public QDialog
 {
     Q_OBJECT
 public:
-    NetSpyderDlg(QWidget *parent=nullptr);
     QString getValue(int para);
+    NetSpyderDlg(QWidget *parent=nullptr);
+    static NetSpyderDlg& ins(){static NetSpyderDlg g;return g;}
     void setValue(QString link,QString txt,QString path,QString html);
 public:
     Tools tools;

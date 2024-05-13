@@ -7,10 +7,11 @@ class RotScaleDlg:public QDialog
 {
     Q_OBJECT
 public:
-    RotScaleDlg(QWidget *parent=nullptr);
     double getValue();
     double getDValue();
+    RotScaleDlg(QWidget *parent=nullptr);
     void setValue(double rot,double scal);
+    static RotScaleDlg& ins(){static RotScaleDlg g;return g;}
 public:
     double rotate;
     double scale;

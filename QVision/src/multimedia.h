@@ -6,6 +6,7 @@ class MultiMedia:public QWidget
     Q_OBJECT
 public:
     MultiMedia(QWidget *parent = nullptr);
+    static MultiMedia & ins(){static MultiMedia m;return m;}
 private slots:
     void Open();
     void Play();

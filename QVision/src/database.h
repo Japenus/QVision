@@ -6,9 +6,8 @@
 class DataBase:public QMainWindow
 {
 public:
-    Tools ts;
-    FormatTransfer ft;
     DataBase(QWidget *parent = nullptr);
+    static DataBase & ins(){static DataBase db;return db;}
     void showCurData();
 private slots:
     void insert();

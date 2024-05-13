@@ -11,6 +11,7 @@ public:
     void setValue(int val);
     int getValue(int whichpara);
     void setValue(int val,int type);
+    static ThresholdDlg& ins(){static ThresholdDlg g;return g;}
 public:
     int thresval,threstype;
 private slots:
