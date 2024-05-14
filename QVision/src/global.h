@@ -8,7 +8,6 @@
 #include <QTimer>
 #include <QObject>
 #include <QScreen>
-// #include <QtCharts>
 #include <QMenuBar>
 #include <QProcess>
 #include <QPainter>
@@ -35,6 +34,7 @@
 #include <QHeaderView>
 #include <QVBoxLayout>
 #include <QJsonObject>
+#include <QPainterPath>
 #include <QInputDialog>
 #include <QAudioDevice>
 #include <allheaders.h>
