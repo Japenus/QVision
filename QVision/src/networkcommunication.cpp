@@ -43,6 +43,7 @@ NetworkCommunication::NetworkCommunication(QWidget *parent):QMainWindow(parent)
     stopBtn = new QPushButton("关闭");
     connectBtn = new QPushButton("连接");
     disconnectBtn = new QPushButton("断开");
+    pingBtn = new QPushButton("Ping");
     tip1->setAlignment(Qt::AlignCenter);
     tip2->setAlignment(Qt::AlignCenter);
 
@@ -63,6 +64,7 @@ NetworkCommunication::NetworkCommunication(QWidget *parent):QMainWindow(parent)
     disconnectBtn->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
     sendBtn->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
     stopBtn->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
+    pingBtn->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
     curStatus->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
 
     sendData->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
@@ -90,7 +92,7 @@ NetworkCommunication::NetworkCommunication(QWidget *parent):QMainWindow(parent)
     Row3->addWidget(tip5);Row3->addWidget(serverIP);
     Row4->addWidget(tip6);Row4->addWidget(serverPort);
     btnRow->addWidget(connectBtn);btnRow->addWidget(disconnectBtn);
-    btnRow->addWidget(sendBtn);btnRow->addWidget(stopBtn);
+    btnRow->addWidget(sendBtn);btnRow->addWidget(stopBtn);btnRow->addWidget(pingBtn);
 
     TopCol1->addWidget(tip1);TopCol1->addLayout(Row1);TopCol1->addLayout(Row2);
     TopCol2->addWidget(tip2);TopCol2->addLayout(Row3);TopCol2->addLayout(Row4);
@@ -108,6 +110,7 @@ NetworkCommunication::NetworkCommunication(QWidget *parent):QMainWindow(parent)
     setCentralWidget(central);
 
     connect(start,&QAction::triggered,this,&NetworkCommunication::createServer);
+    connect(pingBtn,&QPushButton::clicked,this,&NetworkCommunication::pingServer);
     connect(sendBtn,&QPushButton::clicked,this,&NetworkCommunication::send);
     connect(connectBtn,&QPushButton::clicked,this,&NetworkCommunication::connected);
     connect(disconnectBtn,&QPushButton::clicked,this,&NetworkCommunication::disconnected);
@@ -217,6 +220,23 @@ void NetworkCommunication::disconnected()
     }
 }
 
+
+void NetworkCommunication::pingServer()
+{
+    QProcess process;
+    QString command = "ping";
+    QStringList arguments;
+    info="<"+formatted+">Ping命令 \r";
+    arguments << serverIP->currentText();
+    process.start(command,arguments);
+    if(process.waitForFinished(-1)){
+        QMessageBox::information(this,tr("提示"),tr("进程已完成"));
+        info+="<"+formatted+">目的主机:"+serverIP->currentText();
+        recvData->setText(QString::fromLocal8Bit(process.readAllStandardOutput()));
+    }
+    curStatus->setText(info);
+}
+
 //not work
 void NetworkCommunication::keyPressEvent(QKeyEvent *event)
 {
@@ -239,4 +259,30 @@ void NetworkCommunication::stopped()
 NetworkCommunication::~NetworkCommunication()
 {
     log();
+    delete tip1;
+    delete tip2;
+    delete tip3;
+    delete tip4;
+    delete tip5;
+    delete tip6;
+    delete clientIP;
+    delete serverIP;
+    delete clientPort;
+    delete serverPort;
+
+    delete sendBtn;
+    delete stopBtn;
+    delete connectBtn;
+    delete disconnectBtn;
+
+    delete sendData;
+    delete recvData;
+    delete curStatus;
+
+    delete Socket;
+    delete tcpServer;
+
+    if(clientLists.size()){
+        for(auto cli:clientLists) delete cli;
+    }
 }

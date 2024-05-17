@@ -14,6 +14,7 @@ private slots:
     void send();
     void stopped();
     void connected();
+    void pingServer();
     void createServer();
     void disconnected();
 private:
@@ -35,6 +36,7 @@ private:
 
     QPushButton *sendBtn;
     QPushButton *stopBtn;
+    QPushButton *pingBtn;
     QPushButton *connectBtn;
     QPushButton *disconnectBtn;
 
