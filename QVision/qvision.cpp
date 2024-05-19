@@ -1623,19 +1623,19 @@ void QVision::SearchLocation()
     QNetworkAccessManager manager;
     QNetworkRequest request;
     QString ipAddress = QInputDialog::getText(this, "ip查询", "ip地址:");
-    if(ipAddress.isNull()) QMessageBox::warning(this,tr("警告"),tr("ip为空!")); return;
-
+    if(ipAddress.isNull()){
+        QMessageBox::warning(this,tr("警告"),tr("ip为空!"));
+        return;
+    }
     QUrl url("http://ip-api.com/json/" + ipAddress);
     request.setUrl(url);
     QNetworkReply *reply = manager.get(request);
     QEventLoop loop;
     connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
     loop.exec();
-
     if (reply->error() == QNetworkReply::NoError) {
         QJsonDocument jsonDoc = QJsonDocument::fromJson(reply->readAll());
         QJsonObject jsonObj = jsonDoc.object();
-
         QString stat = jsonObj["status"].toString();
         QString contin = jsonObj["continent"].toString();
         QString contrycode = jsonObj["contryCode"].toString();
@@ -1670,6 +1670,7 @@ void QVision::SearchLocation()
         QMessageBox::information(this,tr("查询结果"),tr("详细信息:%1").arg(res));
     } else {
         QMessageBox::warning(this,tr("警告"),tr("错误:%1").arg(reply->errorString()));
+        return;
     }
     reply->deleteLater();
 }

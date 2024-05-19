@@ -13,10 +13,12 @@ protected:
 private slots:
     void send();
     void stopped();
+    void sysInfo();
     void connected();
-    void pingServer();
+    void clearHistory();
     void createServer();
     void disconnected();
+    void exeInstruction();
 private:
     int listenPort=80;
     QString info;
@@ -36,7 +38,8 @@ private:
 
     QPushButton *sendBtn;
     QPushButton *stopBtn;
-    QPushButton *pingBtn;
+    QPushButton *exeBtn;
+    QPushButton *cleanBtn;
     QPushButton *connectBtn;
     QPushButton *disconnectBtn;
 

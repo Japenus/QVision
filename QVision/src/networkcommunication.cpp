@@ -8,9 +8,12 @@ NetworkCommunication::NetworkCommunication(QWidget *parent):QMainWindow(parent)
     formatted = curTime.toString("yyyy-MM-dd hh:mm:ss");
     QMenuBar *menubar = new QMenuBar();
     QAction *start = new QAction("Start Server");
+    QAction *getSysInfo = new QAction("System Info");
     QMenu *menulist = menubar->addMenu("Operation");
+    QMenu *winInstru = menubar->addMenu("Instructions");
     menulist->addSeparator();
     menulist->addAction(start);
+    winInstru->addAction(getSysInfo);
     setMenuBar(menubar);
     QRect DeviceSize=QGuiApplication::screens().at(0)->geometry();
     int w=DeviceSize.width();
@@ -41,9 +44,10 @@ NetworkCommunication::NetworkCommunication(QWidget *parent):QMainWindow(parent)
     curStatus=new QTextEdit();
     sendBtn = new QPushButton("发送");
     stopBtn = new QPushButton("关闭");
+    cleanBtn = new QPushButton("清空");
     connectBtn = new QPushButton("连接");
     disconnectBtn = new QPushButton("断开");
-    pingBtn = new QPushButton("Ping");
+    exeBtn = new QPushButton("执行");
     tip1->setAlignment(Qt::AlignCenter);
     tip2->setAlignment(Qt::AlignCenter);
 
@@ -64,8 +68,9 @@ NetworkCommunication::NetworkCommunication(QWidget *parent):QMainWindow(parent)
     disconnectBtn->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
     sendBtn->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
     stopBtn->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
-    pingBtn->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
+    exeBtn->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
     curStatus->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
+    cleanBtn->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
 
     sendData->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
     recvData->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
@@ -91,8 +96,9 @@ NetworkCommunication::NetworkCommunication(QWidget *parent):QMainWindow(parent)
     Row2->addWidget(tip4);Row2->addWidget(clientPort);
     Row3->addWidget(tip5);Row3->addWidget(serverIP);
     Row4->addWidget(tip6);Row4->addWidget(serverPort);
-    btnRow->addWidget(connectBtn);btnRow->addWidget(disconnectBtn);
-    btnRow->addWidget(sendBtn);btnRow->addWidget(stopBtn);btnRow->addWidget(pingBtn);
+    btnRow->addWidget(connectBtn);btnRow->addWidget(disconnectBtn);btnRow->addWidget(cleanBtn);
+    btnRow->addWidget(sendBtn);btnRow->addWidget(stopBtn);btnRow->addWidget(exeBtn);
+
 
     TopCol1->addWidget(tip1);TopCol1->addLayout(Row1);TopCol1->addLayout(Row2);
     TopCol2->addWidget(tip2);TopCol2->addLayout(Row3);TopCol2->addLayout(Row4);
@@ -110,7 +116,9 @@ NetworkCommunication::NetworkCommunication(QWidget *parent):QMainWindow(parent)
     setCentralWidget(central);
 
     connect(start,&QAction::triggered,this,&NetworkCommunication::createServer);
-    connect(pingBtn,&QPushButton::clicked,this,&NetworkCommunication::pingServer);
+    connect(getSysInfo,&QAction::triggered,this,&NetworkCommunication::sysInfo);
+    connect(exeBtn,&QPushButton::clicked,this,&NetworkCommunication::exeInstruction);
+    connect(cleanBtn,&QPushButton::clicked,this,&NetworkCommunication::clearHistory);
     connect(sendBtn,&QPushButton::clicked,this,&NetworkCommunication::send);
     connect(connectBtn,&QPushButton::clicked,this,&NetworkCommunication::connected);
     connect(disconnectBtn,&QPushButton::clicked,this,&NetworkCommunication::disconnected);
@@ -221,20 +229,40 @@ void NetworkCommunication::disconnected()
 }
 
 
-void NetworkCommunication::pingServer()
+void NetworkCommunication::exeInstruction()
 {
+    info.clear();
     QProcess process;
-    QString command = "ping";
-    QStringList arguments;
-    info="<"+formatted+">Ping命令 \r";
-    arguments << serverIP->currentText();
-    process.start(command,arguments);
-    if(process.waitForFinished(-1)){
-        QMessageBox::information(this,tr("提示"),tr("进程已完成"));
-        info+="<"+formatted+">目的主机:"+serverIP->currentText();
-        recvData->setText(QString::fromLocal8Bit(process.readAllStandardOutput()));
+    QString currentCommand = serverIP->currentText();
+    QString preIns = clientIP->currentText();
+    if((currentCommand.contains(".com")&&preIns.contains("127.0.0.1")) || QHostAddress(currentCommand).toIPv4Address() != 0){
+        QString command = "ping";
+        QStringList arguments;
+        arguments << currentCommand;
+        info="<"+formatted+">执行指令:ping "+currentCommand+"\r";
+        process.start(command, arguments);
+    }else if(preIns.contains("tracert")){
+        QString command = "tracert";
+        QStringList arguments;
+        arguments << currentCommand;
+        info="<"+formatted+">执行指令:tracert "+currentCommand+"\r";
+        process.start(command, arguments);
     }
-    curStatus->setText(info);
+    else{
+        info="<"+formatted+">执行指令:"+currentCommand+"\r";
+        process.start(currentCommand);
+    }
+    if(process.waitForFinished(20000)){
+        QMessageBox::information(this,tr("提示"),tr("进程已完成"));
+        QString returninfo=QString::fromLocal8Bit(process.readAllStandardOutput());
+        recvData->setText(returninfo);
+        curStatus->setText(info);
+    }else{
+        info+="<"+formatted+">指令执行超时！";
+        curStatus->setText(info);
+    }
+    log();
+    process.close();
 }
 
 //not work
@@ -249,6 +277,31 @@ void NetworkCommunication::keyPressEvent(QKeyEvent *event)
     }else{
         return;
     }
+}
+
+void NetworkCommunication::sysInfo()
+{
+    QProcess process;
+    QString command = "systeminfo";
+    info="<"+formatted+">systeminfo \r";
+    process.start(command);
+    if(process.waitForFinished(-1)){
+        QMessageBox::information(this,tr("提示"),tr("进程已完成"));
+        QString sysinfo=QString::fromLocal8Bit(process.readAllStandardOutput());
+        info+="\r <"+formatted+">系统信息:"+sysinfo;
+        recvData->setText(sysinfo);
+    }
+    curStatus->setText(info);
+}
+
+void NetworkCommunication::clearHistory()
+{
+    info.clear();
+    sendData->clear();
+    recvData->clear();
+    serverIP->clear();
+    clientIP->clear();
+    curStatus->clear();
 }
 
 void NetworkCommunication::stopped()

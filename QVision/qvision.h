@@ -24,7 +24,6 @@ public:
     // void dropEvent(QDropEvent *event);
     // void dragEnterEvent(QDragEnterEvent *event);
     ~QVision();
-    static QVision & ins(){static QVision qv;return qv;}
 public:
     void Show();
     bool IsImgOpen();
