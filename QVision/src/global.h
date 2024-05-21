@@ -14,8 +14,8 @@
 #include <core.hpp>
 #include <QSpinBox>
 #include <QToolBox>
+#include <QLibrary>
 #include <QLineEdit>
-#include <baseapi.h>
 #include <QTextEdit>
 #include <QComboBox>
 #include <QSqlError>
@@ -37,7 +37,6 @@
 #include <QPainterPath>
 #include <QInputDialog>
 #include <QAudioDevice>
-#include <allheaders.h>
 #include <QHostAddress>
 #include <QProgressBar>
 #include <QSqlDatabase>
@@ -66,6 +65,8 @@
 // #include "include/dlib/image_processing.h"
 // #include "include/dlib/image_processing/frontal_face_detector.h"
 
+#include <baseapi.h>
+#include <allheaders.h>
 
 using namespace cv;
 using namespace std;

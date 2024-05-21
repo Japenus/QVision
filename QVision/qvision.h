@@ -59,13 +59,14 @@ private:
     QPushButton *deviceInfo;
     QPushButton *remoteSignIn;
 
-    QPushButton *bubbleS;
     QPushButton *heapS;
     QPushButton *quickS;
-    QPushButton *selectS;
     QPushButton *mergeS;
-    QPushButton *insertS;
     QPushButton *shellS;
+    QPushButton *bubbleS;
+    QPushButton *selectS;
+    QPushButton *insertS;
+    QPushButton *testdll;
 
 private slots:
     void Add();
@@ -127,6 +128,7 @@ private slots:
     void RemotelogIn();
     void ScanNearWifi();
 
+    void dlldemo();
     void heapSort();
     void shellSort();
     void quickSort();

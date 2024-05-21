@@ -1454,6 +1454,7 @@ void QVision::showSider()
     selectS = new QPushButton("选择排序", drawer2);
     quickS = new QPushButton("快速排序", drawer2);
     mergeS = new QPushButton("归并排序", drawer2);
+    testdll = new QPushButton("dll", drawer2);
 
 
     row1->addWidget(scanwifi);
@@ -1474,6 +1475,7 @@ void QVision::showSider()
     drawer2Layout->addWidget(selectS);
     drawer2Layout->addWidget(quickS);
     drawer2Layout->addWidget(mergeS);
+    drawer2Layout->addWidget(testdll);
 
     siderBar.addItem(drawer1, "Drawer1");
     siderBar.addItem(drawer2, "Drawer2");
@@ -1490,6 +1492,7 @@ void QVision::showSider()
     connect(shellS, &QPushButton::clicked, this, &QVision::shellSort);
     connect(quickS, &QPushButton::clicked, this, &QVision::quickSort);
     connect(mergeS, &QPushButton::clicked, this, &QVision::mergeSort);
+    connect(testdll, &QPushButton::clicked, this, &QVision::dlldemo);
     connect(bubbleS, &QPushButton::clicked, this, &QVision::bubbleSort);
     connect(insertS, &QPushButton::clicked, this, &QVision::insertSort);
     connect(selectS, &QPushButton::clicked, this, &QVision::selectSort);
@@ -1499,6 +1502,22 @@ void QVision::showSider()
     siderBar.show();
 }
 
+void QVision::dlldemo()
+{
+    // QLibrary myLib("myDll.dll");
+    // if (myLib.load()) {
+    //     QStringList symbols = myLib.publicSymbols();
+
+    //     qDebug() << "Functions available in DLL:";
+    //     foreach (const QString &symbol, symbols) {
+    //         qDebug() << symbol;
+    //     }
+
+    //     myLib.unload();
+    // } else {
+    //     qDebug() << "Failed to load DLL";
+    // }
+}
 
 void QVision::heapSort()
 {
