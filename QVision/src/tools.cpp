@@ -113,12 +113,16 @@ Mat Tools::EdgeCanny(Mat src)
     Canny(gray, res, 150, 100);
     return res;
 }
+
 Mat Tools::EdgeCanny(Mat src,int low,int high)
 {
     Mat res,gray=process.GrayTransform(src);
     Canny(gray,res,low,high);
     return res;
 }
+
+
+
 Mat Tools::Edgescharr(Mat src)
 {
     Mat res;
@@ -355,6 +359,39 @@ static void func(int e,int x,int y,int flags, void* userdata)
             waitKey(0);
         }
     }
+}
+
+static void mouseErase(int e,int x,int y,int f,void *data)
+{
+    Mat* im=(Mat*)data;
+    DataStruct* dts=static_cast<DataStruct*>(data);
+    Point pt(x,y);
+    if(e==EVENT_LBUTTONUP||!(f&EVENT_FLAG_LBUTTON)) temp1=Point(-1,-1);
+    else if(e==EVENT_LBUTTONDOWN) temp1=Point(x,y);
+    else if(e==EVENT_MOUSEMOVE&&(f&EVENT_FLAG_LBUTTON)){
+        if(temp1.x<0) temp1=pt;
+        line(*im,temp1,pt,dts->color,dts->size,LINE_AA,0);
+        temp1=pt;
+        imshow("Erase",*im);
+    }
+    if(e==EVENT_RBUTTONUP){
+        imwrite("Erased.png",*im);
+        QMessageBox::information(nullptr,"提示",QString("擦除区域已保存"));
+    }
+}
+
+
+Mat Tools::EraseArea(Mat src,Scalar c,int s)
+{
+    DataStruct ds;
+    ds.img=src;
+    ds.color=c;
+    ds.size=s;
+    namedWindow("Erase",0);
+    setMouseCallback("Erase",mouseErase,&ds);
+    imshow("Erase",src);
+    waitKey(0);
+    return src;
 }
 
 void Tools::MakeBig(Mat src)
@@ -628,17 +665,18 @@ QString Tools::CharRecognize(const QString &imgPath)
 
 QString Tools::CharRecognize(Mat img)
 {
-    Pix *image=FT.Mat2Pix(img);
-    tesseract::TessBaseAPI *api = new tesseract::TessBaseAPI();
-    if (api->Init("./","eng")) return "数据源丢失!";
-    api->SetImage(image);
-    char *outText = api->GetUTF8Text();
-    QString result(outText);
-    api->End();
-    delete api;
-    delete [] outText;
-    pixDestroy(&image);
-    return result;
+    // Pix *image=FT.Mat2Pix(img);
+    // tesseract::TessBaseAPI *api = new tesseract::TessBaseAPI();
+    // if (api->Init("./","eng")) return "数据源丢失!";
+    // api->SetImage(image);
+    // char *outText = api->GetUTF8Text();
+    // QString result(outText);
+    // api->End();
+    // delete api;
+    // delete [] outText;
+    // pixDestroy(&image);
+    // return result;
+    return "result";
 }
 
 // operation database

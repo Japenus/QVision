@@ -1,12 +1,11 @@
 #include "qvision.h"
 QVision::QVision(QWidget *parent): QMainWindow(parent)
 {
+    init();
     QIcon icon("Spyder.png");
     QRect DeviceSize=QGuiApplication::screens().at(0)->geometry();
     int w=DeviceSize.width();
     int h=DeviceSize.height();
-
-
     QMenuBar *menubar = new QMenuBar();
     QMenu *tab1 = menubar->addMenu("文件");
     QMenu *tab2 = menubar->addMenu("预处理");
@@ -407,6 +406,20 @@ QVision::QVision(QWidget *parent): QMainWindow(parent)
 
     setWindowIcon(icon);
     setWindowTitle("Image Process System");
+
+
+}
+
+void QVision::init()
+{
+    // DllManager import("Dll1.dll");
+    // currentFunPtr=import.getBubble();
+    // Ptrs = import.getAllFuncPtrs();
+    // for (auto it = Ptrs.constBegin(); it != Ptrs.constEnd(); ++it) {
+    //     QString funame = it.key();
+    //     QFunctionPointer p = it.value();
+    //     qInfo() << "name:" << funame << "pointer:" << p;
+    // }
 }
 
 QVision::~QVision()
@@ -874,7 +887,31 @@ void QVision::WakeUpQQ()
 
 void QVision::Eraser()
 {
-    QMessageBox::information(this,tr("提示"),tr("橡皮擦功能"));
+    bool ok;
+    Mat des;
+    QMessageBox select;
+    select.setText("选择操作对象");
+    QPushButton *srcQBtn = select.addButton(tr("原始图"), QMessageBox::ActionRole);
+    QPushButton *resQBtn = select.addButton(tr("结果图"), QMessageBox::ActionRole);
+    select.exec();
+    Scalar eraseColor=Tools::ins().PickColor();
+    int penSize = QInputDialog::getInt(this, "设置", "画笔尺寸:",40,0,255,10,&ok);
+    if (select.clickedButton() == srcQBtn)
+    {
+        des = Src;
+    }
+    else if (select.clickedButton() == resQBtn)
+    {
+        if(Dst.empty()) return;
+        des = Dst;
+
+    }
+    else
+    {
+        return;
+    }
+    if(ok) Dst=Tools::ins().EraseArea(des,eraseColor,penSize);
+    Show();
 }
 
 //图像运算
@@ -1493,30 +1530,25 @@ void QVision::showSider()
     connect(quickS, &QPushButton::clicked, this, &QVision::quickSort);
     connect(mergeS, &QPushButton::clicked, this, &QVision::mergeSort);
     connect(testdll, &QPushButton::clicked, this, &QVision::dlldemo);
-    connect(bubbleS, &QPushButton::clicked, this, &QVision::bubbleSort);
+    connect(bubbleS, &QPushButton::clicked, this, &QVision::insertSort);/////
     connect(insertS, &QPushButton::clicked, this, &QVision::insertSort);
     connect(selectS, &QPushButton::clicked, this, &QVision::selectSort);
-
-
     siderBar.resize(300, 400);
     siderBar.show();
 }
 
 void QVision::dlldemo()
 {
-    // QLibrary myLib("myDll.dll");
-    // if (myLib.load()) {
-    //     QStringList symbols = myLib.publicSymbols();
-
-    //     qDebug() << "Functions available in DLL:";
-    //     foreach (const QString &symbol, symbols) {
-    //         qDebug() << symbol;
-    //     }
-
-    //     myLib.unload();
-    // } else {
-    //     qDebug() << "Failed to load DLL";
-    // }
+    if(!import.loadLib("Sort.dll")) return;
+    Ptrs = import.getAllFuncPtrs();
+    currentFunPtr=Ptrs["bubbleSort"];
+    if(currentFunPtr){
+        int arr[] = {3, 1, 4, 5, 9, 2, 6};
+        int len = sizeof(arr) / sizeof(arr[0]);
+        funcType bubbleSort=reinterpret_cast<funcType>(currentFunPtr);
+        bubbleSort(arr,len);
+        for(auto a:arr) qInfo()<<a;
+    }
 }
 
 void QVision::heapSort()
@@ -1555,14 +1587,14 @@ void QVision::mergeSort()
     qInfo() << "排序后:" << array;
 }
 
-void QVision::bubbleSort()
-{
-    QVector<int> array;
-    array.append({5,2,6,1,8,9,3,7,4});
-    qInfo() << "原始数组:" << array;
-    Sort::ins().bubblesort(array);
-    qInfo()<<"排序后:"<<array;
-}
+// void QVision::bubbleSort()
+// {
+    // QVector<int> array;
+    // array.append({5,2,6,1,8,9,3,7,4});
+    // qInfo() << "原始数组:" << array;
+    // Sort::ins().bubblesort(array);
+    // qInfo()<<"排序后:"<<array;
+// }
 
 void QVision::insertSort()
 {

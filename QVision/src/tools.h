@@ -32,6 +32,7 @@ public:
     QSqlDatabase SQLite(QString dbfile);
     Mat ThresholdProcess(Mat src,int val);
     Mat PersTransform(Mat src,Mat target);
+    Mat EraseArea(Mat src,Scalar c,int s);
     Mat EdgeCanny(Mat src,int low,int high);
     int Screenshot(Mat src, QString winName);
     QStringList GetTables(QSqlDatabase *qDB);

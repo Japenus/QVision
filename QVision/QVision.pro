@@ -14,7 +14,8 @@ INCLUDEPATH +=$$PWD/src \
 
 
 LIBS +=-L$$PWD/lib -lopencv_world480 -lleptonica-1.84.0
-LIBS +=-L$$PWD/lib -ltesseract53
+LIBS +=-L$$PWD/lib -lSort
+# LIBS +=-L$$PWD/lib -ltesseract53
 
 
 HEADERS += \
@@ -39,6 +40,9 @@ HEADERS += \
     dialog/TemplateMatchDlg.h \
     dialog/StatisticPixelDlg.h \
     dialog/UpgradeTempMatchDlg.h \
+    src/Api.h \
+    src/DllManager.h \
+    src/Sort.h \
     src/Tools.h \
     src/Color.h \
     src/Dialog.h \
@@ -81,6 +85,7 @@ SOURCES += \
     dialog/TemplateMatchDlg.cpp \
     dialog/StatisticPixelDlg.cpp \
     dialog/UpgradeTempMatchDlg.cpp \
+    src/DllManager.cpp \
     src/Tools.cpp \
     src/Database.cpp \
     src/Subpixels.cpp \

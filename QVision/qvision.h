@@ -1,10 +1,12 @@
 #ifndef QVISION_H
 #define QVISION_H
+#include "Api.h"
 #include "tools.h"
 #include "global.h"
 #include "Dialog.h"
 #include "database.h"
 #include "screencut.h"
+#include "DllManager.h"
 #include "multimedia.h"
 #include "Preprocess.h"
 #include "remotelogin.h"
@@ -21,6 +23,7 @@ class QVision : public QMainWindow
 
 public:
     QVision(QWidget *parent = nullptr);
+    void init();
     // void dropEvent(QDropEvent *event);
     // void dragEnterEvent(QDragEnterEvent *event);
     ~QVision();
@@ -34,7 +37,8 @@ public:
     QString getFilepath();
     QString getOutputpath();
     Mat QPixmap2Mat(QPixmap &pix);
-
+    QFunctionPointer currentFunPtr;
+    QHash<QString, QFunctionPointer> Ptrs;
 private:
     bool flag=false;
     QLabel *tip1;
@@ -45,6 +49,7 @@ private:
     Mat Src,Dst,Res;
     QWidget *appFace;
     QToolBox siderBar;
+    DllManager import;
     QPushButton *bigSrc;
     QPushButton *bigRes;
     QPushButton *histRes;
@@ -133,7 +138,7 @@ private slots:
     void shellSort();
     void quickSort();
     void mergeSort();
-    void bubbleSort();
+    // void bubbleSort();
     void insertSort();
     void selectSort();
 

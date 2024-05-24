@@ -66,12 +66,10 @@ void Sort::insertSort(QVector<int> &array)
 {
     int index;
     int current;
-    for(int i=1;i<array.size();i++)
-    {
+    for(int i=1;i<array.size();i++){
         index=i-1;
         current=array[i];
-        while(index>=0 && array[index]>current)
-        {
+        while(array[index]>current){
             array[index+1]=array[index];
             index--;
         }
