@@ -1,6 +1,8 @@
 #include "coordinatesystem.h"
 CoordinateSystem::CoordinateSystem(QWidget *parent) : QMainWindow(parent)
 {
+    QIcon icon("ico.png");
+    setWindowIcon(icon);
     container = new QWidget(this);
     exitSubWin = new QPushButton("关闭");
     reDraw = new QPushButton("重绘");
@@ -10,7 +12,8 @@ CoordinateSystem::CoordinateSystem(QWidget *parent) : QMainWindow(parent)
     QHBoxLayout *MainStruct = new QHBoxLayout();
     QVBoxLayout *all = new QVBoxLayout();
     selectPrecison = new QComboBox();
-    label = new QLabel("精度:");
+    label = new QLabel;
+    label->setText("精度");
     drawShape =new QLabel(this);
     box=new QPixmap(w/3,h/2);
     MainStruct->addWidget(reDraw);
@@ -61,6 +64,7 @@ CoordinateSystem::CoordinateSystem(QWidget *parent) : QMainWindow(parent)
     all->addWidget(drawShape);
     all->addLayout(MainStruct);
 
+    label->setStyleSheet("border: 1px solid red;border-radius:5px;color:black");
     container->setStyleSheet("border: 1px solid red;border-radius:5px;");
     drawShape->setStyleSheet("border: 1px solid blue;border-radius:5px;background-color: rgba(0, 0, 0, 0.4);");
 

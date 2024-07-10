@@ -2,6 +2,8 @@
 
 RenameDlg::RenameDlg(QWidget *parent):QDialog(parent)
 {
+    QIcon icon("ico.png");
+    setWindowIcon(icon);
     tip1=new QLabel("文件夹路径:");
     tip2=new QLabel("输入前缀:");
     tip3=new QLabel("起始编号:");

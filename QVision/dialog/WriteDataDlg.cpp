@@ -2,6 +2,8 @@
 
 WriteDataDlg::WriteDataDlg(QWidget *parent):QDialog(parent)
 {
+    QIcon icon("ico.png");
+    setWindowIcon(icon);
     tip1=new QLabel("文件路径:");
     tip2=new QLabel("写入数量:");
     tip3=new QLabel("写入内容:");

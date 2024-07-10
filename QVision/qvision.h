@@ -15,6 +15,7 @@
 #include "dynamicdetect.h"
 #include "fileOperation.h"
 #include "algorithm/Sort.h"
+#include "MachineLearning.h"
 #include "coordinatesystem.h"
 #include "networkcommunication.h"
 class QVision : public QMainWindow
@@ -168,6 +169,7 @@ private slots:
     void AdaptThreshold();
     void AdjustLightness();
     void StatisticPixels();
+    void MachineLearning();
     void SelfDefineModel();
     void CaptureTriangle();
     void LinearTransform();

@@ -3,7 +3,7 @@ NetworkCommunication::NetworkCommunication(QWidget *parent):QMainWindow(parent)
 {
     tcpServer = new QTcpServer(this);
     Socket = new QTcpSocket();
-    QIcon icon("Spyder.png");
+    QIcon icon("ico.png");
     curTime = QDateTime::currentDateTime();
     formatted = curTime.toString("yyyy-MM-dd hh:mm:ss");
     QMenuBar *menubar = new QMenuBar();

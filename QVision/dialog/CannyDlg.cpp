@@ -2,6 +2,8 @@
 
 CannyDlg::CannyDlg(QWidget *parent):QDialog(parent)
 {
+    QIcon icon("ico.png");
+    setWindowIcon(icon);
     tip1=new QLabel("低阈值:");
     tip2=new QLabel("高阈值:");
 

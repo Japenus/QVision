@@ -2,6 +2,8 @@
 
 TemplateMatchDlg::TemplateMatchDlg(QWidget *parent):QDialog(parent)
 {
+    QIcon icon("ico.png");
+    setWindowIcon(icon);
     matchThresval=new QSpinBox(this);
     tip=new QLabel("模板匹配阈值:");
     okBtn=new QPushButton("Ok",this);

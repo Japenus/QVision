@@ -2,6 +2,8 @@
 
 UpgradeTempMatchDlg::UpgradeTempMatchDlg(QWidget *parent):QDialog(parent)
 {
+    QIcon icon("ico.png");
+    setWindowIcon(icon);
     tip1=new QLabel("图像阈值:");
     tip2=new QLabel("缩放步长:");
     tip3=new QLabel("最小缩放比例:");

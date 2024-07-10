@@ -1,6 +1,8 @@
 #include "CalcuDistDlg.h"
 CalcuDistDlg::CalcuDistDlg(QWidget *parent):QDialog(parent)
 {
+    QIcon icon("ico.png");
+    setWindowIcon(icon);
     tip1=new QLabel("起点:");
     tip2=new QLabel("终点:");
     valX1=new QSpinBox(this);

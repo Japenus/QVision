@@ -2,6 +2,8 @@
 
 AreaFillDlg::AreaFillDlg(QWidget *parent):QDialog(parent)
 {
+    QIcon icon("ico.png");
+    setWindowIcon(icon);
     sizeBox=new QSpinBox(this);
     numBox=new QSpinBox(this);
     tip1=new QLabel("尺寸:");

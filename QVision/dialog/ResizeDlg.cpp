@@ -2,6 +2,8 @@
 
 ResizeDlg::ResizeDlg(QWidget *parent):QDialog(parent)
 {
+    QIcon icon("ico.png");
+    setWindowIcon(icon);
     tip1=new QLabel("指定宽度:");
     tip2=new QLabel("指定高度:");
     widthBox=new QSpinBox(this);

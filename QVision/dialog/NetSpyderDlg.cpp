@@ -1,7 +1,7 @@
 #include "netspyderdlg.h"
 NetSpyderDlg::NetSpyderDlg(QWidget *parent):QDialog(parent)
 {
-    QIcon icon("Spyder.png");
+    QIcon icon("ico.png");
     QRect DeviceSize=QGuiApplication::screens().at(0)->geometry();
     int w=DeviceSize.width();
     int h=DeviceSize.height();

@@ -19,7 +19,6 @@ LIBS +=-L$$PWD/lib -lSort
 
 
 HEADERS += \
-    algorithm/beizercurve.h \
     qvision.h \
     algorithm/Sort.h \
     dialog/GuilDlg.h \
@@ -42,6 +41,7 @@ HEADERS += \
     dialog/UpgradeTempMatchDlg.h \
     src/Api.h \
     src/DllManager.h \
+    src/MachineLearning.h \
     src/Sort.h \
     src/Tools.h \
     src/Color.h \
@@ -64,7 +64,6 @@ HEADERS += \
     src/CoordinateSystem.h
 
 SOURCES += \
-    algorithm/beizercurve.cpp \
     main.cpp \
     qvision.cpp \
     algorithm/Sort.cpp \
@@ -86,6 +85,7 @@ SOURCES += \
     dialog/StatisticPixelDlg.cpp \
     dialog/UpgradeTempMatchDlg.cpp \
     src/DllManager.cpp \
+    src/MachineLearning.cpp \
     src/Tools.cpp \
     src/Database.cpp \
     src/Subpixels.cpp \

@@ -646,38 +646,36 @@ void Tools::MatchImgPath(QRegularExpression re,QString context)
     }
 }
 
-QString Tools::CharRecognize(const QString &imgPath)
-{
-    // Mat charImg=imread(imgPath.toStdString());
-    // Pix *image=FT.Mat2Pix(charImg);
-    // tesseract::TessBaseAPI *api = new tesseract::TessBaseAPI();
-    // if (api->Init("./","eng")) return "数据源丢失!";
-    // api->SetImage(image);
-    // char *outText = api->GetUTF8Text();
-    // QString result(outText);
-    // api->End();
-    // delete api;
-    // delete [] outText;
-    // pixDestroy(&image);
-    // return result;
-    return "result";
-}
+// QString Tools::CharRecognize(const QString &imgPath)
+// {
+//     Mat charImg=imread(imgPath.toStdString());
+//     Pix *image=FormatTransfer::ins().Mat2Pix(charImg);
+//     tesseract::TessBaseAPI *api = new tesseract::TessBaseAPI();
+//     if (api->Init("./","eng")) return "数据源丢失!";
+//     api->SetImage(image);
+//     char *outText = api->GetUTF8Text();
+//     QString result(outText);
+//     api->End();
+//     delete api;
+//     delete [] outText;
+//     pixDestroy(&image);
+//     return result;
+// }
 
-QString Tools::CharRecognize(Mat img)
-{
-    // Pix *image=FT.Mat2Pix(img);
-    // tesseract::TessBaseAPI *api = new tesseract::TessBaseAPI();
-    // if (api->Init("./","eng")) return "数据源丢失!";
-    // api->SetImage(image);
-    // char *outText = api->GetUTF8Text();
-    // QString result(outText);
-    // api->End();
-    // delete api;
-    // delete [] outText;
-    // pixDestroy(&image);
-    // return result;
-    return "result";
-}
+// QString Tools::CharRecognize(Mat img)
+// {
+//     Pix *image=FormatTransfer::ins().Mat2Pix(img);
+//     tesseract::TessBaseAPI *api = new tesseract::TessBaseAPI();
+//     if (api->Init("./","eng")) return "数据源丢失!";
+//     api->SetImage(image);
+//     char *outText = api->GetUTF8Text();
+//     QString result(outText);
+//     api->End();
+//     delete api;
+//     delete [] outText;
+//     pixDestroy(&image);
+//     return result;
+// }
 
 // operation database
 QSqlDatabase Tools::SqlServer()

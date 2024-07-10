@@ -2,6 +2,8 @@
 
 ThresholdDlg::ThresholdDlg(QWidget *parent):QDialog(parent)
 {
+    QIcon icon("ico.png");
+    setWindowIcon(icon);
     tip1=new QLabel("模式:");
     tip2=new QLabel("阈值:");
     thval=new QSpinBox(this);

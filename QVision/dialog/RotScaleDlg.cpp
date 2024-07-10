@@ -2,6 +2,8 @@
 
 RotScaleDlg::RotScaleDlg(QWidget *parent):QDialog(parent)
 {
+    QIcon icon("ico.png");
+    setWindowIcon(icon);
     rotateBox=new QDoubleSpinBox(this);
     scaleBox=new QDoubleSpinBox(this);
     okBtn=new QPushButton("ok",this);

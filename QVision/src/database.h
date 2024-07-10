@@ -22,6 +22,7 @@ private slots:
     void ConnectSQLite();
     void disConnection();
     void curDataTables();
+    void TransDBToText();
     void OpenSQLiteFile();
     void ConnectSQLServer();
 private:

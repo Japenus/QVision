@@ -2,7 +2,7 @@
 QVision::QVision(QWidget *parent): QMainWindow(parent)
 {
     init();
-    QIcon icon("Spyder.png");
+    QIcon icon("ico.png");
     QRect DeviceSize=QGuiApplication::screens().at(0)->geometry();
     int w=DeviceSize.width();
     int h=DeviceSize.height();
@@ -46,7 +46,6 @@ QVision::QVision(QWidget *parent): QMainWindow(parent)
     QAction *LinearT = new QAction("Linear Transform", this);
     QAction *BilateralF = new QAction("Bilateral Filter", this);
 
-
     QAction *Sobel = new QAction("Sobel", this);
     QAction *Canny = new QAction("Canny", this);
     QAction *Eraser = new QAction("Eraser", this);
@@ -66,7 +65,6 @@ QVision::QVision(QWidget *parent): QMainWindow(parent)
     QAction *ThresholdP = new QAction("Threshold Process", this);
     QAction *CalculateD = new QAction("Calculate Distance", this);
     QAction *PerspectiveT = new QAction("Perspective Transform", this);
-
 
     QAction *Surf = new QAction("SURF", this);
     QAction *Fast = new QAction("Fast", this);
@@ -88,7 +86,6 @@ QVision::QVision(QWidget *parent): QMainWindow(parent)
     QAction *UpgradeT = new QAction("Upgrade TempMatch", this);
     QAction *FeaturePM = new QAction("Feature Point Match", this);
 
-
     QAction *AddO = new QAction("Add Operation", this);
     QAction *OpenC = new QAction("Open Calculate", this);
     QAction *CloseC = new QAction("Close Calculate", this);
@@ -99,7 +96,6 @@ QVision::QVision(QWidget *parent): QMainWindow(parent)
     QAction *LaplacianT = new QAction("Laplacian Transform", this);
     QAction *SubtractionO = new QAction("Subtraction Operation", this);
 
-
     QAction *CaptureL = new QAction("Capture Line", this);
     QAction *CaptureC = new QAction("Capture Circle", this);
     QAction *CaptureS = new QAction("Capture Square", this);
@@ -107,6 +103,7 @@ QVision::QVision(QWidget *parent): QMainWindow(parent)
     QAction *TesseractO = new QAction("Tesseract OCR", this);
     QAction *RecognizeF = new QAction("Recognize Face", this);
     QAction *CaptureT = new QAction("Capture Triangle", this);
+    QAction *MachineLearn = new QAction("Machine Learn", this);
     QAction *CustomizeM = new QAction("Customize Model", this);
     QAction *CaptureH = new QAction("Capture HumanEyes", this);
     QAction *CaptureSD = new QAction("Capture SelfDefine", this);
@@ -129,6 +126,95 @@ QVision::QVision(QWidget *parent): QMainWindow(parent)
     QAction *CSDN = new QAction("CSDN", this);
     QAction *Github = new QAction("Github", this);
     QAction *JueJin = new QAction("JueJin", this);
+
+    save->setIcon(QIcon("ico.png"));
+    exitApp->setIcon(QIcon("ico.png"));
+    openFile->setIcon(QIcon("ico.png"));
+    BoxF->setIcon(QIcon("ico.png"));
+    MeanF->setIcon(QIcon("ico.png"));
+    Dilation->setIcon(QIcon("ico.png"));
+    LogT->setIcon(QIcon("ico.png"));
+    GaussF->setIcon(QIcon("ico.png"));
+    GrayT->setIcon(QIcon("ico.png"));
+    MediumF->setIcon(QIcon("ico.png"));
+    GammaT->setIcon(QIcon("ico.png"));
+    LinearT->setIcon(QIcon("ico.png"));
+    BilateralF->setIcon(QIcon("ico.png"));
+    Sobel->setIcon(QIcon("ico.png"));
+    Canny->setIcon(QIcon("ico.png"));
+    Eraser->setIcon(QIcon("ico.png"));
+    Scharr->setIcon(QIcon("ico.png"));
+    AreaF->setIcon(QIcon("ico.png"));
+    AreaC->setIcon(QIcon("ico.png"));
+    PickC->setIcon(QIcon("ico.png"));
+    WakeUpQ->setIcon(QIcon("ico.png"));
+    ScreenC->setIcon(QIcon("ico.png"));
+    FixT->setIcon(QIcon("ico.png"));
+    ShowO->setIcon(QIcon("ico.png"));
+    RegionG->setIcon(QIcon("ico.png"));
+    RotateS->setIcon(QIcon("ico.png"));
+    ImageP->setIcon(QIcon("ico.png"));
+    AdaptT->setIcon(QIcon("ico.png"));
+    StatisticP->setIcon(QIcon("ico.png"));
+    ThresholdP->setIcon(QIcon("ico.png"));
+    CalculateD->setIcon(QIcon("ico.png"));
+    PerspectiveT->setIcon(QIcon("ico.png"));
+    Surf->setIcon(QIcon("ico.png"));
+    Fast->setIcon(QIcon("ico.png"));
+    Guil->setIcon(QIcon("ico.png"));
+    Mser->setIcon(QIcon("ico.png"));
+    Gftt->setIcon(QIcon("ico.png"));
+    Line->setIcon(QIcon("ico.png"));
+    Brisk->setIcon(QIcon("ico.png"));
+    Harris->setIcon(QIcon("ico.png"));
+    Circle->setIcon(QIcon("ico.png"));
+    Ballard->setIcon(QIcon("ico.png"));
+    Ellipse->setIcon(QIcon("ico.png"));
+    FloodF->setIcon(QIcon("ico.png"));
+    Triangle->setIcon(QIcon("ico.png"));
+    ImageE->setIcon(QIcon("ico.png"));
+    Rectangle->setIcon(QIcon("ico.png"));
+    ShiTomasi->setIcon(QIcon("ico.png"));
+    TemplateM->setIcon(QIcon("ico.png"));
+    UpgradeT->setIcon(QIcon("ico.png"));
+    FeaturePM->setIcon(QIcon("ico.png"));
+    AddO->setIcon(QIcon("ico.png"));
+    OpenC->setIcon(QIcon("ico.png"));
+    CloseC->setIcon(QIcon("ico.png"));
+    LinearS->setIcon(QIcon("ico.png"));
+    DivideC->setIcon(QIcon("ico.png"));
+    MultipyC->setIcon(QIcon("ico.png"));
+    FourierT->setIcon(QIcon("ico.png"));
+    LaplacianT->setIcon(QIcon("ico.png"));
+
+    SubtractionO->setIcon(QIcon("ico.png"));
+    CaptureL->setIcon(QIcon("ico.png"));
+    CaptureC->setIcon(QIcon("ico.png"));
+    CaptureS->setIcon(QIcon("ico.png"));
+    CaptureE->setIcon(QIcon("ico.png"));
+    TesseractO->setIcon(QIcon("ico.png"));
+    RecognizeF->setIcon(QIcon("ico.png"));
+
+    CaptureT->setIcon(QIcon("ico.png"));
+    MachineLearn->setIcon(QIcon("ico.png"));
+    CustomizeM->setIcon(QIcon("ico.png"));
+    CaptureH->setIcon(QIcon("ico.png"));
+    CaptureSD->setIcon(QIcon("ico.png"));
+    CaptureCC->setIcon(QIcon("ico.png"));
+    CaptureHH->setIcon(QIcon("ico.png"));
+    RenameF->setIcon(QIcon("ico.png"));
+    ResizeI->setIcon(QIcon("ico.png"));
+
+    WriteT->setIcon(QIcon("ico.png"));
+    OutputI->setIcon(QIcon("ico.png"));
+    OutputF->setIcon(QIcon("ico.png"));
+    TcpIp->setIcon(QIcon("ico.png"));
+    Spyder->setIcon(QIcon("ico.png"));
+    LaunchDB->setIcon(QIcon("ico.png"));
+    VideoP->setIcon(QIcon("ico.png"));
+    JueJin->setIcon(QIcon("ico.png"));
+    Github->setIcon(QIcon("ico.png"));
+    CSDN->setIcon(QIcon("ico.png"));
 
     tab1->addSeparator();
     tab1->addAction(openFile);
@@ -208,6 +294,7 @@ QVision::QVision(QWidget *parent): QMainWindow(parent)
     tab6->addAction(ResizeI);
     tab6->addAction(OutputF);
 
+    tab7->addAction(MachineLearn);
     tab7->addAction(CustomizeM);
     tab7->addAction(RecognizeF);
     tab7->addAction(TesseractO);
@@ -378,6 +465,7 @@ QVision::QVision(QWidget *parent): QMainWindow(parent)
     connect(RecognizeF,&QAction::triggered,this,&QVision::RecongnizeFace);
     connect(CaptureH,&QAction::triggered,this,&QVision::CaptureHumanEyes);
     connect(CaptureCC,&QAction::triggered,this,&QVision::CaptureCharacter);
+    connect(MachineLearn,&QAction::triggered,this,&QVision::MachineLearning);
     connect(CustomizeM,&QAction::triggered,this,&QVision::SelfDefineModel);
     connect(CaptureHH,&QAction::triggered,this,&QVision::CaptureHumanFace);
     connect(CaptureSD,&QAction::triggered,this,&QVision::CaptureArbitaryShape);
@@ -406,8 +494,6 @@ QVision::QVision(QWidget *parent): QMainWindow(parent)
 
     setWindowIcon(icon);
     setWindowTitle("Image Process System");
-
-
 }
 
 void QVision::init()
@@ -1179,7 +1265,7 @@ void QVision::Guil()
         qInfo()<<"maxscale"<<maxscale;
         qInfo()<<"scalestep"<<scalestep;
         GuilDlg::ins().setValue(mindist,level,dp,xi,buffersize,cannylow,cannyhigh,minangle,maxangle,anglestep,anglethreshold,
-                    minscale,maxscale,angleplise,scalestep,scalethreshold,posthreshold);
+                                minscale,maxscale,angleplise,scalestep,scalethreshold,posthreshold);
         GuilDlg::ins().mindist=mindist;
         GuilDlg::ins().level=level;
         GuilDlg::ins().dp=dp;
@@ -1200,7 +1286,7 @@ void QVision::Guil()
         try
         {
             Dst=ImgAlgorithm::ins().HoughGuil(src,temp,mindist,level,dp,xi,buffersize,cannylow,cannyhigh,minangle,maxangle,anglestep,
-                               anglethreshold,minscale,maxscale,angleplise,scalestep,scalethreshold,posthreshold);
+                                                anglethreshold,minscale,maxscale,angleplise,scalestep,scalethreshold,posthreshold);
         }
         catch(const exception& e)
         {
@@ -1263,6 +1349,11 @@ void QVision::GFTT()
 
 
 //模型、检测
+void QVision::MachineLearning()
+{
+    MachineLearning::ins().show();
+}
+
 void QVision::SelfDefineModel()
 {
     if(!IsImgOpen()) return;
@@ -1346,7 +1437,7 @@ void QVision::RenameFile()
         RenameDlg::ins().dir=dir;
         RenameDlg::ins().exten=exten;
         RenameDlg::ins().prefix=prefix;
-        int renamed=fileOperation::ins().RenameFile(dir,prefix,num,exten);
+        int renamed=FileOperation::ins().RenameFile(dir,prefix,num,exten);
         QMessageBox::information(this,tr("提示"),tr("已重命名文件数:%1").arg(renamed));
     }
 }
@@ -1367,7 +1458,7 @@ void QVision::WriteToData()
         WriteDataDlg::ins().dir=dir;
         WriteDataDlg::ins().context=context;
         WriteDataDlg::ins().other=other;
-        fileOperation::ins().WriteToFile(dir,context,other,Num,Incre);
+        FileOperation::ins().WriteToFile(dir,context,other,Num,Incre);
         QMessageBox::information(this,tr("提示"),tr("内容已写入"));
     }
 }
@@ -1377,7 +1468,10 @@ void QVision::OutputImgData()
 {
     QString dir=getFolder();
     QString savepath=getOutputpath();
-    fileOperation::ins().GetImgData(dir,savepath);
+    if(dir.isEmpty()||savepath.isEmpty()){
+        QMessageBox::warning(this,"警告","未选择导出目录!");
+        return;}
+    FileOperation::ins().GetImgData(dir,savepath);
 }
 
 
@@ -1385,18 +1479,18 @@ void QVision::ResizeImgSize()
 {
     QString sourceDir = getFolder();
     QString outputDir = getFolder();
-    if(outputDir!=""){
-        if(ResizeDlg::ins().exec()== QDialog::Accepted){
-            int W=ResizeDlg::ins().getValue(1);
-            int H=ResizeDlg::ins().getValue(2);
-            ResizeDlg::ins().setValue(W,H);
-            ResizeDlg::ins().w=W;
-            ResizeDlg::ins().h=H;
-            fileOperation::ins().ResizeImg(sourceDir,outputDir,W, H);
-            QMessageBox::information(this,tr("提示"),tr("数据已写入!"));
-        }
-    }else{
+    if(sourceDir.isEmpty()||outputDir.isEmpty()){
+        QMessageBox::warning(this,"警告","未选择导出目录!");
         return;
+    }
+    if(ResizeDlg::ins().exec()== QDialog::Accepted){
+        int W=ResizeDlg::ins().getValue(1);
+        int H=ResizeDlg::ins().getValue(2);
+        ResizeDlg::ins().setValue(W,H);
+        ResizeDlg::ins().w=W;
+        ResizeDlg::ins().h=H;
+        FileOperation::ins().ResizeImg(sourceDir,outputDir,W, H);
+        QMessageBox::information(this,tr("提示"),tr("数据已写入!"));
     }
 }
 
@@ -1405,7 +1499,11 @@ void QVision::OutputFileInfo()
 {
     QString dir=getFolder();
     QString savepath=getOutputpath();
-    if(!dir.isNull()&&!savepath.isNull()) fileOperation::ins().ExportFiles(dir,savepath);
+    if(dir.isEmpty()||savepath.isEmpty()){
+        QMessageBox::warning(this,"警告","未选择导出目录!");
+        return;
+    }
+    FileOperation::ins().ExportFiles(dir,savepath);
 }
 
 
@@ -1483,6 +1581,7 @@ void QVision::showSider()
     deviceInfo = new QPushButton("设备信息", drawer1);
     remoteSignIn = new QPushButton("远程登录", drawer1);
     showCoord = new QPushButton("坐标系", drawer1);
+    searchIp->setIcon(QIcon("ico.png"));
 
     heapS = new QPushButton("堆排序", drawer2);
     shellS = new QPushButton("希尔排序", drawer2);
@@ -1589,11 +1688,11 @@ void QVision::mergeSort()
 
 // void QVision::bubbleSort()
 // {
-    // QVector<int> array;
-    // array.append({5,2,6,1,8,9,3,7,4});
-    // qInfo() << "原始数组:" << array;
-    // Sort::ins().bubblesort(array);
-    // qInfo()<<"排序后:"<<array;
+// QVector<int> array;
+// array.append({5,2,6,1,8,9,3,7,4});
+// qInfo() << "原始数组:" << array;
+// Sort::ins().bubblesort(array);
+// qInfo()<<"排序后:"<<array;
 // }
 
 void QVision::insertSort()

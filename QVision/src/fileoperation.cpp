@@ -1,8 +1,8 @@
 #include <fstream>
 #include <filesystem>
-#include "fileOperation.h"
+#include "FileOperation.h"
 namespace fs=filesystem;
-int fileOperation::RenameFile(QString path,QString prefix,int& increment,QString exten)
+int FileOperation::RenameFile(QString path,QString prefix,int& increment,QString exten)
 {
     int num = increment;
     vector<fs::path> waitRename;
@@ -32,7 +32,7 @@ int fileOperation::RenameFile(QString path,QString prefix,int& increment,QString
     int renamed = num - increment;
     return renamed;
 }
-int fileOperation::WriteToFile(QString filePath, QString context, QString other, int wNum,int incre)
+int FileOperation::WriteToFile(QString filePath, QString context, QString other, int wNum,int incre)
 {
     ofstream ofs;
     ofs.open(filePath.toStdString(),ios::app);
@@ -48,7 +48,7 @@ int fileOperation::WriteToFile(QString filePath, QString context, QString other,
     }
     return 0;
 }
-void fileOperation::GetImgData(const QString& folderPath, const QString& outputFile)
+void FileOperation::GetImgData(const QString& folderPath, const QString& outputFile)
 {
     ofstream ofs(outputFile.toStdString());
     for (const auto& entry : filesystem::directory_iterator(folderPath.toStdString()))
@@ -64,7 +64,7 @@ void fileOperation::GetImgData(const QString& folderPath, const QString& outputF
     }
     ofs.close();
 }
-void fileOperation::ResizeImg(QString imgfolder, QString outputRes, int weight, int height)
+void FileOperation::ResizeImg(QString imgfolder, QString outputRes, int weight, int height)
 {
     for (const auto& entry : fs::directory_iterator (imgfolder.toStdString()))
     {
@@ -82,7 +82,7 @@ void fileOperation::ResizeImg(QString imgfolder, QString outputRes, int weight, 
         }
     }
 }
-int fileOperation::ExportFiles(QString filefolder, QString outpuText)
+int FileOperation::ExportFiles(QString filefolder, QString outpuText)
 {
     int fileCount = 0;
     filesystem::path folderPath(filefolder.toStdString());

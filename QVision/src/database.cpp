@@ -1,16 +1,18 @@
 #include "database.h"
 DataBase::DataBase(QWidget *parent):QMainWindow(parent)
 {
-    QIcon icon("Spyder.png");
+    QIcon icon("ico.png");
     QMenuBar *menubar = new QMenuBar();
-    QMenu *menulist0 = menubar->addMenu("Open");
+    QMenu *menulist0 = menubar->addMenu("File");
     QMenu *menulist = menubar->addMenu("Connection");
     QAction *connSqlServer = new QAction("SQL Server", this);
     QAction *SQLiteFile = new QAction("SQLite File", this);
+    QAction *TransferToTxt = new QAction("Transfer", this);
     QAction *connMySql = new QAction("MySQL", this);
     QAction *connSQLite = new QAction("SQLite", this);
     menulist0->addSeparator();
     menulist0->addAction(SQLiteFile);
+    menulist0->addAction(TransferToTxt);
 
     menulist->addSeparator();
     menulist->addAction(connSqlServer);
@@ -110,6 +112,7 @@ DataBase::DataBase(QWidget *parent):QMainWindow(parent)
     connect(connMySql,&QAction::triggered,this,&DataBase::ConnectMySQL);
     connect(connSQLite,&QAction::triggered,this,&DataBase::ConnectSQLite);
     connect(connSqlServer,&QAction::triggered,this,&DataBase::ConnectSQLServer);
+    connect(TransferToTxt,&QAction::triggered,this,&DataBase::TransDBToText);
     connect(SQLiteFile,&QAction::triggered,this,&DataBase::OpenSQLiteFile);
     connect(databaseLists, &QPushButton::clicked, this, &DataBase::curDatabases);
     connect(datatableLists, &QPushButton::clicked, this, &DataBase::curDataTables);
@@ -128,6 +131,36 @@ DataBase::DataBase(QWidget *parent):QMainWindow(parent)
     setWindowTitle("DataBase Management");
 }
 
+
+void DataBase::TransDBToText()
+{
+    dbPath=QFileDialog::getOpenFileName(nullptr,tr("选择数据库文件"),".db",tr("DataBase (*.db *.sqlite3)"));
+    QSqlDatabase db=QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName(dbPath);
+    if(!dbPath.isEmpty() && db.open()){
+        QString sql="select * from "+QString(db.tables().first());
+        QSqlQuery que(sql);
+        QFile f("Transferred.txt");
+        if(!f.open(QIODevice::WriteOnly|QIODevice::Text)){
+            QMessageBox::warning(nullptr,"警告","写入文件失败!");
+            return;
+        }
+        QTextStream out(&f);
+        while(que.next()){
+            QString data;
+            for(int i=0;i<que.record().count();i++){
+                data+=que.value(i).toString()+"\t";
+            }
+            out<<data.trimmed()<<"\t";
+        }
+        f.close();
+        db.close();
+        QMessageBox::information(nullptr,"Tip","转换完成!");
+    }else{
+        QMessageBox::warning(nullptr,"警告","转换失败!");
+        return;
+    }
+}
 
 void DataBase::OpenSQLiteFile()
 {

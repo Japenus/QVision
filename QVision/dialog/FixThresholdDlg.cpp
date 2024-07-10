@@ -2,7 +2,8 @@
 
 FixThresholdDlg::FixThresholdDlg(QWidget *parent):QDialog(parent)
 {
-
+    QIcon icon("ico.png");
+    setWindowIcon(icon);
     tip=new QLabel("固定阈值:");
     spinBox=new QSpinBox(this);
     okBtn=new QPushButton("ok",this);

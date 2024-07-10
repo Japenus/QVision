@@ -1,6 +1,8 @@
 #include "multimedia.h"
 MultiMedia::MultiMedia(QWidget *parent):QWidget(parent)
 {
+    QIcon icon("ico.png");
+    setWindowIcon(icon);
     Row1 = new QHBoxLayout;
     Row2 = new QHBoxLayout;
     Row3 = new QHBoxLayout;

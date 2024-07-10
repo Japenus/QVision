@@ -1,6 +1,8 @@
 #include "BallardDlg.h"
 BallardDlg::BallardDlg(QWidget *parent):QDialog(parent)
 {
+    QIcon icon("ico.png");
+    setWindowIcon(icon);
     minDistBox=new QSpinBox(this);
     levelBox=new QSpinBox(this);
     dpBox=new QSpinBox(this);

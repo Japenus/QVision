@@ -1,7 +1,7 @@
 #include "remotelogin.h"
 RemoteLogin::RemoteLogin(QWidget *parent):QMainWindow(parent)
 {
-    QIcon icon("Spyder.png");
+    QIcon icon("ico.png");
     QMenuBar *menubar = new QMenuBar();
     QMenu *list = menubar->addMenu("Tool");
     QAction *createConn = new QAction("Create", this);

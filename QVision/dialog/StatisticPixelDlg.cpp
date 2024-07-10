@@ -2,6 +2,8 @@
 
 StatisticPixelDlg::StatisticPixelDlg(QWidget *parent):QDialog(parent)
 {
+    QIcon icon("ico.png");
+    setWindowIcon(icon);
     tip=new QLabel("像素值:");
     pixel=new QSpinBox(this);
     okBtn=new QPushButton("Ok",this);

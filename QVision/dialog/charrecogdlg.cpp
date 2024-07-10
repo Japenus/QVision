@@ -2,6 +2,8 @@
 
 CharRecogDlg::CharRecogDlg(QWidget *parent):QDialog(parent)
 {
+    QIcon icon("ico.png");
+    setWindowIcon(icon);
     tip1=new QLabel("图片");
     tip2=new QLabel("结果");
 
@@ -97,8 +99,9 @@ void CharRecogDlg::MakeBig()
 
 void CharRecogDlg::Recognize()
 {
-    QString ouTxt = Tools::ins().CharRecognize(picPath);
-    ShowResult->setText(ouTxt);
+    // QString ouTxt = Tools::ins().CharRecognize(picPath);
+    // ShowResult->setText(ouTxt);
+    qInfo()<<"库文件出错";
 }
 
 void CharRecogDlg::Clean()

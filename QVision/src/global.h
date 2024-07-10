@@ -68,12 +68,12 @@
 // #include "include/dlib/image_processing.h"
 // #include "include/dlib/image_processing/frontal_face_detector.h"
 
-// #include <baseapi.h>
-// #include <allheaders.h>
+#include <baseapi.h>
+#include <allheaders.h>
 
 using namespace cv;
 using namespace std;
-// using namespace tesseract;
+using namespace tesseract;
 enum {
     MINDIST,
     LEVEL,

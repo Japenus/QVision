@@ -10,7 +10,6 @@ class Tools:public QObject
 public:
     static Tools& ins(){static Tools t;return t;}
 public:
-    FormatTransfer FT;
     Preprocess process;
     Scalar PickColor();
     QSqlDatabase MySql();
@@ -24,7 +23,7 @@ public:
     Mat Edgescharr(Mat src);
     QSqlDatabase SqlServer();
     Mat ShowHistogram(Mat src);
-    QString CharRecognize(Mat img);
+    // QString CharRecognize(Mat img);
     QString NetSpyder(QString &url);
     Mat ShowOutline(Mat src,int val);
     Mat FixThreshold(Mat img, int val);
@@ -37,7 +36,7 @@ public:
     int Screenshot(Mat src, QString winName);
     QStringList GetTables(QSqlDatabase *qDB);
     QStringList GetDataBases(QSqlDatabase *qDB);
-    QString CharRecognize(const QString &imgPath);
+    // QString CharRecognize(const QString &imgPath);
     Mat ThresholdProcess(Mat src,int val,int type);
     double CalcDist(int X1, int Y1, int x2, int Y2);
     Mat RotateScale(Mat src, double angle, double scale);
