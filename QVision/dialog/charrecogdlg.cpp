@@ -99,9 +99,7 @@ void CharRecogDlg::MakeBig()
 
 void CharRecogDlg::Recognize()
 {
-    // QString ouTxt = Tools::ins().CharRecognize(picPath);
-    // ShowResult->setText(ouTxt);
-    qInfo()<<"库文件出错";
+    ShowResult->setText(Tools::ins().CharRecognize(picPath));
 }
 
 void CharRecogDlg::Clean()

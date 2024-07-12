@@ -2,7 +2,7 @@
 QVision::QVision(QWidget *parent): QMainWindow(parent)
 {
     init();
-    QIcon icon("ico.png");
+    QIcon icon(iconSrc);
     QRect DeviceSize=QGuiApplication::screens().at(0)->geometry();
     int w=DeviceSize.width();
     int h=DeviceSize.height();
@@ -30,293 +30,206 @@ QVision::QVision(QWidget *parent): QMainWindow(parent)
     QMenu *tab7_1 = tab7->addMenu("Dynamic Capture");
 
 
-    QAction *save = new QAction("Save", this);
-    QAction *exitApp = new QAction("Exit", this);
-    QAction *openFile = new QAction("Open", this);
+    open = new QAction("Open", this);
+    save = new QAction("Save", this);
+    exit = new QAction("Exit", this);
 
-    QAction *Erosion = new QAction("Erosion", this);
-    QAction *BoxF = new QAction("Box Filter", this);
-    QAction *MeanF = new QAction("Mean Filter", this);
-    QAction *Dilation = new QAction("Dilation", this);
-    QAction *LogT = new QAction("Log Transform", this);
-    QAction *GaussF = new QAction("Gauss Filter", this);
-    QAction *GrayT = new QAction("Gray Transform", this);
-    QAction *MediumF = new QAction("Medium Filter", this);
-    QAction *GammaT = new QAction("Gamma Transform", this);
-    QAction *LinearT = new QAction("Linear Transform", this);
-    QAction *BilateralF = new QAction("Bilateral Filter", this);
+    erose = new QAction("Erosion", this);
+    boxFilt = new QAction("Box Filter", this);
+    meanFilt = new QAction("Mean Filter", this);
+    dilate = new QAction("Dilation", this);
+    logTrans = new QAction("Log Transform", this);
+    gaussFilt = new QAction("Gauss Filter", this);
+    grayTrans = new QAction("Gray Transform", this);
+    mediumFilt = new QAction("Medium Filter", this);
+    gammaTrans = new QAction("Gamma Transform", this);
+    linearTrans = new QAction("Linear Transform", this);
+    bilateralFilt = new QAction("Bilateral Filter", this);
 
-    QAction *Sobel = new QAction("Sobel", this);
-    QAction *Canny = new QAction("Canny", this);
-    QAction *Eraser = new QAction("Eraser", this);
-    QAction *Scharr = new QAction("Scharr", this);
-    QAction *AreaF = new QAction("Area Fill", this);
-    QAction *AreaC = new QAction("Area Cover", this);
-    QAction *PickC = new QAction("Pick Color", this);
-    QAction *WakeUpQ = new QAction("WakeUp QQ", this);
-    QAction *ScreenC = new QAction("Screen Cut", this);
-    QAction *FixT = new QAction("Fix Threshold", this);
-    QAction *ShowO = new QAction("Show Outline", this);
-    QAction *RegionG = new QAction("Region Grow", this);
-    QAction *RotateS = new QAction("Rotate Scale", this);
-    QAction *ImageP = new QAction("Image Pyramid", this);
-    QAction *AdaptT = new QAction("Adapt Threshold", this);
-    QAction *StatisticP = new QAction("Statistic Pixels", this);
-    QAction *ThresholdP = new QAction("Threshold Process", this);
-    QAction *CalculateD = new QAction("Calculate Distance", this);
-    QAction *PerspectiveT = new QAction("Perspective Transform", this);
+    sobelEdge = new QAction("Sobel", this);
+    cannyEdge = new QAction("Canny", this);
+    erase = new QAction("Eraser", this);
+    scharrEdge = new QAction("Scharr", this);
+    areaFilled = new QAction("Area Fill", this);
+    areaCovered = new QAction("Area Cover", this);
+    pickupColor = new QAction("Pick Color", this);
+    wakeQQ = new QAction("WakeUp QQ", this);
+    screenShot = new QAction("Screen Cut", this);
+    fixThres = new QAction("Fix Threshold", this);
+    showEdge = new QAction("Show Outline", this);
+    regionGrowing = new QAction("Region Grow", this);
+    rotScale = new QAction("Rotate Scale", this);
+    imgPyramid = new QAction("Image Pyramid", this);
+    adaptThres = new QAction("Adapt Threshold", this);
+    statisticPix = new QAction("Statistic Pixels", this);
+    thresProcess = new QAction("Threshold Process", this);
+    calculateDist = new QAction("Calculate Distance", this);
+    perspectTrans = new QAction("Perspective Transform", this);
 
-    QAction *Surf = new QAction("SURF", this);
-    QAction *Fast = new QAction("Fast", this);
-    QAction *Guil = new QAction("Guil", this);
-    QAction *Mser = new QAction("Mser", this);
-    QAction *Gftt = new QAction("GFTT", this);
-    QAction *Line = new QAction("Line", this);
-    QAction *Brisk = new QAction("Brisk", this);
-    QAction *Harris = new QAction("Harris", this);
-    QAction *Circle = new QAction("Circle", this);
-    QAction *Ballard = new QAction("Ballard", this);
-    QAction *Ellipse = new QAction("Ellipse", this);
-    QAction *FloodF = new QAction("Flood Fill", this);
-    QAction *Triangle = new QAction("Triangle", this);
-    QAction *ImageE = new QAction("Image Equal", this);
-    QAction *Rectangle = new QAction("Rectangle", this);
-    QAction *ShiTomasi = new QAction("Shi Tomasi", this);
-    QAction *TemplateM = new QAction("Template Match", this);
-    QAction *UpgradeT = new QAction("Upgrade TempMatch", this);
-    QAction *FeaturePM = new QAction("Feature Point Match", this);
+    surfFeature = new QAction("SURF", this);
+    fastCornerDetect = new QAction("Fast", this);
+    houghGuil = new QAction("Guil", this);
+    mserCornerDetect = new QAction("Mser", this);
+    gfttCornerDetect = new QAction("GFTT", this);
+    houghLine = new QAction("Line", this);
+    briskCornerDetect = new QAction("Brisk", this);
+    harrisCornerDetect = new QAction("Harris", this);
+    houghCircle = new QAction("Circle", this);
+    houghBallard = new QAction("Ballard", this);
+    houghEllipse = new QAction("Ellipse", this);
+    floodFilled = new QAction("Flood Fill", this);
+    houghTriangle = new QAction("Triangle", this);
+    imgEqual = new QAction("Image Equal", this);
+    houghRectangle = new QAction("Rectangle", this);
+    shiTomasiCornerDetect = new QAction("Shi Tomasi", this);
+    tempMatch = new QAction("Template Match", this);
+    upgradeTMatch = new QAction("Upgrade TempMatch", this);
+    featurePntMatch = new QAction("Feature Point Match", this);
 
-    QAction *AddO = new QAction("Add Operation", this);
-    QAction *OpenC = new QAction("Open Calculate", this);
-    QAction *CloseC = new QAction("Close Calculate", this);
-    QAction *LinearS = new QAction("Linear Stretch", this);
-    QAction *DivideC = new QAction("Divide Calculate", this);
-    QAction *MultipyC = new QAction("Multipy Calculate", this);
-    QAction *FourierT = new QAction("Fourier Transform", this);
-    QAction *LaplacianT = new QAction("Laplacian Transform", this);
-    QAction *SubtractionO = new QAction("Subtraction Operation", this);
+    addOper = new QAction("Add Operation", this);
+    openCal = new QAction("Open Calculate", this);
+    closeCal = new QAction("Close Calculate", this);
+    lineStretch = new QAction("Linear Stretch", this);
+    divideCal = new QAction("Divide Calculate", this);
+    multipyCal = new QAction("Multipy Calculate", this);
+    fourierTrans = new QAction("Fourier Transform", this);
+    laplaceTrans = new QAction("Laplacian Transform", this);
+    subtractOper = new QAction("Subtraction Operation", this);
 
-    QAction *CaptureL = new QAction("Capture Line", this);
-    QAction *CaptureC = new QAction("Capture Circle", this);
-    QAction *CaptureS = new QAction("Capture Square", this);
-    QAction *CaptureE = new QAction("Capture Ellpise", this);
-    QAction *TesseractO = new QAction("Tesseract OCR", this);
-    QAction *RecognizeF = new QAction("Recognize Face", this);
-    QAction *CaptureT = new QAction("Capture Triangle", this);
-    QAction *MachineLearn = new QAction("Machine Learn", this);
-    QAction *CustomizeM = new QAction("Customize Model", this);
-    QAction *CaptureH = new QAction("Capture HumanEyes", this);
-    QAction *CaptureSD = new QAction("Capture SelfDefine", this);
-    QAction *CaptureCC = new QAction("Capture Character", this);
-    QAction *CaptureHH = new QAction("Capture HumanFace", this);
+    capLine = new QAction("Capture Line", this);
+    capCircle = new QAction("Capture Circle", this);
+    capSquare = new QAction("Capture Square", this);
+    capEllipse = new QAction("Capture Ellpise", this);
+    tessOcr = new QAction("Tesseract OCR", this);
+    recogFace = new QAction("Recognize Face", this);
+    capTriangle = new QAction("Capture Triangle", this);
+    machineLearn = new QAction("Machine Learn", this);
+    userModel = new QAction("Customize Model", this);
+    capHumaneye = new QAction("Capture HumanEyes", this);
+    capSelfmodel = new QAction("Capture SelfDefine", this);
+    capChar = new QAction("Capture Character", this);
+    capHumanFace = new QAction("Capture HumanFace", this);
 
 
-    QAction *RenameF = new QAction("Rename Files", this);
-    QAction *ResizeI = new QAction("Resize Images", this);
-    QAction *WriteT = new QAction("Write to Files", this);
-    QAction *OutputI = new QAction("Output ImgData", this);
-    QAction *OutputF = new QAction("Output FileInfo", this);
+    renameFiles = new QAction("Rename Files", this);
+    resizeImg = new QAction("Resize Images", this);
+    writeToFile = new QAction("Write to Files", this);
+    exportImgdata = new QAction("Output ImgData", this);
+    exportFileinfo = new QAction("Output FileInfo", this);
 
-    QAction *TcpIp = new QAction("Tcp/Ip", this);
-    QAction *Spyder = new QAction("Spyder", this);
+    tcpIp = new QAction("Tcp/Ip", this);
+    spyderNet = new QAction("Spyder", this);
 
-    QAction *LaunchDB = new QAction("Launch", this);
-    QAction *VideoP = new QAction("Video Player", this);
+    launchDB = new QAction("Launch", this);
+    videoPage = new QAction("Video Player", this);
 
-    QAction *CSDN = new QAction("CSDN", this);
-    QAction *Github = new QAction("Github", this);
-    QAction *JueJin = new QAction("JueJin", this);
+    contactCSDN = new QAction("CSDN", this);
+    contactGithub = new QAction("Github", this);
+    contactJueJin = new QAction("JueJin", this);
 
-    save->setIcon(QIcon("ico.png"));
-    exitApp->setIcon(QIcon("ico.png"));
-    openFile->setIcon(QIcon("ico.png"));
-    BoxF->setIcon(QIcon("ico.png"));
-    MeanF->setIcon(QIcon("ico.png"));
-    Dilation->setIcon(QIcon("ico.png"));
-    LogT->setIcon(QIcon("ico.png"));
-    GaussF->setIcon(QIcon("ico.png"));
-    GrayT->setIcon(QIcon("ico.png"));
-    MediumF->setIcon(QIcon("ico.png"));
-    GammaT->setIcon(QIcon("ico.png"));
-    LinearT->setIcon(QIcon("ico.png"));
-    BilateralF->setIcon(QIcon("ico.png"));
-    Sobel->setIcon(QIcon("ico.png"));
-    Canny->setIcon(QIcon("ico.png"));
-    Eraser->setIcon(QIcon("ico.png"));
-    Scharr->setIcon(QIcon("ico.png"));
-    AreaF->setIcon(QIcon("ico.png"));
-    AreaC->setIcon(QIcon("ico.png"));
-    PickC->setIcon(QIcon("ico.png"));
-    WakeUpQ->setIcon(QIcon("ico.png"));
-    ScreenC->setIcon(QIcon("ico.png"));
-    FixT->setIcon(QIcon("ico.png"));
-    ShowO->setIcon(QIcon("ico.png"));
-    RegionG->setIcon(QIcon("ico.png"));
-    RotateS->setIcon(QIcon("ico.png"));
-    ImageP->setIcon(QIcon("ico.png"));
-    AdaptT->setIcon(QIcon("ico.png"));
-    StatisticP->setIcon(QIcon("ico.png"));
-    ThresholdP->setIcon(QIcon("ico.png"));
-    CalculateD->setIcon(QIcon("ico.png"));
-    PerspectiveT->setIcon(QIcon("ico.png"));
-    Surf->setIcon(QIcon("ico.png"));
-    Fast->setIcon(QIcon("ico.png"));
-    Guil->setIcon(QIcon("ico.png"));
-    Mser->setIcon(QIcon("ico.png"));
-    Gftt->setIcon(QIcon("ico.png"));
-    Line->setIcon(QIcon("ico.png"));
-    Brisk->setIcon(QIcon("ico.png"));
-    Harris->setIcon(QIcon("ico.png"));
-    Circle->setIcon(QIcon("ico.png"));
-    Ballard->setIcon(QIcon("ico.png"));
-    Ellipse->setIcon(QIcon("ico.png"));
-    FloodF->setIcon(QIcon("ico.png"));
-    Triangle->setIcon(QIcon("ico.png"));
-    ImageE->setIcon(QIcon("ico.png"));
-    Rectangle->setIcon(QIcon("ico.png"));
-    ShiTomasi->setIcon(QIcon("ico.png"));
-    TemplateM->setIcon(QIcon("ico.png"));
-    UpgradeT->setIcon(QIcon("ico.png"));
-    FeaturePM->setIcon(QIcon("ico.png"));
-    AddO->setIcon(QIcon("ico.png"));
-    OpenC->setIcon(QIcon("ico.png"));
-    CloseC->setIcon(QIcon("ico.png"));
-    LinearS->setIcon(QIcon("ico.png"));
-    DivideC->setIcon(QIcon("ico.png"));
-    MultipyC->setIcon(QIcon("ico.png"));
-    FourierT->setIcon(QIcon("ico.png"));
-    LaplacianT->setIcon(QIcon("ico.png"));
-
-    SubtractionO->setIcon(QIcon("ico.png"));
-    CaptureL->setIcon(QIcon("ico.png"));
-    CaptureC->setIcon(QIcon("ico.png"));
-    CaptureS->setIcon(QIcon("ico.png"));
-    CaptureE->setIcon(QIcon("ico.png"));
-    TesseractO->setIcon(QIcon("ico.png"));
-    RecognizeF->setIcon(QIcon("ico.png"));
-
-    CaptureT->setIcon(QIcon("ico.png"));
-    MachineLearn->setIcon(QIcon("ico.png"));
-    CustomizeM->setIcon(QIcon("ico.png"));
-    CaptureH->setIcon(QIcon("ico.png"));
-    CaptureSD->setIcon(QIcon("ico.png"));
-    CaptureCC->setIcon(QIcon("ico.png"));
-    CaptureHH->setIcon(QIcon("ico.png"));
-    RenameF->setIcon(QIcon("ico.png"));
-    ResizeI->setIcon(QIcon("ico.png"));
-
-    WriteT->setIcon(QIcon("ico.png"));
-    OutputI->setIcon(QIcon("ico.png"));
-    OutputF->setIcon(QIcon("ico.png"));
-    TcpIp->setIcon(QIcon("ico.png"));
-    Spyder->setIcon(QIcon("ico.png"));
-    LaunchDB->setIcon(QIcon("ico.png"));
-    VideoP->setIcon(QIcon("ico.png"));
-    JueJin->setIcon(QIcon("ico.png"));
-    Github->setIcon(QIcon("ico.png"));
-    CSDN->setIcon(QIcon("ico.png"));
 
     tab1->addSeparator();
-    tab1->addAction(openFile);
+    tab1->addAction(open);
     tab1->addAction(save);
-    tab1->addAction(exitApp);
+    tab1->addAction(exit);
 
     tab2->addSeparator();
     tab2->addMenu(tab2_1);
     tab2->addMenu(tab2_2);
     tab2->addMenu(tab2_3);
-    tab2_1->addAction(GrayT);
-    tab2_1->addAction(LogT);
-    tab2_1->addAction(LinearT);
-    tab2_1->addAction(GammaT);
-    tab2_2->addAction(BoxF);
-    tab2_2->addAction(MeanF);
-    tab2_2->addAction(MediumF);
-    tab2_2->addAction(BilateralF);
-    tab2_2->addAction(GaussF);
-    tab2_3->addAction(Dilation);
-    tab2_3->addAction(Erosion);
+    tab2_1->addAction(grayTrans);
+    tab2_1->addAction(logTrans);
+    tab2_1->addAction(linearTrans);
+    tab2_1->addAction(gammaTrans);
+    tab2_2->addAction(boxFilt);
+    tab2_2->addAction(meanFilt);
+    tab2_2->addAction(mediumFilt);
+    tab2_2->addAction(bilateralFilt);
+    tab2_2->addAction(gaussFilt);
+    tab2_3->addAction(dilate);
+    tab2_3->addAction(erose);
 
     tab3->addMenu(tab3_1);
-    tab3_1->addAction(Sobel);
-    tab3_1->addAction(Canny);
-    tab3_1->addAction(Scharr);
-    tab3->addAction(RegionG);
-    tab3->addAction(FixT);
-    tab3->addAction(ShowO);
-    tab3->addAction(ThresholdP);
-    tab3->addAction(AdaptT);
-    tab3->addAction(AreaC);
-    tab3->addAction(AreaF);
-    tab3->addAction(StatisticP);
-    tab3->addAction(PerspectiveT);
-    tab3->addAction(CalculateD);
-    tab3->addAction(RotateS);
-    tab3->addAction(ImageP);
-    tab3->addAction(PickC);
-    tab3->addAction(ScreenC);
-    tab3->addAction(WakeUpQ);
-    tab3->addAction(Eraser);
+    tab3_1->addAction(sobelEdge);
+    tab3_1->addAction(cannyEdge);
+    tab3_1->addAction(scharrEdge);
+    tab3->addAction(regionGrowing);
+    tab3->addAction(fixThres);
+    tab3->addAction(showEdge);
+    tab3->addAction(thresProcess);
+    tab3->addAction(adaptThres);
+    tab3->addAction(areaCovered);
+    tab3->addAction(areaFilled);
+    tab3->addAction(statisticPix);
+    tab3->addAction(perspectTrans);
+    tab3->addAction(calculateDist);
+    tab3->addAction(rotScale);
+    tab3->addAction(imgPyramid);
+    tab3->addAction(pickupColor);
+    tab3->addAction(screenShot);
+    tab3->addAction(wakeQQ);
+    tab3->addAction(erase);
 
-    tab4->addAction(DivideC);
-    tab4->addAction(OpenC);
-    tab4->addAction(CloseC);
-    tab4->addAction(MultipyC);
-    tab4->addAction(LinearS);
-    tab4->addAction(AddO);
-    tab4->addAction(SubtractionO);
-    tab4->addAction(FourierT);
-    tab4->addAction(LaplacianT);
+    tab4->addAction(divideCal);
+    tab4->addAction(openCal);
+    tab4->addAction(closeCal);
+    tab4->addAction(multipyCal);
+    tab4->addAction(lineStretch);
+    tab4->addAction(addOper);
+    tab4->addAction(subtractOper);
+    tab4->addAction(fourierTrans);
+    tab4->addAction(laplaceTrans);
 
-    tab5->addAction(Surf);
-    tab5->addAction(FloodF);
-    tab5->addAction(ImageE);
-    tab5->addAction(TemplateM);
-    tab5->addAction(FeaturePM);
-    tab5->addAction(UpgradeT);
-    tab5_1->addAction(Line);
-    tab5_1->addAction(Circle);
-    tab5_1->addAction(Ellipse);
-    tab5_1->addAction(Triangle);
-    tab5_1->addAction(Rectangle);
-    tab5_1_1->addAction(Guil);
-    tab5_1_1->addAction(Ballard);
-    tab5_2->addAction(ShiTomasi);
-    tab5_2->addAction(Harris);
-    tab5_2->addAction(Fast);
-    tab5_2->addAction(Brisk);
-    tab5_2->addAction(Mser);
-    tab5_2->addAction(Gftt);
+    tab5->addAction(surfFeature);
+    tab5->addAction(floodFilled);
+    tab5->addAction(imgEqual);
+    tab5->addAction(tempMatch);
+    tab5->addAction(featurePntMatch);
+    tab5->addAction(upgradeTMatch);
+    tab5_1->addAction(houghLine);
+    tab5_1->addAction(houghCircle);
+    tab5_1->addAction(houghEllipse);
+    tab5_1->addAction(houghTriangle);
+    tab5_1->addAction(houghRectangle);
+    tab5_1_1->addAction(houghGuil);
+    tab5_1_1->addAction(houghBallard);
+    tab5_2->addAction(shiTomasiCornerDetect);
+    tab5_2->addAction(harrisCornerDetect);
+    tab5_2->addAction(fastCornerDetect);
+    tab5_2->addAction(briskCornerDetect);
+    tab5_2->addAction(mserCornerDetect);
+    tab5_2->addAction(gfttCornerDetect);
 
-    tab6->addAction(RenameF);
-    tab6->addAction(WriteT);
-    tab6->addAction(OutputI);
-    tab6->addAction(ResizeI);
-    tab6->addAction(OutputF);
+    tab6->addAction(renameFiles);
+    tab6->addAction(writeToFile);
+    tab6->addAction(exportImgdata);
+    tab6->addAction(resizeImg);
+    tab6->addAction(exportFileinfo);
 
-    tab7->addAction(MachineLearn);
-    tab7->addAction(CustomizeM);
-    tab7->addAction(RecognizeF);
-    tab7->addAction(TesseractO);
+    tab7->addAction(machineLearn);
+    tab7->addAction(userModel);
+    tab7->addAction(recogFace);
+    tab7->addAction(tessOcr);
     tab7->addMenu(tab7_1);
-    tab7_1->addAction(CaptureL);
-    tab7_1->addAction(CaptureC);
-    tab7_1->addAction(CaptureT);
-    tab7_1->addAction(CaptureE);
-    tab7_1->addAction(CaptureCC);
-    tab7_1->addAction(CaptureSD);
-    tab7_1->addAction(CaptureS);
-    tab7_1->addAction(CaptureH);
-    tab7_1->addAction(CaptureHH);
+    tab7_1->addAction(capLine);
+    tab7_1->addAction(capCircle);
+    tab7_1->addAction(capTriangle);
+    tab7_1->addAction(capEllipse);
+    tab7_1->addAction(capChar);
+    tab7_1->addAction(capSelfmodel);
+    tab7_1->addAction(capSquare);
+    tab7_1->addAction(capHumaneye);
+    tab7_1->addAction(capHumanFace);
 
-    tab8->addAction(Spyder);
-    tab8->addAction(TcpIp);
-    tab9->addAction(VideoP);
-    tab10->addAction(LaunchDB);
-    tab11->addAction(Github);
-    tab11->addAction(CSDN);
-    tab11->addAction(JueJin);
+    tab8->addAction(spyderNet);
+    tab8->addAction(tcpIp);
+    tab9->addAction(videoPage);
+    tab10->addAction(launchDB);
+    tab11->addAction(contactGithub);
+    tab11->addAction(contactCSDN);
+    tab11->addAction(contactJueJin);
 
+    SetIcon();
     setMenuBar(menubar);
 
     srcBox=new QLabel();
@@ -389,99 +302,99 @@ QVision::QVision(QWidget *parent): QMainWindow(parent)
     connect(closeApp,&QPushButton::clicked,this,&QVision::closeQVision);
 
     connect(save,&QAction::triggered,this,&QVision::saveImg);
-    connect(openFile,&QAction::triggered,this,&QVision::openImg);
-    connect(exitApp,&QAction::triggered,this,&QVision::exitQVision);
+    connect(open,&QAction::triggered,this,&QVision::openImg);
+    connect(exit,&QAction::triggered,this,&QVision::exitQVision);
 
 
-    connect(BoxF,&QAction::triggered,this,&QVision::BoxFilter);
-    connect(Erosion,&QAction::triggered,this,&QVision::Erosion);
-    connect(MeanF,&QAction::triggered,this,&QVision::MeanFilter);
-    connect(Dilation,&QAction::triggered,this,&QVision::Dilation);
-    connect(LogT,&QAction::triggered,this,&QVision::LogTransform);
-    connect(GaussF,&QAction::triggered,this,&QVision::GaussFilter);
-    connect(GrayT,&QAction::triggered,this,&QVision::GrayTransform);
-    connect(MediumF,&QAction::triggered,this,&QVision::MediumFilter);
-    connect(GammaT,&QAction::triggered,this,&QVision::GammaTransform);
-    connect(LinearT,&QAction::triggered,this,&QVision::LinearTransform);
-    connect(BilateralF,&QAction::triggered,this,&QVision::BilateralFilter);
+    connect(boxFilt,&QAction::triggered,this,&QVision::BoxFilter);
+    connect(erose,&QAction::triggered,this,&QVision::Erosion);
+    connect(meanFilt,&QAction::triggered,this,&QVision::MeanFilter);
+    connect(dilate,&QAction::triggered,this,&QVision::Dilation);
+    connect(logTrans,&QAction::triggered,this,&QVision::LogTransform);
+    connect(gaussFilt,&QAction::triggered,this,&QVision::GaussFilter);
+    connect(grayTrans,&QAction::triggered,this,&QVision::GrayTransform);
+    connect(mediumFilt,&QAction::triggered,this,&QVision::MediumFilter);
+    connect(gammaTrans,&QAction::triggered,this,&QVision::GammaTransform);
+    connect(linearTrans,&QAction::triggered,this,&QVision::LinearTransform);
+    connect(bilateralFilt,&QAction::triggered,this,&QVision::BilateralFilter);
 
-    connect(Sobel,&QAction::triggered,this,&QVision::Sobel);
-    connect(Canny,&QAction::triggered,this,&QVision::Canny);
-    connect(Eraser,&QAction::triggered,this,&QVision::Eraser);
-    connect(Scharr,&QAction::triggered,this,&QVision::Scharr);
-    connect(AreaF,&QAction::triggered,this,&QVision::AreaFill);
-    connect(AreaC,&QAction::triggered,this,&QVision::AreaCover);
-    connect(PickC,&QAction::triggered,this,&QVision::PickColor);
-    connect(WakeUpQ,&QAction::triggered,this,&QVision::WakeUpQQ);
-    connect(FixT,&QAction::triggered,this,&QVision::FixThreshold);
-    connect(ShowO,&QAction::triggered,this,&QVision::ShowOutline);
-    connect(ImageP,&QAction::triggered,this,&QVision::ImageEqual);
-    connect(RegionG,&QAction::triggered,this,&QVision::RegionGrow);
-    connect(RotateS,&QAction::triggered,this,&QVision::RotateScale);
-    connect(AdaptT,&QAction::triggered,this,&QVision::AdaptThreshold);
-    connect(ScreenC,&QAction::triggered,this,&QVision::CaptureScreen);
-    connect(StatisticP,&QAction::triggered,this,&QVision::StatisticPixels);
-    connect(ThresholdP,&QAction::triggered,this,&QVision::ThresholdProcess);
-    connect(CalculateD,&QAction::triggered,this,&QVision::CalculateDistance);
-    connect(PerspectiveT,&QAction::triggered,this,&QVision::PerspectiveTransform);
+    connect(sobelEdge,&QAction::triggered,this,&QVision::Sobel);
+    connect(cannyEdge,&QAction::triggered,this,&QVision::Canny);
+    connect(erase,&QAction::triggered,this,&QVision::Eraser);
+    connect(scharrEdge,&QAction::triggered,this,&QVision::Scharr);
+    connect(areaFilled,&QAction::triggered,this,&QVision::AreaFill);
+    connect(areaCovered,&QAction::triggered,this,&QVision::AreaCover);
+    connect(pickupColor,&QAction::triggered,this,&QVision::PickColor);
+    connect(wakeQQ,&QAction::triggered,this,&QVision::WakeUpQQ);
+    connect(fixThres,&QAction::triggered,this,&QVision::FixThreshold);
+    connect(showEdge,&QAction::triggered,this,&QVision::ShowOutline);
+    connect(imgPyramid,&QAction::triggered,this,&QVision::ImageEqual);
+    connect(regionGrowing,&QAction::triggered,this,&QVision::RegionGrow);
+    connect(rotScale,&QAction::triggered,this,&QVision::RotateScale);
+    connect(adaptThres,&QAction::triggered,this,&QVision::AdaptThreshold);
+    connect(screenShot,&QAction::triggered,this,&QVision::CaptureScreen);
+    connect(statisticPix,&QAction::triggered,this,&QVision::StatisticPixels);
+    connect(thresProcess,&QAction::triggered,this,&QVision::ThresholdProcess);
+    connect(calculateDist,&QAction::triggered,this,&QVision::CalculateDistance);
+    connect(perspectTrans,&QAction::triggered,this,&QVision::PerspectiveTransform);
 
 
-    connect(Surf,&QAction::triggered,this,&QVision::SURF);
-    connect(Gftt,&QAction::triggered,this,&QVision::GFTT);
-    connect(Guil,&QAction::triggered,this,&QVision::Guil);
-    connect(Line,&QAction::triggered,this,&QVision::Line);
-    connect(Fast,&QAction::triggered,this,&QVision::Fast);
-    connect(Mser,&QAction::triggered,this,&QVision::Mser);
-    connect(Brisk,&QAction::triggered,this,&QVision::Brisk);
-    connect(Circle,&QAction::triggered,this,&QVision::Circle);
-    connect(Harris,&QAction::triggered,this,&QVision::Harris);
-    connect(Ellipse,&QAction::triggered,this,&QVision::Ellipse);
-    connect(Ballard,&QAction::triggered,this,&QVision::Ballard);
-    connect(FloodF,&QAction::triggered,this,&QVision::FloodFill);
-    connect(ImageE,&QAction::triggered,this,&QVision::ImageEqual);
-    connect(Triangle,&QAction::triggered,this,&QVision::Triangle);
-    connect(Rectangle,&QAction::triggered,this,&QVision::Rectangle);
-    connect(ShiTomasi,&QAction::triggered,this,&QVision::ShiTomasi);
-    connect(TemplateM,&QAction::triggered,this,&QVision::TemplateMatch);
-    connect(UpgradeT,&QAction::triggered,this,&QVision::UpgradeTempMatch);
-    connect(FeaturePM,&QAction::triggered,this,&QVision::FeaturePointMatch);
+    connect(surfFeature,&QAction::triggered,this,&QVision::SURF);
+    connect(gfttCornerDetect,&QAction::triggered,this,&QVision::GFTT);
+    connect(houghGuil,&QAction::triggered,this,&QVision::Guil);
+    connect(houghLine,&QAction::triggered,this,&QVision::Line);
+    connect(fastCornerDetect,&QAction::triggered,this,&QVision::Fast);
+    connect(mserCornerDetect,&QAction::triggered,this,&QVision::Mser);
+    connect(briskCornerDetect,&QAction::triggered,this,&QVision::Brisk);
+    connect(houghCircle,&QAction::triggered,this,&QVision::Circle);
+    connect(harrisCornerDetect,&QAction::triggered,this,&QVision::Harris);
+    connect(houghEllipse,&QAction::triggered,this,&QVision::Ellipse);
+    connect(houghBallard,&QAction::triggered,this,&QVision::Ballard);
+    connect(floodFilled,&QAction::triggered,this,&QVision::FloodFill);
+    connect(imgEqual,&QAction::triggered,this,&QVision::ImageEqual);
+    connect(houghTriangle,&QAction::triggered,this,&QVision::Triangle);
+    connect(houghRectangle,&QAction::triggered,this,&QVision::Rectangle);
+    connect(shiTomasiCornerDetect,&QAction::triggered,this,&QVision::ShiTomasi);
+    connect(tempMatch,&QAction::triggered,this,&QVision::TemplateMatch);
+    connect(upgradeTMatch,&QAction::triggered,this,&QVision::UpgradeTempMatch);
+    connect(featurePntMatch,&QAction::triggered,this,&QVision::FeaturePointMatch);
 
-    connect(AddO,&QAction::triggered,this,&QVision::Add);
-    connect(DivideC,&QAction::triggered,this,&QVision::Divide);
-    connect(FourierT,&QAction::triggered,this,&QVision::Fourier);
-    connect(MultipyC,&QAction::triggered,this,&QVision::Multipy);
-    connect(OpenC,&QAction::triggered,this,&QVision::OpenCalculate);
-    connect(LaplacianT,&QAction::triggered,this,&QVision::Laplacian);
-    connect(CloseC,&QAction::triggered,this,&QVision::CloseCalculate);
-    connect(LinearS,&QAction::triggered,this,&QVision::LinearStretch);
-    connect(SubtractionO,&QAction::triggered,this,&QVision::Subtraction);
+    connect(addOper,&QAction::triggered,this,&QVision::Add);
+    connect(divideCal,&QAction::triggered,this,&QVision::Divide);
+    connect(fourierTrans,&QAction::triggered,this,&QVision::Fourier);
+    connect(multipyCal,&QAction::triggered,this,&QVision::Multipy);
+    connect(openCal,&QAction::triggered,this,&QVision::OpenCalculate);
+    connect(laplaceTrans,&QAction::triggered,this,&QVision::Laplacian);
+    connect(closeCal,&QAction::triggered,this,&QVision::CloseCalculate);
+    connect(lineStretch,&QAction::triggered,this,&QVision::LinearStretch);
+    connect(subtractOper,&QAction::triggered,this,&QVision::Subtraction);
 
-    connect(CaptureL,&QAction::triggered,this,&QVision::CaptureLine);
-    connect(CaptureC,&QAction::triggered,this,&QVision::CaptureCircle);
-    connect(CaptureS,&QAction::triggered,this,&QVision::CaptureSquare);
-    connect(CaptureE,&QAction::triggered,this,&QVision::CaptureEllpise);
-    connect(TesseractO,&QAction::triggered,this,&QVision::TesseractOCR);
-    connect(CaptureT,&QAction::triggered,this,&QVision::CaptureTriangle);
-    connect(RecognizeF,&QAction::triggered,this,&QVision::RecongnizeFace);
-    connect(CaptureH,&QAction::triggered,this,&QVision::CaptureHumanEyes);
-    connect(CaptureCC,&QAction::triggered,this,&QVision::CaptureCharacter);
-    connect(MachineLearn,&QAction::triggered,this,&QVision::MachineLearning);
-    connect(CustomizeM,&QAction::triggered,this,&QVision::SelfDefineModel);
-    connect(CaptureHH,&QAction::triggered,this,&QVision::CaptureHumanFace);
-    connect(CaptureSD,&QAction::triggered,this,&QVision::CaptureArbitaryShape);
+    connect(capLine,&QAction::triggered,this,&QVision::CaptureLine);
+    connect(capCircle,&QAction::triggered,this,&QVision::CaptureCircle);
+    connect(capSquare,&QAction::triggered,this,&QVision::CaptureSquare);
+    connect(capEllipse,&QAction::triggered,this,&QVision::CaptureEllpise);
+    connect(tessOcr,&QAction::triggered,this,&QVision::TesseractOCR);
+    connect(capTriangle,&QAction::triggered,this,&QVision::CaptureTriangle);
+    connect(recogFace,&QAction::triggered,this,&QVision::RecongnizeFace);
+    connect(capHumaneye,&QAction::triggered,this,&QVision::CaptureHumanEyes);
+    connect(capChar,&QAction::triggered,this,&QVision::CaptureCharacter);
+    connect(machineLearn,&QAction::triggered,this,&QVision::MachineLearning);
+    connect(userModel,&QAction::triggered,this,&QVision::SelfDefineModel);
+    connect(capHumanFace,&QAction::triggered,this,&QVision::CaptureHumanFace);
+    connect(capSelfmodel,&QAction::triggered,this,&QVision::CaptureArbitaryShape);
 
-    connect(CSDN,&QAction::triggered,this,&QVision::CSDN);
-    connect(TcpIp,&QAction::triggered,this,&QVision::TCPIP);
-    connect(Github,&QAction::triggered,this,&QVision::Follow);
-    connect(Spyder,&QAction::triggered,this,&QVision::Spyder);
-    connect(JueJin,&QAction::triggered,this,&QVision::JueJin);
-    connect(LaunchDB,&QAction::triggered,this,&QVision::Launch);
-    connect(VideoP,&QAction::triggered,this,&QVision::VideoPlayer);
-    connect(RenameF,&QAction::triggered,this,&QVision::RenameFile);
-    connect(WriteT,&QAction::triggered,this,&QVision::WriteToData);
-    connect(OutputI,&QAction::triggered,this,&QVision::OutputImgData);
-    connect(ResizeI,&QAction::triggered,this,&QVision::ResizeImgSize);
-    connect(OutputF,&QAction::triggered,this,&QVision::OutputFileInfo);
+    connect(contactCSDN,&QAction::triggered,this,&QVision::CSDN);
+    connect(tcpIp,&QAction::triggered,this,&QVision::TCPIP);
+    connect(contactGithub,&QAction::triggered,this,&QVision::Follow);
+    connect(spyderNet,&QAction::triggered,this,&QVision::Spyder);
+    connect(contactJueJin,&QAction::triggered,this,&QVision::JueJin);
+    connect(launchDB,&QAction::triggered,this,&QVision::Launch);
+    connect(videoPage,&QAction::triggered,this,&QVision::VideoPlayer);
+    connect(renameFiles,&QAction::triggered,this,&QVision::RenameFile);
+    connect(writeToFile,&QAction::triggered,this,&QVision::WriteToData);
+    connect(exportImgdata,&QAction::triggered,this,&QVision::OutputImgData);
+    connect(resizeImg,&QAction::triggered,this,&QVision::ResizeImgSize);
+    connect(exportFileinfo,&QAction::triggered,this,&QVision::OutputFileInfo);
 
     QImage SrcImg=QImage(Src.data,Src.cols,Src.rows,Src.step,QImage::Format_RGB888).rgbSwapped();
     QImage ResImg=QImage(Dst.data,Dst.cols,Dst.rows,Dst.step,QImage::Format_RGB888).rgbSwapped();
@@ -498,14 +411,20 @@ QVision::QVision(QWidget *parent): QMainWindow(parent)
 
 void QVision::init()
 {
-    // DllManager import("Dll1.dll");
-    // currentFunPtr=import.getBubble();
-    // Ptrs = import.getAllFuncPtrs();
-    // for (auto it = Ptrs.constBegin(); it != Ptrs.constEnd(); ++it) {
-    //     QString funame = it.key();
-    //     QFunctionPointer p = it.value();
-    //     qInfo() << "name:" << funame << "pointer:" << p;
-    // }
+    QString runDir=QCoreApplication::applicationDirPath();
+    QString configDir = runDir + "/config";
+    QDir dir(configDir);
+    if (!dir.exists()) dir.mkdir(configDir);
+    QString filePath = configDir + "/icon.txt";
+    QFile file(filePath);
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QTextStream in(&file);
+        iconSrc = in.readAll();
+        file.close();
+        this->setWindowIcon(QIcon(iconSrc));
+    } else {
+        QMessageBox::warning(this, "Warn", "找不到图标文件!");
+    }
 }
 
 QVision::~QVision()
@@ -553,29 +472,123 @@ QString QVision::getFilepath()
 {
     QString imgName=QFileDialog::getOpenFileName(this,tr("Open File"),"",tr("Type (*.png *.jpg *.bmp)"));
     if(!imgName.isEmpty()) return imgName;
-    return "";
+    return "null!";
 }
 
 QString QVision::getOutputpath()
 {
     QString imgName=QFileDialog::getOpenFileName(this,tr("Open File"),"",tr("Type (*.txt);;All Files(*.*)"));
     if(!imgName.isEmpty()) return imgName;
-    return "";
+    return "null!";
 }
 
 QString QVision::getModel()
 {
     QString modlelName=QFileDialog::getOpenFileName(this,tr("Choose Model"),"xml",tr("Xml Model (*.xml);;Prototxt Model(*.prototxt);;H5 Model(*.h5);;Json Model(*.json);;Weight Model(*.weights)"));
     if(!modlelName.isEmpty()) return modlelName;
-    return "";
+    return "null!";
 }
 
 QString QVision::getFolder()
 {
     QString folderPath=QFileDialog::getExistingDirectory(this,tr("Choose Folder"),"",QFileDialog::ShowDirsOnly);
     if(!folderPath.isEmpty()) return folderPath;
-    return "";
+    return "error!";
 }
+
+void QVision::SetIcon()
+{
+    save->setIcon(QIcon(iconSrc));
+    exit->setIcon(QIcon(iconSrc));
+    open->setIcon(QIcon(iconSrc));
+    boxFilt->setIcon(QIcon(iconSrc));
+    meanFilt->setIcon(QIcon(iconSrc));
+    dilate->setIcon(QIcon(iconSrc));
+    erose->setIcon(QIcon(iconSrc));
+    logTrans->setIcon(QIcon(iconSrc));
+    gaussFilt->setIcon(QIcon(iconSrc));
+    grayTrans->setIcon(QIcon(iconSrc));
+    mediumFilt->setIcon(QIcon(iconSrc));
+    gammaTrans->setIcon(QIcon(iconSrc));
+    linearTrans->setIcon(QIcon(iconSrc));
+    bilateralFilt->setIcon(QIcon(iconSrc));
+    sobelEdge->setIcon(QIcon(iconSrc));
+    cannyEdge->setIcon(QIcon(iconSrc));
+    erase->setIcon(QIcon(iconSrc));
+    scharrEdge->setIcon(QIcon(iconSrc));
+    areaFilled->setIcon(QIcon(iconSrc));
+    areaCovered->setIcon(QIcon(iconSrc));
+    pickupColor->setIcon(QIcon(iconSrc));
+    wakeQQ->setIcon(QIcon(iconSrc));
+    screenShot->setIcon(QIcon(iconSrc));
+    fixThres->setIcon(QIcon(iconSrc));
+    showEdge->setIcon(QIcon(iconSrc));
+    regionGrowing->setIcon(QIcon(iconSrc));
+    rotScale->setIcon(QIcon(iconSrc));
+    imgPyramid->setIcon(QIcon(iconSrc));
+    adaptThres->setIcon(QIcon(iconSrc));
+    statisticPix->setIcon(QIcon(iconSrc));
+    thresProcess->setIcon(QIcon(iconSrc));
+    calculateDist->setIcon(QIcon(iconSrc));
+    perspectTrans->setIcon(QIcon(iconSrc));
+    surfFeature->setIcon(QIcon(iconSrc));
+    fastCornerDetect->setIcon(QIcon(iconSrc));
+    houghGuil->setIcon(QIcon(iconSrc));
+    mserCornerDetect->setIcon(QIcon(iconSrc));
+    gfttCornerDetect->setIcon(QIcon(iconSrc));
+    houghLine->setIcon(QIcon(iconSrc));
+    briskCornerDetect->setIcon(QIcon(iconSrc));
+    harrisCornerDetect->setIcon(QIcon(iconSrc));
+    houghCircle->setIcon(QIcon(iconSrc));
+    houghBallard->setIcon(QIcon(iconSrc));
+    houghEllipse->setIcon(QIcon(iconSrc));
+    floodFilled->setIcon(QIcon(iconSrc));
+    houghTriangle->setIcon(QIcon(iconSrc));
+    imgEqual->setIcon(QIcon(iconSrc));
+    houghRectangle->setIcon(QIcon(iconSrc));
+    shiTomasiCornerDetect->setIcon(QIcon(iconSrc));
+    tempMatch->setIcon(QIcon(iconSrc));
+    upgradeTMatch->setIcon(QIcon(iconSrc));
+    featurePntMatch->setIcon(QIcon(iconSrc));
+    addOper->setIcon(QIcon(iconSrc));
+    openCal->setIcon(QIcon(iconSrc));
+    closeCal->setIcon(QIcon(iconSrc));
+    lineStretch->setIcon(QIcon(iconSrc));
+    divideCal->setIcon(QIcon(iconSrc));
+    multipyCal->setIcon(QIcon(iconSrc));
+    fourierTrans->setIcon(QIcon(iconSrc));
+    laplaceTrans->setIcon(QIcon(iconSrc));
+
+    subtractOper->setIcon(QIcon(iconSrc));
+    capLine->setIcon(QIcon(iconSrc));
+    capCircle->setIcon(QIcon(iconSrc));
+    capSquare->setIcon(QIcon(iconSrc));
+    capEllipse->setIcon(QIcon(iconSrc));
+    tessOcr->setIcon(QIcon(iconSrc));
+    recogFace->setIcon(QIcon(iconSrc));
+
+    capTriangle->setIcon(QIcon(iconSrc));
+    machineLearn->setIcon(QIcon(iconSrc));
+    userModel->setIcon(QIcon(iconSrc));
+    capHumaneye->setIcon(QIcon(iconSrc));
+    capSelfmodel->setIcon(QIcon(iconSrc));
+    capChar->setIcon(QIcon(iconSrc));
+    capHumanFace->setIcon(QIcon(iconSrc));
+    renameFiles->setIcon(QIcon(iconSrc));
+    resizeImg->setIcon(QIcon(iconSrc));
+
+    writeToFile->setIcon(QIcon(iconSrc));
+    exportImgdata->setIcon(QIcon(iconSrc));
+    exportFileinfo->setIcon(QIcon(iconSrc));
+    tcpIp->setIcon(QIcon(iconSrc));
+    spyderNet->setIcon(QIcon(iconSrc));
+    launchDB->setIcon(QIcon(iconSrc));
+    videoPage->setIcon(QIcon(iconSrc));
+    contactJueJin->setIcon(QIcon(iconSrc));
+    contactGithub->setIcon(QIcon(iconSrc));
+    contactCSDN->setIcon(QIcon(iconSrc));
+}
+
 
 void QVision::Show()
 {
@@ -1581,7 +1594,8 @@ void QVision::showSider()
     deviceInfo = new QPushButton("设备信息", drawer1);
     remoteSignIn = new QPushButton("远程登录", drawer1);
     showCoord = new QPushButton("坐标系", drawer1);
-    searchIp->setIcon(QIcon("ico.png"));
+    fixIcon = new QPushButton("修改图标", drawer1);
+    searchIp->setIcon(QIcon(iconSrc));
 
     heapS = new QPushButton("堆排序", drawer2);
     shellS = new QPushButton("希尔排序", drawer2);
@@ -1600,6 +1614,7 @@ void QVision::showSider()
     row2->addWidget(remoteSignIn);
     row2->addWidget(qtChart);
     row2->addWidget(searchIp);
+    row2->addWidget(fixIcon);
 
     layout->addLayout(row1);
     layout->addLayout(row2);
@@ -1622,6 +1637,7 @@ void QVision::showSider()
     connect(remoteSignIn, &QPushButton::clicked, this, &QVision::RemotelogIn);
     connect(deviceInfo, &QPushButton::clicked, this, &QVision::GetDeviceInfo);
     connect(showCoord, &QPushButton::clicked, this, &QVision::ShowCoordinateSystem);
+    connect(fixIcon, &QPushButton::clicked, this, &QVision::ChangeSoftWareIcon);
 
 
     connect(heapS, &QPushButton::clicked, this, &QVision::heapSort);
@@ -1848,4 +1864,22 @@ void QVision::DisplayQtChart()
 void QVision::ShowCoordinateSystem()
 {
     CoordinateSystem::ins().show();
+}
+
+void QVision::ChangeSoftWareIcon()
+{
+    QString userDeskTop="C:/Users/"+QSysInfo::machineHostName()+"/Desktop";
+    iconSrc=QFileDialog::getOpenFileName(this,"选择图标",userDeskTop,"All Files *(*.*)");
+    QString icon = QCoreApplication::applicationDirPath() + "/config/icon.txt";
+    QFile file(icon);
+    if (file.open(QIODevice::WriteOnly)) {
+        QTextStream out(&file);
+        out << iconSrc;
+        file.close();
+        QMessageBox::information(this, "提示", "重启软件以应用新图标!");
+    } else {
+        QMessageBox::warning(this, "警告", "配置错误!");
+    }
+    QProcess::startDetached(qApp->applicationFilePath());
+    qApp->exit();
 }

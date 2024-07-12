@@ -13,9 +13,8 @@ INCLUDEPATH +=$$PWD/src \
               include/leptonica \
 
 
-LIBS +=-L$$PWD/lib -lopencv_world480 -lleptonica-1.84.0
+LIBS +=-L$$PWD/lib -lopencv_world480 -lleptonica-1.84.0 -lOCR
 LIBS +=-L$$PWD/lib -lSort
-# LIBS +=-L$$PWD/lib -ltesseract53
 
 
 HEADERS += \

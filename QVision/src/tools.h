@@ -23,7 +23,6 @@ public:
     Mat Edgescharr(Mat src);
     QSqlDatabase SqlServer();
     Mat ShowHistogram(Mat src);
-    // QString CharRecognize(Mat img);
     QString NetSpyder(QString &url);
     Mat ShowOutline(Mat src,int val);
     Mat FixThreshold(Mat img, int val);
@@ -32,11 +31,12 @@ public:
     Mat ThresholdProcess(Mat src,int val);
     Mat PersTransform(Mat src,Mat target);
     Mat EraseArea(Mat src,Scalar c,int s);
+    QString CharRecognize(Mat img);
+    QString CharRecognize(QString imgPath);
     Mat EdgeCanny(Mat src,int low,int high);
     int Screenshot(Mat src, QString winName);
     QStringList GetTables(QSqlDatabase *qDB);
     QStringList GetDataBases(QSqlDatabase *qDB);
-    // QString CharRecognize(const QString &imgPath);
     Mat ThresholdProcess(Mat src,int val,int type);
     double CalcDist(int X1, int Y1, int x2, int Y2);
     Mat RotateScale(Mat src, double angle, double scale);
@@ -55,6 +55,8 @@ public:
     void DrawRotRect(Mat whichimg,const Point2f& rCenter,const Size2f& rSize,float rAngle, Scalar rColor,int rwidth);
     vector<pair<Rect, double>> TotalArea(const Mat& src, const Mat& temp,double step,double min, double max,int threshold);
     void SetHoughParas(Ptr<GeneralizedHoughGuil> guil,double a, int b, double c, double d, int e, int f, int g, int h, int i, int j, int k,float l,float m,double n,int o,int p,float q);
+private:
+    QString res;
 };
 
 #endif // TOOLS_H

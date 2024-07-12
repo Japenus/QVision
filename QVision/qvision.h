@@ -30,6 +30,7 @@ public:
     ~QVision();
 public:
     void Show();
+    void SetIcon();
     bool IsImgOpen();
     void Show(Mat src);
     bool Save(Mat what);
@@ -42,6 +43,7 @@ public:
     QHash<QString, QFunctionPointer> Ptrs;
 private:
     bool flag=false;
+    QString iconSrc="ico.png";
     QLabel *tip1;
     QLabel *tip2;
     int fixPara=10;
@@ -59,6 +61,7 @@ private:
 
     QPushButton *openSider;
     QPushButton *qtChart;
+    QPushButton *fixIcon;
     QPushButton *scanwifi;
     QPushButton *searchIp;
     QPushButton *showCoord;
@@ -181,8 +184,116 @@ private slots:
     void UpgradeTempMatch();
     void CalculateDistance();
     void FeaturePointMatch();
+    void ChangeSoftWareIcon();
     void CaptureArbitaryShape();
     void PerspectiveTransform();
     void ShowCoordinateSystem();
+
+private:
+    // tab1
+    QAction *open;
+    QAction *save;
+    QAction *exit;
+
+    // tab2
+    QAction *gammaTrans;
+    QAction *logTrans;
+    QAction *grayTrans;
+    QAction *linearTrans;
+    QAction *meanFilt;
+    QAction *boxFilt;
+    QAction *gaussFilt;
+    QAction *mediumFilt;
+    QAction *bilateralFilt;
+    QAction *erose;
+    QAction *dilate;
+
+    // tab3
+    QAction *sobelEdge;
+    QAction *cannyEdge;
+    QAction *scharrEdge;
+    QAction *erase;
+    QAction *areaFilled;
+    QAction *areaCovered;
+    QAction *pickupColor;
+    QAction *wakeQQ;
+    QAction *screenShot;
+    QAction *fixThres;
+    QAction *showEdge;
+    QAction *regionGrowing;
+    QAction *rotScale;
+    QAction *imgPyramid;
+    QAction *adaptThres;
+    QAction *statisticPix;
+    QAction *thresProcess;
+    QAction *calculateDist;
+    QAction *perspectTrans;
+
+    // tab4
+    QAction *houghLine;
+    QAction *houghGuil;
+    QAction *houghCircle;
+    QAction *houghBallard;
+    QAction *houghEllipse;
+    QAction *houghTriangle;
+    QAction *houghRectangle;
+    QAction *surfFeature;
+    QAction *fastCornerDetect;
+    QAction *mserCornerDetect;
+    QAction *gfttCornerDetect;
+    QAction *briskCornerDetect;
+    QAction *harrisCornerDetect;
+    QAction *shiTomasiCornerDetect;
+    QAction *featurePntMatch;
+    QAction *tempMatch;
+    QAction *upgradeTMatch;
+    QAction *floodFilled;
+    QAction *imgEqual;
+
+    // tab5
+    QAction *addOper;
+    QAction *openCal;
+    QAction *closeCal;
+    QAction *divideCal;
+    QAction *multipyCal;
+    QAction *lineStretch;
+    QAction *fourierTrans;
+    QAction *laplaceTrans;
+    QAction *subtractOper;
+
+    // tab6
+    QAction *capLine;
+    QAction *tessOcr;
+    QAction *capChar;
+    QAction *capSquare;
+    QAction *capCircle;
+    QAction *recogFace;
+    QAction *userModel;
+    QAction *capEllipse;
+    QAction *capTriangle;
+    QAction *capHumaneye;
+    QAction *machineLearn;
+    QAction *capSelfmodel;
+    QAction *capHumanFace;
+
+    // tab7
+    QAction *renameFiles;
+    QAction *resizeImg;
+    QAction *writeToFile;
+    QAction *exportImgdata;
+    QAction *exportFileinfo;
+
+    // tab8
+    QAction *tcpIp;
+    QAction *spyderNet;
+
+    // tab9
+    QAction *launchDB;
+    QAction *videoPage;
+
+    // tab10
+    QAction *contactCSDN;
+    QAction *contactGithub;
+    QAction *contactJueJin;
 };
 #endif // QVISIONH
