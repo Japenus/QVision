@@ -669,6 +669,65 @@ QString Tools::CharRecognize(Mat img)
     return res;
 }
 
+QString Tools::recognizeQRCode(Mat img)
+{
+    Mat res,mask;
+    QRCodeDetector qrDecoder;
+    string data = qrDecoder.detectAndDecode(img, mask, res);
+    if(data.length()>0) return QString::fromStdString(data);
+}
+
+// #include<zbar.h>
+// using namespace zbar;
+// struct decodedObject
+// {
+//     string type;
+//     string data;
+//     vector <Point> location;
+// };
+
+QString Tools::recognizeBarCode(Mat img)
+{
+    // vector<decodedObject> decodedObjects;
+    // ImageScanner scanner;
+    // scanner.set_config(ZBAR_NONE, ZBAR_CFG_ENABLE, 1);
+    // Mat imGray;
+    // cvtColor(img, imGray,COLOR_BGR2GRAY);
+    // Image image(img.cols, img.rows, "Y800", (uchar *)imGray.data, img.cols * img.rows);
+    // int n = scanner.scan(image);
+    // for(Image::SymbolIterator symbol = image.symbol_begin(); symbol != image.symbol_end(); ++symbol)
+    // {
+    //     decodedObject obj;
+    //     obj.type = symbol->get_type_name();
+    //     obj.data = symbol->get_data();
+    //     cout << "Type : " << obj.type << endl;
+    //     cout << "Data : " << obj.data << endl << endl;
+    //     for(int i = 0; i< symbol->get_location_size(); i++)
+    //     {
+    //         obj.location.push_back(Point(symbol->get_location_x(i),symbol->get_location_y(i)));
+    //     }
+    //     decodedObjects.push_back(obj);
+    // }
+
+    // for(int i = 0; i < decodedObjects.size(); i++)
+    // {
+    //     vector<Point> points = decodedObjects[i].location;
+    //     vector<Point> hull;
+    //     if(points.size() > 4)
+    //         convexHull(points, hull);
+    //     else
+    //         hull = points;
+    //     int n = hull.size();
+    //     for(int j = 0; j < n; j++)
+    //     {
+    //         line(img, hull[j], hull[ (j+1) % n], Scalar(255,0,0), 3);
+    //     }
+
+    // }
+    // imshow("Results", img);
+    return "???";
+}
+
 // operation database
 QSqlDatabase Tools::SqlServer()
 {

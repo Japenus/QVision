@@ -14,9 +14,9 @@ TemplateMatchDlg::TemplateMatchDlg(QWidget *parent):QDialog(parent)
     matchThresval->setSingleStep(5);
     matchThresval->setKeyboardTracking(true);
 
-    QVBoxLayout*layout= new QVBoxLayout(this);
-    QHBoxLayout*inputRow= new QHBoxLayout(this);
-    QHBoxLayout*btnRow = new QHBoxLayout(this);
+    QVBoxLayout*layout= new QVBoxLayout();
+    QHBoxLayout*inputRow= new QHBoxLayout();
+    QHBoxLayout*btnRow = new QHBoxLayout();
 
     inputRow->addWidget(tip);
     inputRow->addWidget(matchThresval);

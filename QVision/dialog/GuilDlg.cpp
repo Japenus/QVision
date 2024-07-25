@@ -103,14 +103,14 @@ GuilDlg::GuilDlg(QWidget *parent):QDialog(parent)
     tip16=new QLabel("缩放阈值");
     tip17=new QLabel("位置阈值");
 
-    QVBoxLayout *MainStruct=new QVBoxLayout(this);
-    QHBoxLayout *subRow1=new QHBoxLayout(this);
-    QHBoxLayout *subRow2=new QHBoxLayout(this);
-    QHBoxLayout *subRow3=new QHBoxLayout(this);
-    QHBoxLayout *subRow4=new QHBoxLayout(this);
-    QHBoxLayout *subRow5=new QHBoxLayout(this);
-    QHBoxLayout *subRow6=new QHBoxLayout(this);
-    QHBoxLayout *btnRow=new QHBoxLayout(this);
+    QVBoxLayout *MainStruct=new QVBoxLayout();
+    QHBoxLayout *subRow1=new QHBoxLayout();
+    QHBoxLayout *subRow2=new QHBoxLayout();
+    QHBoxLayout *subRow3=new QHBoxLayout();
+    QHBoxLayout *subRow4=new QHBoxLayout();
+    QHBoxLayout *subRow5=new QHBoxLayout();
+    QHBoxLayout *subRow6=new QHBoxLayout();
+    QHBoxLayout *btnRow=new QHBoxLayout();
 
     subRow1->addWidget(tip1);subRow1->addWidget(minDistBox);subRow1->addWidget(tip2);subRow1->addWidget(levelBox);subRow1->addWidget(tip3);subRow1->addWidget(dpBox);
     subRow2->addWidget(tip4);subRow2->addWidget(xiBox);subRow2->addWidget(tip5);subRow2->addWidget(buffersizeBox);subRow2->addWidget(tip6);subRow2->addWidget(cannylowBox);

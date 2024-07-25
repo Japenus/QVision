@@ -20,10 +20,10 @@ ThresholdDlg::ThresholdDlg(QWidget *parent):QDialog(parent)
     thtype->setSingleStep(1);
     thtype->setFixedWidth(100);
 
-    QVBoxLayout *MainStruct = new QVBoxLayout(this);
-    QHBoxLayout *Row1 = new QHBoxLayout(this);
-    QHBoxLayout *Row2 = new QHBoxLayout(this);
-    QHBoxLayout *btnRow = new QHBoxLayout(this);
+    QVBoxLayout *MainStruct = new QVBoxLayout();
+    QHBoxLayout *Row1 = new QHBoxLayout();
+    QHBoxLayout *Row2 = new QHBoxLayout();
+    QHBoxLayout *btnRow = new QHBoxLayout();
 
     Row1->addWidget(tip1);Row1->addWidget(thtype);
     Row2->addWidget(tip2);Row2->addWidget(thval);

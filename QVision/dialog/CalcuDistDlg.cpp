@@ -28,10 +28,10 @@ CalcuDistDlg::CalcuDistDlg(QWidget *parent):QDialog(parent)
     valY2->setRange(0,10000);
     valY2->setSingleStep(20);
 
-    QVBoxLayout *MainStruct = new QVBoxLayout(this);
-    QHBoxLayout *Row1 = new QHBoxLayout(this);
-    QHBoxLayout *Row2 = new QHBoxLayout(this);
-    QHBoxLayout *btnRow = new QHBoxLayout(this);
+    QVBoxLayout *MainStruct = new QVBoxLayout();
+    QHBoxLayout *Row1 = new QHBoxLayout();
+    QHBoxLayout *Row2 = new QHBoxLayout();
+    QHBoxLayout *btnRow = new QHBoxLayout();
     Row1->addWidget(tip1);Row1->addWidget(valX1);Row1->addWidget(valX2);
     Row2->addWidget(tip2);Row2->addWidget(valY1);Row2->addWidget(valY2);
     btnRow->addWidget(okBtn);btnRow->addWidget(cancelBtn);

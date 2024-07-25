@@ -472,28 +472,28 @@ QString QVision::getFilepath()
 {
     QString imgName=QFileDialog::getOpenFileName(this,tr("Open File"),"",tr("Type (*.png *.jpg *.bmp)"));
     if(!imgName.isEmpty()) return imgName;
-    return "null!";
+    return "";
 }
 
 QString QVision::getOutputpath()
 {
     QString imgName=QFileDialog::getOpenFileName(this,tr("Open File"),"",tr("Type (*.txt);;All Files(*.*)"));
     if(!imgName.isEmpty()) return imgName;
-    return "null!";
+    return "";
 }
 
 QString QVision::getModel()
 {
     QString modlelName=QFileDialog::getOpenFileName(this,tr("Choose Model"),"xml",tr("Xml Model (*.xml);;Prototxt Model(*.prototxt);;H5 Model(*.h5);;Json Model(*.json);;Weight Model(*.weights)"));
     if(!modlelName.isEmpty()) return modlelName;
-    return "null!";
+    return "";
 }
 
 QString QVision::getFolder()
 {
     QString folderPath=QFileDialog::getExistingDirectory(this,tr("Choose Folder"),"",QFileDialog::ShowDirsOnly);
     if(!folderPath.isEmpty()) return folderPath;
-    return "error!";
+    return "";
 }
 
 void QVision::SetIcon()
@@ -594,12 +594,9 @@ void QVision::Show()
 {
     QImage img;
     if(!Dst.empty()){
-        if (Dst.channels() == 1)
-        {
+        if (Dst.channels() == 1){
             img = QImage(Dst.data, Dst.cols, Dst.rows, Dst.step, QImage::Format_Grayscale8);
-        }
-        else
-        {
+        }else{
             img = QImage(Dst.data, Dst.cols, Dst.rows, Dst.step, QImage::Format_BGR888);
         }
         QPixmap pixmap = QPixmap::fromImage(img);
@@ -1452,6 +1449,9 @@ void QVision::RenameFile()
         RenameDlg::ins().prefix=prefix;
         int renamed=FileOperation::ins().RenameFile(dir,prefix,num,exten);
         QMessageBox::information(this,tr("提示"),tr("已重命名文件数:%1").arg(renamed));
+    }else{
+        QMessageBox::information(this,tr("提示"),tr("已取消!"));
+        return;
     }
 }
 
@@ -1473,6 +1473,9 @@ void QVision::WriteToData()
         WriteDataDlg::ins().other=other;
         FileOperation::ins().WriteToFile(dir,context,other,Num,Incre);
         QMessageBox::information(this,tr("提示"),tr("内容已写入"));
+    }else{
+        QMessageBox::information(this,tr("提示"),tr("已取消!"));
+        return;
     }
 }
 
@@ -1483,7 +1486,8 @@ void QVision::OutputImgData()
     QString savepath=getOutputpath();
     if(dir.isEmpty()||savepath.isEmpty()){
         QMessageBox::warning(this,"警告","未选择导出目录!");
-        return;}
+        return;
+    }
     FileOperation::ins().GetImgData(dir,savepath);
 }
 

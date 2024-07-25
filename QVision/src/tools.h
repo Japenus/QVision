@@ -32,6 +32,8 @@ public:
     Mat PersTransform(Mat src,Mat target);
     Mat EraseArea(Mat src,Scalar c,int s);
     QString CharRecognize(Mat img);
+    QString recognizeQRCode(Mat img);
+    QString recognizeBarCode(Mat img);
     QString CharRecognize(QString imgPath);
     Mat EdgeCanny(Mat src,int low,int high);
     int Screenshot(Mat src, QString winName);

@@ -36,10 +36,10 @@ CharRecogDlg::CharRecogDlg(QWidget *parent):QDialog(parent)
     clearBtn->setStyleSheet("border:1px solid purple;padding: 5px;color: blue;border-radius: 10px;font-weight: bold;");
 
 
-    QVBoxLayout *MainStruct = new QVBoxLayout(this);
-    QHBoxLayout *subRow1 = new QHBoxLayout(this);
-    QHBoxLayout *subRow2 = new QHBoxLayout(this);
-    QHBoxLayout *btnRow = new QHBoxLayout(this);
+    QVBoxLayout *MainStruct = new QVBoxLayout();
+    QHBoxLayout *subRow1 = new QHBoxLayout();
+    QHBoxLayout *subRow2 = new QHBoxLayout();
+    QHBoxLayout *btnRow = new QHBoxLayout();
 
     subRow1->addWidget(tip1);subRow1->addWidget(tip2);
     subRow2->addWidget(DisplayPic);subRow2->addWidget(ShowResult);
@@ -99,7 +99,19 @@ void CharRecogDlg::MakeBig()
 
 void CharRecogDlg::Recognize()
 {
-    ShowResult->setText(Tools::ins().CharRecognize(picPath));
+    QMessageBox select;
+    select.setText("识别对象");
+    QPushButton *qrCode = select.addButton(tr("二维码"), QMessageBox::ActionRole);
+    QPushButton *imgChar = select.addButton(tr("字符"), QMessageBox::ActionRole);
+    select.exec();
+    if (select.clickedButton() == qrCode)
+    {
+        ShowResult->setText(Tools::ins().recognizeQRCode(charImg));
+        // ShowResult->setText(Tools::ins().recognizeBarCode(charImg));
+    }else if (select.clickedButton() == imgChar)
+    {
+        ShowResult->setText(Tools::ins().CharRecognize(picPath));
+    }
 }
 
 void CharRecogDlg::Clean()

@@ -13,9 +13,9 @@ FixThresholdDlg::FixThresholdDlg(QWidget *parent):QDialog(parent)
     spinBox->setSingleStep(10);
     spinBox->setKeyboardTracking(true);
 
-    QVBoxLayout *MainStruct = new QVBoxLayout(this);
-    QHBoxLayout *Row1 = new QHBoxLayout(this);
-    QHBoxLayout *btnRow = new QHBoxLayout(this);
+    QVBoxLayout *MainStruct = new QVBoxLayout();
+    QHBoxLayout *Row1 = new QHBoxLayout();
+    QHBoxLayout *btnRow = new QHBoxLayout();
 
     Row1->addWidget(tip);Row1->addWidget(spinBox);
     btnRow->addWidget(okBtn);btnRow->addWidget(cancelBtn);

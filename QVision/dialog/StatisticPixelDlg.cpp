@@ -13,9 +13,9 @@ StatisticPixelDlg::StatisticPixelDlg(QWidget *parent):QDialog(parent)
     pixel->setRange(0,255);
     pixel->setSingleStep(20);
 
-    QVBoxLayout *MainStruct = new QVBoxLayout(this);
-    QHBoxLayout *Row = new QHBoxLayout(this);
-    QHBoxLayout *btnRow = new QHBoxLayout(this);
+    QVBoxLayout *MainStruct = new QVBoxLayout();
+    QHBoxLayout *Row = new QHBoxLayout();
+    QHBoxLayout *btnRow = new QHBoxLayout();
     Row->addWidget(tip);Row->addWidget(pixel);
     btnRow->addWidget(okBtn);btnRow->addWidget(cancelBtn);
     MainStruct->addLayout(Row);MainStruct->addLayout(btnRow);

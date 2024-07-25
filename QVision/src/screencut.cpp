@@ -17,7 +17,7 @@ ScreenCut::ScreenCut(QWidget *parent)
 
 void ScreenCut::CutArea(QPixmap &pix)
 {
-    CurrentArea=ft.QPixmap2Mat(pix);
+    CurrentArea=FormatTransfer::ins().QPixmap2Mat(pix);
     imwrite("ScreenShot.png",CurrentArea);
 }
 
@@ -34,7 +34,7 @@ void ScreenCut::paintEvent(QPaintEvent *event)
 {
     QWidget::paintEvent(event);
     QPainter painter(this);
-    QPen pen(Cyan,1);
+    QPen pen(Cyan,2);
     painter.setPen(pen);
     painter.drawPixmap(0, 0, width(), height(), captured);
     int w = 0, h = 0;
@@ -50,21 +50,9 @@ void ScreenCut::paintEvent(QPaintEvent *event)
         h = End.y() - Start.y();
         painter.drawRect(Start.x() - 1, Start.y() - 1, w + 1, h + 1);
     }
-    QPolygon listMarker;
-    listMarker.push_back(QPoint(Start.x(), Start.y()));
-    listMarker.push_back(QPoint(Start.x() + w, Start.y()));
-    listMarker.push_back(QPoint(Start.x(),Start.y() + h));
-    listMarker.push_back(QPoint(Start.x() + w,Start.y() + h));
-
-    listMarker.push_back(QPoint(Start.x() + (w >> 1), Start.y()));
-    listMarker.push_back(QPoint(Start.x() + (w >> 1), h + Start.y()));
-    listMarker.push_back(QPoint(Start.x(), Start.y() + (h >> 1)));
-    listMarker.push_back(QPoint(Start.x() + w, Start.y() + (h >> 1)));
-
     pen.setWidth(4);
     pen.setColor(Magenta);
     painter.setPen(pen);
-    painter.drawPoints(listMarker);
 }
 
 void ScreenCut::mousePressEvent(QMouseEvent *event)

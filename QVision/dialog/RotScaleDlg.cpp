@@ -20,10 +20,10 @@ RotScaleDlg::RotScaleDlg(QWidget *parent):QDialog(parent)
     scaleBox->setRange(0,10);
     scaleBox->setSingleStep(0.1);
 
-    QVBoxLayout *Mainstruct = new QVBoxLayout(this);
-    QHBoxLayout *subRow1=new QHBoxLayout(this);
-    QHBoxLayout *subRow2 = new QHBoxLayout(this);
-    QHBoxLayout *btnRow= new QHBoxLayout(this);
+    QVBoxLayout *Mainstruct = new QVBoxLayout();
+    QHBoxLayout *subRow1=new QHBoxLayout();
+    QHBoxLayout *subRow2 = new QHBoxLayout();
+    QHBoxLayout *btnRow= new QHBoxLayout();
 
     subRow1->addWidget(tip1);subRow1->addWidget(rotateBox);
     subRow2->addWidget(tip2);subRow2->addWidget(scaleBox);

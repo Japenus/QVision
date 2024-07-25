@@ -24,10 +24,10 @@ AreaFillDlg::AreaFillDlg(QWidget *parent):QDialog(parent)
     okBtn->setFixedSize(50,20);
     cancelBtn->setFixedSize(50,20);
 
-    QVBoxLayout *MainStruct = new QVBoxLayout(this);
-    QHBoxLayout *subRow1 = new QHBoxLayout(this);
-    QHBoxLayout *subRow2 = new QHBoxLayout(this);
-    QHBoxLayout *btnRow = new QHBoxLayout(this);
+    QVBoxLayout *MainStruct = new QVBoxLayout();
+    QHBoxLayout *subRow1 = new QHBoxLayout();
+    QHBoxLayout *subRow2 = new QHBoxLayout();
+    QHBoxLayout *btnRow = new QHBoxLayout();
 
     subRow1->addWidget(tip1);subRow1->addWidget(sizeBox);
     subRow2->addWidget(tip2);subRow2->addWidget(numBox);

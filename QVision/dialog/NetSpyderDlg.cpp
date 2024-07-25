@@ -50,12 +50,12 @@ NetSpyderDlg::NetSpyderDlg(QWidget *parent):QDialog(parent)
     htmlCodeBox->setMaximumSize(w,h);
     displayUrls->setMinimumSize(600,200);
     htmlCodeBox->setMinimumSize(600,100);
-    QVBoxLayout *MainStruct = new QVBoxLayout(this);
-    QVBoxLayout *subRow1=new QVBoxLayout(this);
-    QHBoxLayout *mid = new QHBoxLayout(this);
-    QVBoxLayout *subRow2 =new QVBoxLayout(this);
-    QVBoxLayout *subRow3= new QVBoxLayout(this);
-    QHBoxLayout *btnRow = new QHBoxLayout(this);
+    QVBoxLayout *MainStruct = new QVBoxLayout();
+    QVBoxLayout *subRow1=new QVBoxLayout();
+    QHBoxLayout *mid = new QHBoxLayout();
+    QVBoxLayout *subRow2 =new QVBoxLayout();
+    QVBoxLayout *subRow3= new QVBoxLayout();
+    QHBoxLayout *btnRow = new QHBoxLayout();
 
     subRow1->addWidget(tip1);subRow1->addWidget(tip2);subRow1->addWidget(tip4);
     subRow2->addWidget(urlBox);subRow2->addWidget(searchBox);subRow2->addWidget(savePathBox);

@@ -11,9 +11,10 @@ INCLUDEPATH +=$$PWD/src \
               include/opencv2 \
               include/tesseract \
               include/leptonica \
+              include/zbar \
 
 
-LIBS +=-L$$PWD/lib -lopencv_world480 -lleptonica-1.84.0 -lOCR
+LIBS +=-L$$PWD/lib -lopencv_world480 -lleptonica-1.84.0 -lOCR -lZBar
 LIBS +=-L$$PWD/lib -lSort
 
 
