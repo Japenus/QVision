@@ -1,7 +1,7 @@
 QT += core gui sql network multimedia multimediawidgets axcontainer
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 CONFIG += c++17
-
+RC_ICONS = qvision.ico
 # CONFIG += warn_off
 # QMAKE_CXXFLAGS += -Wall
 # QMAKE_CXXFLAGS += -Wno-comment
@@ -124,3 +124,5 @@ DISTFILES += \
     icon/sample18.jpg \
     icon/sample19.jpg \
     icon/sample20.jpg \
+
+RESOURCES +=
