@@ -328,7 +328,7 @@ QVision::QVision(QWidget *parent): QMainWindow(parent)
     connect(wakeQQ,&QAction::triggered,this,&QVision::WakeUpQQ);
     connect(fixThres,&QAction::triggered,this,&QVision::FixThreshold);
     connect(showEdge,&QAction::triggered,this,&QVision::ShowOutline);
-    connect(imgPyramid,&QAction::triggered,this,&QVision::ImageEqual);
+    connect(imgPyramid,&QAction::triggered,this,&QVision::ImagePyramid);
     connect(regionGrowing,&QAction::triggered,this,&QVision::RegionGrow);
     connect(rotScale,&QAction::triggered,this,&QVision::RotateScale);
     connect(adaptThres,&QAction::triggered,this,&QVision::AdaptThreshold);
@@ -1524,7 +1524,7 @@ void QVision::OutputFileInfo()
 }
 
 
-//网络
+//NetWork Programming
 void QVision::Spyder()
 {
     if(NetSpyderDlg::ins().exec()==QDialog::Accepted){

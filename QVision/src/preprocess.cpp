@@ -14,8 +14,8 @@ Mat Preprocess::LogTransform(Mat src,double para)
         for (int j = 0; j < src.cols; j++)
         {
             Vec3b pixel = src.at<Vec3b>(i,j);
-            int grayValue = para * log(1 + pixel[2]);
-            res.at<uchar>(i, j) = grayValue;
+            int val = para * log(1 + pixel[2]);
+            res.at<uchar>(i, j) = val;
         }
     }
     return res;
@@ -30,8 +30,8 @@ Mat Preprocess::LinearTransform(Mat src)
         for (int j = 0; j < src.cols; j++)
         {
             Vec3b pixel = src.at<Vec3b>(i, j);
-            int grayValue = 0.299 * pixel[2]+0.587 * pixel[1] + 0.114 * pixel[0];
-            res.at<uchar>(i, j) = grayValue;
+            int val = 0.299 * pixel[2]+0.587 * pixel[1] + 0.114 * pixel[0];
+            res.at<uchar>(i, j) = val;
         }
     }
     return res;
@@ -46,8 +46,8 @@ Mat Preprocess::GammaTransform(Mat src, float gamma)
         for(int j=0;j<src.cols;j++)
         {
             Vec3b pixel=src.at<Vec3b>(i,j);
-            int grayValue = 255 * pow(pixel[2]/255,gamma);
-            res.at<uchar>(i, j) = grayValue;
+            int val = 255 * pow(pixel[2]/255,gamma);
+            res.at<uchar>(i, j) = val;
         }
     }
     return res;

@@ -1,10 +1,7 @@
 #include "netspyderdlg.h"
 NetSpyderDlg::NetSpyderDlg(QWidget *parent):QDialog(parent)
 {
-    QIcon icon("ico.png");
-    QRect DeviceSize=QGuiApplication::screens().at(0)->geometry();
-    int w=DeviceSize.width();
-    int h=DeviceSize.height();
+
     tip1=new QLabel("输入链接:");
     tip2=new QLabel("图片格式:");
     tip3=new QLabel("搜索结果:");
@@ -27,12 +24,9 @@ NetSpyderDlg::NetSpyderDlg(QWidget *parent):QDialog(parent)
     Continue=new QPushButton("Continue");
 
     Rows=new QStandardItem();
-    tableData=new QStandardItemModel(20,3,this);
-    tableData->setHorizontalHeaderLabels(QStringList()<<"请求地址"<<"状态"<<"结果");
-    for (int var = 1; var < 20; ++var) {
-        Rows->appendRow(new QStandardItem(QString::number(var)));
-    }
-    tableData->setVerticalHeaderItem(0,Rows);
+    tableData=new QStandardItemModel();
+
+
     displayUrls->setModel(tableData);
     tableStyle=displayUrls->verticalHeader();
     tableStyle->setDefaultSectionSize(20);
@@ -46,20 +40,25 @@ NetSpyderDlg::NetSpyderDlg(QWidget *parent):QDialog(parent)
     searchBox->setMaxLength(1000);
     progress->setValue(0);
     tip3->setFixedHeight(10);
-    displayUrls->setMaximumSize(w,h);
-    htmlCodeBox->setMaximumSize(w,h);
-    displayUrls->setMinimumSize(600,200);
-    htmlCodeBox->setMinimumSize(600,100);
-    QVBoxLayout *MainStruct = new QVBoxLayout();
-    QVBoxLayout *subRow1=new QVBoxLayout();
-    QHBoxLayout *mid = new QHBoxLayout();
-    QVBoxLayout *subRow2 =new QVBoxLayout();
-    QVBoxLayout *subRow3= new QVBoxLayout();
-    QHBoxLayout *btnRow = new QHBoxLayout();
+    displayUrls->setFixedHeight(100);
 
-    subRow1->addWidget(tip1);subRow1->addWidget(tip2);subRow1->addWidget(tip4);
-    subRow2->addWidget(urlBox);subRow2->addWidget(searchBox);subRow2->addWidget(savePathBox);
-    mid->addLayout(subRow1);mid->addLayout(subRow2);
+    QHBoxLayout *mid = new QHBoxLayout;
+    QVBoxLayout *subRow1=new QVBoxLayout;
+    QVBoxLayout *subRow2 =new QVBoxLayout;
+    QVBoxLayout *subRow3= new QVBoxLayout;
+    QHBoxLayout *btnRow = new QHBoxLayout;
+    QVBoxLayout *MainStruct = new QVBoxLayout;
+
+    subRow1->addWidget(tip1);
+    subRow1->addWidget(tip2);
+    subRow1->addWidget(tip4);
+
+    subRow2->addWidget(urlBox);
+    subRow2->addWidget(searchBox);
+    subRow2->addWidget(savePathBox);
+
+    mid->addLayout(subRow1);
+    mid->addLayout(subRow2);
 
     subRow3->addWidget(tip3);
     subRow3->addWidget(displayUrls);
@@ -87,7 +86,8 @@ NetSpyderDlg::NetSpyderDlg(QWidget *parent):QDialog(parent)
     connect(GetPath,&QPushButton::clicked,this,&NetSpyderDlg::onGetSavePathClicked);
 
 
-    resize(600,400);
+    resize(600,600);
+    QIcon icon("ico.png");
     setWindowIcon(icon);
     setWindowTitle("Network Spyder");
 }
@@ -120,9 +120,10 @@ void NetSpyderDlg::onStopClicked()
 void NetSpyderDlg::onStartClicked()
 {
     url=urlBox->text();
+    if(url.isEmpty()) return;
     keyword=searchBox->text();
     savePath=savePathBox->text();
-    htmlCode=htmlCodeBox->toPlainText();
+    htmlCode=htmlCodeBox->toHtml();
     QElapsedTimer *curTime=new QElapsedTimer();
     code=tools.NetSpyder(url,progress,curTime);
     htmlCodeBox->setText(code);

@@ -100,17 +100,17 @@ void CharRecogDlg::MakeBig()
 void CharRecogDlg::Recognize()
 {
     QMessageBox select;
-    select.setText("识别对象");
+    select.setText("请选择识别类型");
     QPushButton *qrCode = select.addButton(tr("二维码"), QMessageBox::ActionRole);
+    QPushButton *barCode = select.addButton(tr("条形码"), QMessageBox::ActionRole);
     QPushButton *imgChar = select.addButton(tr("字符"), QMessageBox::ActionRole);
     select.exec();
-    if (select.clickedButton() == qrCode)
-    {
+    if (select.clickedButton() == qrCode){
         ShowResult->setText(Tools::ins().recognizeQRCode(charImg));
-        // ShowResult->setText(Tools::ins().recognizeBarCode(charImg));
-    }else if (select.clickedButton() == imgChar)
-    {
+    }else if (select.clickedButton() == imgChar){
         ShowResult->setText(Tools::ins().CharRecognize(picPath));
+    }else if(select.clickedButton() == barCode){
+        ShowResult->setText(Tools::ins().recognizeBarCode(charImg));
     }
 }
 

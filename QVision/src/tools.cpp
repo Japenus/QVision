@@ -8,6 +8,7 @@ struct RequestResult
 {
     QString url;
     bool success;
+    bool isFailed;
     int statusCode;
     QByteArray data;
 };
@@ -162,7 +163,7 @@ Mat Tools::ShowOutline(Mat src,int val)
     findContours(bin,contours,hierarchy,RETR_TREE,CHAIN_APPROX_SIMPLE);//CHAIN_APPROX_SIMp1E
     for(int i = 0; i < contours.size(); i++)
     {
-        drawContours(src, contours,i,QVCyan,2,LINE_8,hierarchy);
+        drawContours(src, contours,i,QVPurple,2,LINE_8,hierarchy);
     }
     return src;
 }
@@ -170,7 +171,7 @@ Mat Tools::ShowOutline(Mat src,int val)
 
 int Tools::Statistic(Mat img, int pixVal)
 {
-    Mat temp,gray =process.GrayTransform(img);
+    Mat temp,gray=process.GrayTransform(img);
     compare(gray,pixVal,temp,CMP_EQ);
     int count = countNonZero(temp);
     return count;
@@ -312,48 +313,51 @@ Mat Tools::PersTransform(Mat src,Mat target)
     waitKey(0);
     return transformed;
 }
-
+static int base = 0;
 static void func(int e,int x,int y,int flags, void* userdata)
 {
-    static Mat image;
+    static Mat image=*(Mat*)userdata,zoom;
     static bool cutting= false;
     static Point LT(-1,-1),RB(-1, -1);
     static int cutNumber=1;
-    if (e == EVENT_LBUTTONDOWN)
-    {
-        image = *(Mat*)userdata;
-        if(!cutting)
-        {
+    int val,w=image.cols,h=image.rows;
+    if (e == EVENT_LBUTTONDOWN){
+        if(!cutting){
             cutting = true;
             LT = Point(x,y);
         }
-    }
-    else if (e==EVENT_MOUSEWHEEL)
-    {
-        QMessageBox::information(nullptr,"提示","右键保存此区域");
-    }
-    else if (e == EVENT_MOUSEMOVE)
-    {
-        if(cutting)
-        {
+    }else if (e==EVENT_MOUSEWHEEL){
+        val=getMouseWheelDelta(flags)/10;
+        if(val>0){
+            ++base;
+            resize(image,zoom,Size(h*val*base,w*val*base),0,0,INTER_LINEAR);
+            w*=val*base;h*=val*base;
+            imshow("Bigger", zoom);
+        }else{
+            ++base;
+            val=abs(val);
+            resize(image,zoom,Size(h/(val*base),w/(val*base)),0,0,INTER_LINEAR);
+            w/=val*base;h/=val*base;
+            imshow("Bigger", zoom);
+        }
+    }else if (e == EVENT_MOUSEMOVE){
+        if(cutting){
             RB = Point(x,y);
             Mat s = image.clone();
-            rectangle(s,LT,RB,QVGreen,3);
-            imshow("Bigger Image", s);
+            Rect area(LT,RB);
+            rectangle(s,area,QVGreen,3);
+            imshow("Bigger", s);
         }
-    }
-    else if (e== EVENT_LBUTTONUP)
-    {
+    }else if (e== EVENT_LBUTTONUP){
         cutting = false;
-    }
-    else if (e == EVENT_RBUTTONUP)
-    {
-        if (LT != Point(-1,-1) && RB != Point(-1,-1))
-        {
+        Rect Area(LT,RB);
+        Tools::ins().ShowOutline(image(Area),150);
+    }else if (e == EVENT_RBUTTONUP){
+        if (LT != Point(-1,-1) && RB != Point(-1,-1)){
             Rect Area(LT,RB);
             Box=Area;
             Mat curArea = image(Area);
-            QMessageBox::information(nullptr,"提示",QString("截图已保存:ScreenShot%1.jpg").arg(cutNumber));
+            QMessageBox::information(nullptr,"提示",QString("截图已保存:cutArea%1.jpg").arg(cutNumber));
             imwrite("ScreenShot" + to_string(cutNumber) + ".jpg",curArea);
             cutNumber++;
             waitKey(0);
@@ -396,11 +400,10 @@ Mat Tools::EraseArea(Mat src,Scalar c,int s)
 
 void Tools::MakeBig(Mat src)
 {
-    if (!src.empty())
-    {
-        namedWindow("Bigger Image",0);
-        imshow("Bigger Image", src);
-        setMouseCallback("Bigger Image",func,&src);
+    if (!src.empty()){
+        namedWindow("Bigger",0);
+        imshow("Bigger", src);
+        setMouseCallback("Bigger",func,&src);
         waitKey(0);
     }
 }
@@ -588,40 +591,42 @@ Scalar Tools::PickColor()
         return Default;
     }
 }
+#include<QThread>
 QString Tools::NetSpyder(QString &url,QProgressBar *bar,QElapsedTimer *t)
 {
-    // 测试链接：https://tesseract-ocr.github.io/tessdoc/APIExamp1e.html
+    // http://dlib.net/
     QUrl link(url);
     QEventLoop loop;
-    QString htmlcode="";
     RequestResult RR;
+    QString htmlcode;
     QNetworkRequest request(link);
     QRegularExpression regExp("<img src=\"([^\"]+)\"");
     QNetworkAccessManager *manager = new QNetworkAccessManager();
-    QNetworkReply *rep1y = manager->get(request);
-    connect(rep1y, &QNetworkReply::downloadProgress, [=](qint64 rec,qint64 total){
-        int progress=(rec*100)/total;
-        bar->setValue(progress);
-        int pastime=t->elapsed();
-        double speed=rec/(pastime/1000.0);
-        qDebug()<<speed;
+    QNetworkReply *reply = manager->get(request);
+    connect(reply, &QNetworkReply::downloadProgress, [=](qint64 rec,qint64 total){
+        bar->setValue((rec*100)/total);
+        double speed=rec/(t->elapsed()/1000.0);
+        qInfo()<<speed;
     });
-    connect(rep1y, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+    connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
     loop.exec();
     RR.url=url;
-    RR.statusCode=rep1y->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    RR.success=(rep1y->error()==QNetworkReply::NoError);
+    RR.statusCode=reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    RR.success=(reply->error()==QNetworkReply::NoError);
+    RR.isFailed=(reply->error()!=QNetworkReply::NoError);
     if (RR.success) {
-        RR.data=rep1y->readAll();
+        RR.data=reply->readAll();
         htmlcode=QString(RR.data);
         MatchImgPath(regExp,htmlcode);
-        rep1y->deleteLater();
+        reply->deleteLater();
+        QThread::msleep(2000);
+        bar->setValue(0);
         manager->deleteLater();
         return htmlcode;
     }
-    else {
-        QMessageBox::warning(nullptr, QString("Warning"), QString("Request failed!") + rep1y->errorString());
-        return htmlcode;
+    qInfo()<<"success:"<<RR.success<<"RR.isFailed:"<<RR.isFailed;
+    if(RR.isFailed){
+        return htmlcode = "Error: " + reply->errorString();
     }
 }
 
@@ -643,6 +648,7 @@ void Tools::MatchImgPath(QRegularExpression re,QString context)
         file.close();
     }else{
         QMessageBox::information(nullptr,tr("提示"),tr("当前页面未发现图片资源!"));
+        return;
     }
 }
 
@@ -655,7 +661,11 @@ QString Tools::CharRecognize(QString imgPath)
     ocr->SetImage(im.data, im.cols, im.rows, 3, im.step);
     res=ocr->GetUTF8Text();
     ocr->End();
-    return res;
+    if(!res.isEmpty()){
+        return res;
+    }else{
+        return "输入图像中没有字符!";
+    }
 }
 
 QString Tools::CharRecognize(Mat img)
@@ -666,7 +676,11 @@ QString Tools::CharRecognize(Mat img)
     ocr->SetImage(img.data, img.cols, img.rows, 3, img.step);
     res=ocr->GetUTF8Text();
     ocr->End();
-    return res;
+    if(!res.isEmpty()){
+        return res;
+    }else{
+        return "输入图像中没有字符!";
+    }
 }
 
 QString Tools::recognizeQRCode(Mat img)
@@ -674,20 +688,29 @@ QString Tools::recognizeQRCode(Mat img)
     Mat res,mask;
     QRCodeDetector qrDecoder;
     string data = qrDecoder.detectAndDecode(img, mask, res);
-    if(data.length()>0) return QString::fromStdString(data);
+    if(data.length()>0){
+        return QString::fromStdString(data);
+    }else{
+        return "输入图像中未检测到二维码！";
+    }
+
 }
 
 // #include<zbar.h>
 // using namespace zbar;
-// struct decodedObject
-// {
-//     string type;
-//     string data;
-//     vector <Point> location;
-// };
+
+struct barCodeData{
+    QString type;
+    QString data;
+    QVector <QPoint> pos;
+};
 
 QString Tools::recognizeBarCode(Mat img)
 {
+    QVector<barCodeData> bcd;
+
+    // ImageScanner scanner;
+
     // vector<decodedObject> decodedObjects;
     // ImageScanner scanner;
     // scanner.set_config(ZBAR_NONE, ZBAR_CFG_ENABLE, 1);
@@ -725,7 +748,7 @@ QString Tools::recognizeBarCode(Mat img)
 
     // }
     // imshow("Results", img);
-    return "???";
+    return "未实现!";
 }
 
 // operation database
@@ -744,8 +767,7 @@ QSqlDatabase Tools::SqlServer()
     {
         info = qDB.lastError().text();
         QMessageBox::critical(0, QObject::tr("无法连接数据库:"), info);
-    }else
-    {
+    }else{
         QMessageBox::information(nullptr, tr("提示"),tr("数据库连接成功！"));
     }
     return qDB;

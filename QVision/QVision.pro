@@ -19,6 +19,7 @@ LIBS +=-L$$PWD/lib -lSort
 
 
 HEADERS += \
+    barcode/scanner.h \
     qvision.h \
     algorithm/Sort.h \
     dialog/GuilDlg.h \
@@ -64,6 +65,7 @@ HEADERS += \
     src/CoordinateSystem.h
 
 SOURCES += \
+    barcode/scanner.cpp \
     main.cpp \
     qvision.cpp \
     algorithm/Sort.cpp \
@@ -124,5 +126,3 @@ DISTFILES += \
     icon/sample18.jpg \
     icon/sample19.jpg \
     icon/sample20.jpg \
-
-RESOURCES +=
