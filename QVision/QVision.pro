@@ -14,7 +14,7 @@ INCLUDEPATH +=$$PWD/src \
               include/zbar \
 
 
-LIBS +=-L$$PWD/lib -lopencv_world480 -lleptonica-1.84.0 -lOCR -lZBar
+LIBS +=-L$$PWD/lib -lopencv480 -lleptonica -lOCR -lZBar
 LIBS +=-L$$PWD/lib -lSort
 
 
