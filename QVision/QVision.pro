@@ -2,9 +2,6 @@ QT += core gui sql network multimedia multimediawidgets axcontainer
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 CONFIG += c++17
 RC_ICONS = qvision.ico
-# CONFIG += warn_off
-# QMAKE_CXXFLAGS += -Wall
-# QMAKE_CXXFLAGS += -Wno-comment
 
 INCLUDEPATH +=$$PWD/src \
               $$PWD/dialog \
@@ -14,8 +11,7 @@ INCLUDEPATH +=$$PWD/src \
               include/zbar \
 
 
-LIBS +=-L$$PWD/lib -lopencv480 -lleptonica -lOCR -lZBar
-LIBS +=-L$$PWD/lib -lSort
+LIBS +=-L$$PWD/lib -lOpenCV -lLeptonica -lOCR -lZBar -lSort
 
 
 HEADERS += \
