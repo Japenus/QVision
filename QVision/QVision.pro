@@ -19,8 +19,8 @@ LIBS +=-L$$PWD/lib -lSort
 
 
 HEADERS += \
-    barcode/scanner.h \
     qvision.h \
+    barcode/scanner.h \
     algorithm/Sort.h \
     dialog/GuilDlg.h \
     dialog/CannyDlg.h \
@@ -41,8 +41,6 @@ HEADERS += \
     dialog/StatisticPixelDlg.h \
     dialog/UpgradeTempMatchDlg.h \
     src/Api.h \
-    src/DllManager.h \
-    src/MachineLearning.h \
     src/Sort.h \
     src/Tools.h \
     src/Color.h \
@@ -51,6 +49,7 @@ HEADERS += \
     src/Database.h \
     src/Screencut.h \
     src/Subpixels.h \
+    src/DllManager.h \
     src/Preprocess.h \
     src/Multimedia.h \
     src/ImgAlgorithm.h \
@@ -58,17 +57,18 @@ HEADERS += \
     src/Dynamicdetect.h \
     src/Fileoperation.h \
     src/Formattransfer.h \
+    src/MachineLearning.h \
+    src/CoordinateSystem.h \
     src/Networkcommunication.h \
     datastruct/Global.h \
     datastruct/LinkList.h \
     datastruct/BinaryTree.h \
-    src/CoordinateSystem.h
 
 SOURCES += \
-    barcode/scanner.cpp \
     main.cpp \
     qvision.cpp \
     algorithm/Sort.cpp \
+    barcode/scanner.cpp \
     dialog/GuilDlg.cpp \
     dialog/CannyDlg.cpp \
     dialog/RenameDlg.cpp \
@@ -86,12 +86,11 @@ SOURCES += \
     dialog/TemplateMatchDlg.cpp \
     dialog/StatisticPixelDlg.cpp \
     dialog/UpgradeTempMatchDlg.cpp \
-    src/DllManager.cpp \
-    src/MachineLearning.cpp \
     src/Tools.cpp \
     src/Database.cpp \
     src/Subpixels.cpp \
     src/Screencut.cpp \
+    src/DllManager.cpp \
     src/Preprocess.cpp \
     src/Multimedia.cpp \
     src/Imgcalculate.cpp \
@@ -99,30 +98,8 @@ SOURCES += \
     src/Dynamicdetect.cpp \
     src/Fileoperation.cpp \
     src/Formattransfer.cpp \
+    src/MachineLearning.cpp \
+    src/CoordinateSystem.cpp \
     src/Networkcommunication.cpp \
     datastruct/LinkList.cpp \
     datastruct/BinaryTree.cpp \
-    src/CoordinateSystem.cpp
-
-DISTFILES += \
-    icon/21.png \
-    icon/sample1.jpg \
-    icon/sample2.jpg \
-    icon/sample3.jpg \
-    icon/sample4.jpg \
-    icon/sample5.jpg \
-    icon/sample6.jpg \
-    icon/sample7.jpg \
-    icon/sample8.jpg \
-    icon/sample9.jpg \
-    icon/sample10.jpg \
-    icon/sample11.jpg \
-    icon/sample12.jpg \
-    icon/sample13.jpg \
-    icon/sample14.jpg \
-    icon/sample15.jpg \
-    icon/sample16.jpg \
-    icon/sample17.jpg \
-    icon/sample18.jpg \
-    icon/sample19.jpg \
-    icon/sample20.jpg \
