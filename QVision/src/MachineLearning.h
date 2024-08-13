@@ -13,6 +13,10 @@ public slots:
     void modifyBackground();
     void closeWin();
 
+    void onStartStreaming();
+    void onStopStreaming();
+    void onSavingImage();
+
 protected:
     void paintEvent(QPaintEvent *event) override;
     void drawStar(QPainter *painter, int x, int y, int outerRadius, int innerRadius, int points);
@@ -20,14 +24,24 @@ protected:
 private:
     QImage bgImg;
     QString srcBg;
+    QVideoWidget *vi;
     QPushButton *lbtn;
-    QPushButton *rbtn;
+    QGroupBox *paras;
+    QPushButton *closeCurWin;
+    QPushButton *startCapture;
+    QPushButton *stopCapture;
+    QPushButton *saveScreen;
     QWidget *left;
     QWidget *right;
     QWidget *center;
     QHBoxLayout *main;
     QVBoxLayout *pLeft;
     QVBoxLayout *pRight;
+
+    QCamera *m_camera;
+    QMediaCaptureSession *m_mediaCaptureSession;
+    QImageCapture *m_imageCapture;
+    QString m_imageSavingPath;
 
 };
 

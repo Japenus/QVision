@@ -247,20 +247,20 @@ QVision::QVision(QWidget *parent): QMainWindow(parent)
 
     tip1->setFixedHeight(3*fixPara);tip1->setAlignment(Qt::AlignCenter);
     tip2->setFixedHeight(3*fixPara);tip2->setAlignment(Qt::AlignCenter);
-    tip1->setStyleSheet("border: 1px solid brown;padding: 5px;color: green; /*background-color: orange;*/border-radius: 10px;font-weight: bold; font-style: italic;");
-    tip2->setStyleSheet("border: 1px solid brown;padding: 5px;color: green; /*background-color: orange;*/border-radius: 10px;font-weight: bold; font-style: italic;");
+    tip1->setStyleSheet("border: 1px solid "+color3+";padding: 5px;color: green;border-radius: 10px;font-weight: bold; font-style: italic;");
+    tip2->setStyleSheet("border: 1px solid "+color3+";padding: 5px;color: green;border-radius: 10px;font-weight: bold; font-style: italic;");
 
-    srcBox->setStyleSheet("border: 1px solid brown; padding: 5px;border-radius: 10px;font-weight: bold;");
-    resBox->setStyleSheet("border: 1px solid brown; padding: 5px;border-radius: 10px;font-weight: bold;");
+    srcBox->setStyleSheet("border: 1px solid "+color3+"; padding: 5px;border-radius: 10px;font-weight: bold;");
+    resBox->setStyleSheet("border: 1px solid "+color3+"; padding: 5px;border-radius: 10px;font-weight: bold;");
 
-    bigRes->setStyleSheet("border: 1px solid brown;padding: 5px;color: blue;border-radius: 10px;font-weight: bold;");
-    bigSrc->setStyleSheet("border: 1px solid brown;padding: 5px;color: blue;border-radius: 10px;font-weight: bold;");
+    bigRes->setStyleSheet("border: 1px solid "+color3+";padding: 5px;color: "+color7+";border-radius: 10px;font-weight: bold;");
+    bigSrc->setStyleSheet("border: 1px solid "+color3+";padding: 5px;color: "+color7+";border-radius: 10px;font-weight: bold;");
 
-    histRes->setStyleSheet("border: 1px solid brown;padding: 5px;color: blue;border-radius: 10px;font-weight: bold;");
-    histSrc->setStyleSheet("border: 1px solid brown;padding: 5px;color: blue;;border-radius: 10px;font-weight: bold;");
+    histRes->setStyleSheet("border: 1px solid "+color3+";padding: 5px;color: "+color7+";border-radius: 10px;font-weight: bold;");
+    histSrc->setStyleSheet("border: 1px solid "+color3+";padding: 5px;color: "+color7+";;border-radius: 10px;font-weight: bold;");
 
-    openSider->setStyleSheet("border: 1px solid brown;padding: 5px;color: blue;border-radius: 10px;font-weight: bold;");
-    closeApp->setStyleSheet("border: 1px solid brown;padding: 5px;color: blue;;border-radius: 10px;font-weight: bold;");
+    openSider->setStyleSheet("border: 1px solid "+color3+";padding: 5px;color: "+color7+";border-radius: 10px;font-weight: bold;");
+    closeApp->setStyleSheet("border: 1px solid "+color3+";padding: 5px;color: "+color7+";;border-radius: 10px;font-weight: bold;");
 
     srcBox->setMaximumSize(w,h);srcBox->setMinimumSize(w/4,h/3);
     resBox->setMaximumSize(w,h);resBox->setMinimumSize(w/4,h/3);

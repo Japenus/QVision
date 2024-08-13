@@ -4,14 +4,14 @@ CONFIG += c++17
 RC_ICONS = qvision.ico
 
 INCLUDEPATH +=$$PWD/src \
-              $$PWD/dialog \
-              include/opencv2 \
-              include/tesseract \
-              include/leptonica \
+              $$PWD/dialog\
               include/zbar \
+              include/opencv2 \
+              include/tesseract\
+              include/leptonica \
 
 
-LIBS +=-L$$PWD/lib -lOpenCV -lLeptonica -lOCR -lZBar -lSort
+LIBS +=-L$$PWD/lib -lOpenCV -lLeptonica -lOCR -lZBar -lSort -lDlib
 
 
 HEADERS += \

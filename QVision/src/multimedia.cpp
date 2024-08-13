@@ -17,12 +17,12 @@ MultiMedia::MultiMedia(QWidget *parent):QWidget(parent)
     pSlider = new QSlider(Qt::Horizontal, this);
     durTime = new QLabel("00:00 / 00:00", this);
     pSlider->setStyleSheet("border: 2px solid green;border-radius: 5px;");
-    durTime->setStyleSheet("border: 1px solid brown;padding: 5px;color: blue;;border-radius: 10px;font-weight: bold;");
-    OpenVideo->setStyleSheet("border: 1px solid brown;padding: 5px;color: blue;border-radius: 10px;font-weight: bold;");
-    PlayVideo->setStyleSheet("border: 1px solid brown;padding: 5px;color: blue;;border-radius: 10px;font-weight: bold;");
-    PauseVideo->setStyleSheet("border: 1px solid brown;padding: 5px;color: blue;border-radius: 10px;font-weight: bold;");
-    CloseWindow->setStyleSheet("border: 1px solid brown;padding: 5px;color: blue;;border-radius: 10px;font-weight: bold;");
-    PlaySpeed->setStyleSheet("border: 1px solid brown;padding: 5px;color: blue;border-radius: 10px;font-weight: bold;");
+    durTime->setStyleSheet("border: 1px solid brown;padding: 5px;color: "+color1+";;border-radius: 10px;font-weight: bold;");
+    OpenVideo->setStyleSheet("border: 1px solid brown;padding: 5px;color: "+color1+";border-radius: 10px;font-weight: bold;");
+    PlayVideo->setStyleSheet("border: 1px solid brown;padding: 5px;color: "+color1+";;border-radius: 10px;font-weight: bold;");
+    PauseVideo->setStyleSheet("border: 1px solid brown;padding: 5px;color: "+color1+";border-radius: 10px;font-weight: bold;");
+    CloseWindow->setStyleSheet("border: 1px solid brown;padding: 5px;color: "+color1+";;border-radius: 10px;font-weight: bold;");
+    PlaySpeed->setStyleSheet("border: 1px solid brown;padding: 5px;color: "+color1+";border-radius: 10px;font-weight: bold;");
 
     // QAudioDevice audioDevice = QAudioDevice::defaultOutputDevice();
     // QAudioOutput *audioOutput = new QAudioOutput(audioDevice, mediaPlayer);

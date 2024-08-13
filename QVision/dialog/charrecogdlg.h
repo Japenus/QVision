@@ -31,5 +31,6 @@ private:
     QPushButton *clearBtn;
     QPushButton *recogBtn;
     QPushButton *exitBtn;
+    QString color1="green";
 };
 #endif // CHARRECOGDLG_H

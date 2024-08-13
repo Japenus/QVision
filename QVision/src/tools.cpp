@@ -30,7 +30,7 @@ Mat Tools::ShowHistogram(Mat src)
     int h = 300;
     int w = 512;
     int x = w/val;
-    Mat res(h,w,CV_8UC3,Scalar(90,10,60));
+    Mat res(h,w,CV_8UC3,QVBlack);
     normalize(hist, hist,0,h,NORM_MINMAX,-1,Mat());
     for (int i = 1; i < val; i++)
     {

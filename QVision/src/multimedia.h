@@ -30,6 +30,7 @@ private:
     QPushButton *CloseWindow;
     QMediaPlayer *mediaPlayer;
     QVideoWidget *videowidget;
+    QString color1="cyan";
 };
 
 #endif // MULTIMEDIA_H

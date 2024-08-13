@@ -56,24 +56,24 @@ DataBase::DataBase(QWidget *parent):QMainWindow(parent)
     showInfo->setReadOnly(true);
 
     //style
-    addDataItem->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
-    delDataItem->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
-    refreshItem->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
-    findDataItem->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
-    cleanTips->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
-    disConn->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
-    insertNullRow->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
-    closeCurWin->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
-    databaseListBox->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
-    datatableListsBox->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
+    addDataItem->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: "+color1+";border-radius: 5px;font-weight: bold;");
+    delDataItem->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: "+color1+";border-radius: 5px;font-weight: bold;");
+    refreshItem->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: "+color1+";border-radius: 5px;font-weight: bold;");
+    findDataItem->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: "+color1+";border-radius: 5px;font-weight: bold;");
+    cleanTips->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: "+color1+";border-radius: 5px;font-weight: bold;");
+    disConn->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: "+color1+";border-radius: 5px;font-weight: bold;");
+    insertNullRow->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: "+color1+";border-radius: 5px;font-weight: bold;");
+    closeCurWin->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: "+color1+";border-radius: 5px;font-weight: bold;");
+    databaseListBox->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: "+color1+";border-radius: 5px;font-weight: bold;");
+    datatableListsBox->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: "+color1+";border-radius: 5px;font-weight: bold;");
 
 
-    databaseLists->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
-    datatableLists->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
-    tip1->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
-    tip2->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
-    showInfo->setStyleSheet("border: 2px solid purple;padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
-    dataList->setStyleSheet("border: 1px solid purple;color:blue;");
+    databaseLists->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: "+color1+";border-radius: 5px;font-weight: bold;");
+    datatableLists->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: "+color1+";border-radius: 5px;font-weight: bold;");
+    tip1->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: "+color1+";border-radius: 5px;font-weight: bold;");
+    tip2->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: "+color1+";border-radius: 5px;font-weight: bold;");
+    showInfo->setStyleSheet("border: 2px solid purple;padding: 5px;color: "+color1+";border-radius: 5px;font-weight: bold;");
+    dataList->setStyleSheet("border: 1px solid purple;color:"+color1+";");
 
 
     QVBoxLayout *MainStruct =new  QVBoxLayout;

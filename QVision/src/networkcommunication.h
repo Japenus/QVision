@@ -36,6 +36,7 @@ private:
     QLineEdit *clientPort;
     QLineEdit *serverPort;
 
+    QString color1="orange";
     QPushButton *sendBtn;
     QPushButton *stopBtn;
     QPushButton *exeBtn;

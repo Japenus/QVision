@@ -9,6 +9,7 @@
 #include <QObject>
 #include <QScreen>
 #include <QWidget>
+#include <QCamera>
 #include <QMenuBar>
 #include <QProcess>
 #include <QPainter>
@@ -21,6 +22,7 @@
 #include <QComboBox>
 #include <QSqlError>
 #include <QSqlQuery>
+#include <QGroupBox>
 #include <QAxWidget>
 #include <QSqlRecord>
 #include <QTcpServer>
@@ -46,10 +48,13 @@
 #include <QColorDialog>
 #include <QMediaPlayer>
 #include <QVideoWidget>
+#include <QVideoWidget>
 #include <QStandardItem>
 #include <QElapsedTimer>
 #include <QSplashScreen>
 #include <QNetworkReply>
+#include <QImageCapture>
+#include <QMediaDevices>
 #include <QJsonDocument>
 #include <QPlainTextEdit>
 #include <QGuiApplication>
@@ -57,9 +62,8 @@
 #include <QDesktopServices>
 #include <QNetworkInterface>
 #include <QRegularExpression>
+#include <QMediaCaptureSession>
 #include <QNetworkAccessManager>
-
-
 #include <Sort.h>
 
 

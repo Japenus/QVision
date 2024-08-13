@@ -32,7 +32,7 @@ private:
     QLabel *tip2;
     QString dbPath;
     QString searchField;
-
+    QString color1="yellow";
     QSqlDatabase qDB;
     int fixHeight=30;
     int curSelectedRow;

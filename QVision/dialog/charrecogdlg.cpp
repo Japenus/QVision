@@ -28,12 +28,12 @@ CharRecogDlg::CharRecogDlg(QWidget *parent):QDialog(parent)
     tip2->setStyleSheet("border:1px solid purple;padding: 5px;color: green;border-radius: 5px;font-weight: bold;font-weight: bold;");
     DisplayPic->setStyleSheet("border:1px solid purple; padding: 5px;border-radius: 5px;font-weight: bold;");
     ShowResult->setStyleSheet("border:1px solid purple; padding: 5px;border-radius: 5px;font-weight: bold;");
-    getPicBtn->setStyleSheet("border:1px solid purple;padding: 5px;color: blue;border-radius: 10px;font-weight: bold;");
-    recogBtn->setStyleSheet("border:1px solid purple;padding: 5px;color: blue;border-radius: 10px;font-weight: bold;");
-    exitBtn->setStyleSheet("border:1px solid purple;padding: 5px;color: blue;border-radius: 10px;font-weight: bold;");
-    makeBigBtn->setStyleSheet("border:1px solid purple;padding: 5px;color: blue;border-radius: 10px;font-weight: bold;");
-    saveTxtBtn->setStyleSheet("border:1px solid purple;padding: 5px;color: blue;border-radius: 10px;font-weight: bold;");
-    clearBtn->setStyleSheet("border:1px solid purple;padding: 5px;color: blue;border-radius: 10px;font-weight: bold;");
+    getPicBtn->setStyleSheet("border:1px solid purple;padding: 5px;color: "+color1+";border-radius: 10px;font-weight: bold;");
+    recogBtn->setStyleSheet("border:1px solid purple;padding: 5px;color: "+color1+";border-radius: 10px;font-weight: bold;");
+    exitBtn->setStyleSheet("border:1px solid purple;padding: 5px;color: "+color1+";border-radius: 10px;font-weight: bold;");
+    makeBigBtn->setStyleSheet("border:1px solid purple;padding: 5px;color: "+color1+";border-radius: 10px;font-weight: bold;");
+    saveTxtBtn->setStyleSheet("border:1px solid purple;padding: 5px;color: "+color1+";border-radius: 10px;font-weight: bold;");
+    clearBtn->setStyleSheet("border:1px solid purple;padding: 5px;color: "+color1+";border-radius: 10px;font-weight: bold;");
 
 
     QVBoxLayout *MainStruct = new QVBoxLayout();

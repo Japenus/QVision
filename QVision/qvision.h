@@ -44,6 +44,13 @@ public:
 private:
     bool flag=false;
     QString iconSrc="ico.png";
+    QString color1="blue";
+    QString color2="orange";
+    QString color3="cyan";
+    QString color4="green";
+    QString color5="yellow";
+    QString color6="purple";
+    QString color7="lightgreen";
     QLabel *tip1;
     QLabel *tip2;
     int fixPara=10;
