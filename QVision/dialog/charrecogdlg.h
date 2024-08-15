@@ -32,5 +32,6 @@ private:
     QPushButton *recogBtn;
     QPushButton *exitBtn;
     QString color1="green";
+    QString SherryToJerry;
 };
 #endif // CHARRECOGDLG_H

@@ -3,9 +3,9 @@ QVision::QVision(QWidget *parent): QMainWindow(parent)
 {
     init();
     QIcon icon(iconSrc);
-    QRect DeviceSize=QGuiApplication::screens().at(0)->geometry();
-    int w=DeviceSize.width();
-    int h=DeviceSize.height();
+    // QRect DeviceSize=QGuiApplication::screens().at(0)->geometry();
+    // int w=DeviceSize.width();
+    // int h=DeviceSize.height();
     QMenuBar *menubar = new QMenuBar();
     QMenu *tab1 = menubar->addMenu("文件");
     QMenu *tab2 = menubar->addMenu("预处理");
@@ -232,9 +232,15 @@ QVision::QVision(QWidget *parent): QMainWindow(parent)
     SetIcon();
     setMenuBar(menubar);
 
-    srcBox=new QLabel();
-    resBox=new QLabel();
-    // srcBox->setAcceptDrops(true);
+    srcBox=new QGraphicsView;
+    resBox=new QGraphicsView;
+
+    srcScene=new QGraphicsScene(this);
+    resScene=new QGraphicsScene(this);
+
+    srcBox->setDragMode(QGraphicsView::ScrollHandDrag);
+    resBox->setDragMode(QGraphicsView::ScrollHandDrag);
+
     tip1=new QLabel("Before");
     tip2=new QLabel("After");
 
@@ -261,12 +267,6 @@ QVision::QVision(QWidget *parent): QMainWindow(parent)
 
     openSider->setStyleSheet("border: 1px solid "+color3+";padding: 5px;color: "+color7+";border-radius: 10px;font-weight: bold;");
     closeApp->setStyleSheet("border: 1px solid "+color3+";padding: 5px;color: "+color7+";;border-radius: 10px;font-weight: bold;");
-
-    srcBox->setMaximumSize(w,h);srcBox->setMinimumSize(w/4,h/3);
-    resBox->setMaximumSize(w,h);resBox->setMinimumSize(w/4,h/3);
-    srcBox->setScaledContents(true);resBox->setScaledContents(true);
-    srcBox->setSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored);
-    resBox->setSizePolicy(QSizePolicy::Ignored,QSizePolicy::Ignored);
 
     QVBoxLayout *MainStruct = new QVBoxLayout;
     QHBoxLayout *Row1 = new QHBoxLayout;
@@ -396,17 +396,34 @@ QVision::QVision(QWidget *parent): QMainWindow(parent)
     connect(resizeImg,&QAction::triggered,this,&QVision::ResizeImgSize);
     connect(exportFileinfo,&QAction::triggered,this,&QVision::OutputFileInfo);
 
-    QImage SrcImg=QImage(Src.data,Src.cols,Src.rows,Src.step,QImage::Format_RGB888).rgbSwapped();
-    QImage ResImg=QImage(Dst.data,Dst.cols,Dst.rows,Dst.step,QImage::Format_RGB888).rgbSwapped();
-
-    srcBox->setPixmap(QPixmap::fromImage(SrcImg).scaled(srcBox->size(),Qt::KeepAspectRatio));
-    resBox->setPixmap(QPixmap::fromImage(ResImg).scaled(resBox->size(),Qt::KeepAspectRatio));
-
-    srcBox->setScaledContents(true);srcBox->setFrameStyle(QFrame::Box);
-    resBox->setScaledContents(true);resBox->setFrameStyle(QFrame::Box);
-
+    srcBox->setScene(srcScene);
+    resBox->setScene(resScene);
+    srcBox->show();
+    resBox->show();
+    resize(1000,600);
     setWindowIcon(icon);
-    setWindowTitle("Image Process System");
+    setWindowTitle("Image System");
+}
+
+void QVision::wheelEvent(QWheelEvent *event)
+{
+    QPointF mousePos=event->position();
+    double limit=srcBox->width();
+    if (event->angleDelta().y() > 0)
+    {
+        if(mousePos.x()<limit){
+            srcBox->scale(1.2, 1.2);
+        }else{
+            resBox->scale(1.2, 1.2);
+        }
+    } else {
+        if(mousePos.x()<limit){
+            srcBox->scale(0.8, 0.8);
+        }else{
+            resBox->scale(0.8, 0.8);
+        }
+    }
+    event->accept();
 }
 
 void QVision::init()
@@ -423,7 +440,7 @@ void QVision::init()
         file.close();
         this->setWindowIcon(QIcon(iconSrc));
     } else {
-        QMessageBox::warning(this, "Warn", "找不到图标文件!");
+        QMessageBox::warning(this, "Warn", "Can't find the program icon!");
     }
 }
 
@@ -441,16 +458,21 @@ void QVision::openImg()
     if (!fileName.isEmpty()) {
         flag=true;
         QImage image(fileName);
-        srcBox->setPixmap(QPixmap::fromImage(image));
+        srcScene->clear();
+        srcScene->addPixmap(QPixmap::fromImage(image).scaled(srcBox->size(),Qt::IgnoreAspectRatio));
     }
 }
 
 
 void QVision::saveImg()
 {
-    QImage image = resBox->pixmap().toImage();
     QString filePath = QFileDialog::getSaveFileName(this, tr("Save Image"), "result1.png", tr("Images (*.png *.jpg *.bmp)"));
-    if (!filePath.isEmpty()) image.save(filePath);
+    if (!filePath.isEmpty()){
+        QPixmap pixmap(resBox->size());
+        QPainter painter(&pixmap);
+        resScene->render(&painter);
+        pixmap.save(filePath);
+    }
 }
 
 void QVision::exitQVision()
@@ -599,28 +621,21 @@ void QVision::Show()
         }else{
             img = QImage(Dst.data, Dst.cols, Dst.rows, Dst.step, QImage::Format_BGR888);
         }
-        QPixmap pixmap = QPixmap::fromImage(img);
-        resBox->setPixmap(pixmap);
-        resBox->setScaledContents(true);
-        resBox->show();
+        QPixmap pixmap = QPixmap::fromImage(img).scaled(srcBox->size(),Qt::IgnoreAspectRatio);
+        resScene->addPixmap(pixmap);
     }
 }
 
 void QVision::Show(Mat image)
 {
     QImage img;
-    if (image.channels() == 1)
-    {
+    if (image.channels() == 1){
         img = QImage(image.data, image.cols, image.rows, image.step, QImage::Format_Grayscale8);
-    }
-    else
-    {
+    }else{
         img = QImage(image.data, image.cols, image.rows, image.step, QImage::Format_BGR888);
     }
-    QPixmap pixmap = QPixmap::fromImage(img);
-    resBox->setPixmap(pixmap);
-    resBox->setScaledContents(true);
-    resBox->show();
+    QPixmap pixmap = QPixmap::fromImage(img).scaled(srcBox->size(),Qt::IgnoreAspectRatio);
+    resScene->addPixmap(pixmap);
 }
 
 bool QVision::Save(Mat what)
@@ -647,7 +662,7 @@ Mat QVision::QPixmap2Mat(QPixmap &datatype)
 void QVision::SrcHist()
 {
     if(!IsImgOpen()) return;
-    QPixmap pixmap = srcBox->pixmap();
+    QPixmap pixmap = srcBox->grab();
     Src = QPixmap2Mat(pixmap);
     Tools::ins().ShowHistogram(Src);
 }
@@ -655,8 +670,8 @@ void QVision::SrcHist()
 
 void QVision::ResHist()
 {
-    if(!resBox->pixmap()) return;
-    QPixmap pixmap = resBox->pixmap();
+    if(!IsImgOpen()||resScene->items().empty()) return;
+    QPixmap pixmap = resBox->grab();
     Dst = QPixmap2Mat(pixmap);
     Tools::ins().ShowHistogram(Dst);
 }

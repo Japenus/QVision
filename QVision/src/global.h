@@ -65,7 +65,9 @@
 #include <QMediaCaptureSession>
 #include <QNetworkAccessManager>
 #include <Sort.h>
-
+#include <QGraphicsView>
+#include <QGraphicsScene>
+#include <QGraphicsProxyWidget>
 
 // #include "include/dlib/opencv.h"
 // #include "include/dlib/image_processing.h"

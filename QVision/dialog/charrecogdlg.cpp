@@ -4,11 +4,40 @@ CharRecogDlg::CharRecogDlg(QWidget *parent):QDialog(parent)
 {
     QIcon icon("ico.png");
     setWindowIcon(icon);
+    SherryToJerry="To 我最爱的男孩\n"
+        "       这是一封新年就开始写的信，但提笔的瞬间却又不知从何说起，"
+        "我们平常的相处感觉也是两个人倾心交流了很多很多次，"
+        "从我们的从前、我们的现在到我们的未来，其实我真的真的很庆幸能够遇见你，"
+        "我说过很多很多次我觉得你是上天给我的礼物，是一份我期待了很久很久的礼物。"
+        "在这个新年伊始，首先感谢我们顺利度过了2023年的时光，"
+        "2023这一年的时光对我来说其实是冲击很大、挑战很大的一年，也算是经历了人生中的大起大落，"
+        "虽然可能对你来说很多事情并没有那么惊天动地，但对我来说也是一种经历，"
+        "但是起起落落、超退潮张这才是人生常态，我也很庆幸，在2023的尾巴遇见了你，"
+        "我知道你不相信什么玄学神话，但我依旧很感谢冥冥之中的缘分让我们相遇，"
+        "如果说你是上天2023年苦尽甘来的礼物，那我也很希望我可以永远拥有并珍惜这样的感情，"
+        "当然我也希望你可以把我当成生命中最重要的人之一，我也希望我对于你而言也是一份珍贵的礼物。"
+        "其实，一想到你，我的记忆就好像照片一样，对于你的感觉，"
+        "像是南头古城那颗阳光下的大榕树，是红树湾公园桥墩旁的拥吻，"
+        "是夜晚牵着两只手漫步在深圳的大街小巷，是在广州塔下你的侧脸，"
+        "也是家里的瓶瓶罐罐茶米油盐，是我做的第一顿糖醋排骨，是一个个漫漫长夜你的怀抱，"
+        "一想到这些我的泪水就有点无法停止，原谅我始终没办法做一个不掉眼泪的成熟大人，"
+        "只是一想到我们所拥有的幸福时刻我就觉得人有时候只活这几个瞬间，"
+        "是一个个温馨感动的瞬间组成了我们无法复刻，无人可以代替的人生，也原谅我很贪婪，"
+        "贪婪到想要和你共享余生中每一个惊喜与每一份幸福，我想要你身边无可取代的位置，"
+        "和你毫无保留的爱，一句句新年快乐的含义是希望今后你的年年岁岁与我一起快快乐乐，幸福平安。"
+        "新的一年，我们还会一起看很多很多的风景，一起牵手走过很多很多的路，"
+        "也会遇到很多很多困难，但我相信只要你牵紧我的手，我们一起面对，一起思考，"
+        "一起学习，没有什么会是困难的，再次祝你——我的宝贝、我最心爱的男孩，新年快乐、万事顺遂，"
+        "一切越来越好!\n"
+        "                                                                       From \n"
+        "                                                                       你最爱的宝贝";
     tip1=new QLabel("图片");
     tip2=new QLabel("结果");
 
     DisplayPic=new QLabel(this);
     ShowResult=new QTextEdit(this);
+    ShowResult->setReadOnly(true);
+    ShowResult->setText(SherryToJerry);
 
     DisplayPic->setMinimumSize(400,300);
     DisplayPic->setMaximumSize(800,600);
@@ -63,7 +92,7 @@ CharRecogDlg::CharRecogDlg(QWidget *parent):QDialog(parent)
     connect(saveTxtBtn,&QPushButton::clicked, this,&CharRecogDlg::SaveText);
     connect(exitBtn,&QPushButton::clicked, this,&CharRecogDlg::ShutDown);
 
-    resize(600,400);
+    resize(800,600);
     setWindowTitle("Character Recognition");
 }
 

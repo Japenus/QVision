@@ -28,6 +28,10 @@ public:
     // void dropEvent(QDropEvent *event);
     // void dragEnterEvent(QDragEnterEvent *event);
     ~QVision();
+
+protected:
+    void wheelEvent(QWheelEvent *event) override;
+
 public:
     void Show();
     void SetIcon();
@@ -41,6 +45,7 @@ public:
     Mat QPixmap2Mat(QPixmap &pix);
     QFunctionPointer currentFunPtr;
     QHash<QString, QFunctionPointer> Ptrs;
+
 private:
     bool flag=false;
     QString iconSrc="ico.png";
@@ -54,8 +59,13 @@ private:
     QLabel *tip1;
     QLabel *tip2;
     int fixPara=10;
-    QLabel *srcBox;
-    QLabel *resBox;
+
+    QGraphicsView *srcBox;
+    QGraphicsView *resBox;
+    QGraphicsScene *srcScene;
+    QGraphicsScene *resScene;
+    // QLabel *srcBox;
+    // QLabel *resBox;
     Mat Src,Dst,Res;
     QWidget *appFace;
     QToolBox siderBar;
