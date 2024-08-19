@@ -676,11 +676,11 @@ void QVision::ResHist()
     Tools::ins().ShowHistogram(Dst);
 }
 
-
 void QVision::BigSrc()
 {
     if(!IsImgOpen()) return;
     Tools::ins().MakeBig(Src);
+    // resScene->addPixmap(Tools::ins().tmp);
 }
 
 

@@ -313,33 +313,22 @@ Mat Tools::PersTransform(Mat src,Mat target)
     waitKey(0);
     return transformed;
 }
-static int base = 0;
+
 static void func(int e,int x,int y,int flags, void* userdata)
 {
-    static Mat image=*(Mat*)userdata,zoom;
+    static Mat image=*(Mat*)userdata;
+    Tools* self = static_cast<Tools*>(userdata);
     static bool cutting= false;
     static Point LT(-1,-1),RB(-1, -1);
     static int cutNumber=1;
-    int val,w=image.cols,h=image.rows;
     if (e == EVENT_LBUTTONDOWN){
+        self->isCut=false;
         if(!cutting){
             cutting = true;
             LT = Point(x,y);
         }
     }else if (e==EVENT_MOUSEWHEEL){
-        val=getMouseWheelDelta(flags)/10;
-        if(val>0){
-            ++base;
-            resize(image,zoom,Size(h*val*base,w*val*base),0,0,INTER_LINEAR);
-            w*=val*base;h*=val*base;
-            imshow("Bigger", zoom);
-        }else{
-            ++base;
-            val=abs(val);
-            resize(image,zoom,Size(h/(val*base),w/(val*base)),0,0,INTER_LINEAR);
-            w/=val*base;h/=val*base;
-            imshow("Bigger", zoom);
-        }
+        QMessageBox::information(nullptr,"提示","右键保存此区域");
     }else if (e == EVENT_MOUSEMOVE){
         if(cutting){
             RB = Point(x,y);
@@ -350,15 +339,17 @@ static void func(int e,int x,int y,int flags, void* userdata)
         }
     }else if (e== EVENT_LBUTTONUP){
         cutting = false;
-        Rect Area(LT,RB);
-        Tools::ins().ShowOutline(image(Area),150);
+        // Rect Area(LT,RB);
+        // Tools::ins().ShowOutline(image(Area),150);
     }else if (e == EVENT_RBUTTONUP){
         if (LT != Point(-1,-1) && RB != Point(-1,-1)){
             Rect Area(LT,RB);
             Box=Area;
             Mat curArea = image(Area);
+            self->isCut=true;
+            self->tmp=FormatTransfer::ins().matToQpixmap(curArea);
             QMessageBox::information(nullptr,"提示",QString("截图已保存:cutArea%1.jpg").arg(cutNumber));
-            imwrite("ScreenShot" + to_string(cutNumber) + ".jpg",curArea);
+            imwrite("cutArea" + to_string(cutNumber) + ".jpg",curArea);
             cutNumber++;
             waitKey(0);
         }
@@ -405,6 +396,8 @@ void Tools::MakeBig(Mat src)
         imshow("Bigger", src);
         setMouseCallback("Bigger",func,&src);
         waitKey(0);
+        // qInfo("close...");
+        // qInfo()<<isCut;
     }
 }
 
@@ -591,7 +584,7 @@ Scalar Tools::PickColor()
         return Default;
     }
 }
-#include<QThread>
+
 QString Tools::NetSpyder(QString &url,QProgressBar *bar,QElapsedTimer *t)
 {
     // http://dlib.net/

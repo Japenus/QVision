@@ -10,6 +10,7 @@
 #include <QScreen>
 #include <QWidget>
 #include <QCamera>
+#include <QThread>
 #include <QMenuBar>
 #include <QProcess>
 #include <QPainter>

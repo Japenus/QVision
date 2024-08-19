@@ -1,23 +1,23 @@
 #ifndef QVISION_H
 #define QVISION_H
 #include "Api.h"
-#include "tools.h"
+#include "Tools.h"
 #include "global.h"
-#include "Dialog.h"
-#include "database.h"
-#include "screencut.h"
-#include "DllManager.h"
-#include "multimedia.h"
-#include "Preprocess.h"
-#include "remotelogin.h"
-#include "ImgAlgorithm.h"
-#include "imgcalculate.h"
-#include "dynamicdetect.h"
+#include "dialog.h"
+#include "dataBase.h"
+#include "screenCut.h"
+#include "dllManager.h"
+#include "multiMedia.h"
+#include "preProcess.h"
+#include "remoteLogin.h"
+#include "imgAlgorithm.h"
+#include "imgCalculate.h"
+#include "dynamicDetect.h"
 #include "fileOperation.h"
 #include "algorithm/Sort.h"
 #include "MachineLearning.h"
-#include "coordinatesystem.h"
-#include "networkcommunication.h"
+#include "coordinateSystem.h"
+#include "networkCommunication.h"
 class QVision : public QMainWindow
 {
     Q_OBJECT
@@ -46,8 +46,16 @@ public:
     QFunctionPointer currentFunPtr;
     QHash<QString, QFunctionPointer> Ptrs;
 
+public:
+    QGraphicsScene *resScene;
+
+
 private:
     bool flag=false;
+    Mat Src,Dst,Res;
+    QWidget *appFace;
+    QToolBox siderBar;
+    DllManager import;
     QString iconSrc="ico.png";
     QString color1="blue";
     QString color2="orange";
@@ -63,13 +71,7 @@ private:
     QGraphicsView *srcBox;
     QGraphicsView *resBox;
     QGraphicsScene *srcScene;
-    QGraphicsScene *resScene;
-    // QLabel *srcBox;
-    // QLabel *resBox;
-    Mat Src,Dst,Res;
-    QWidget *appFace;
-    QToolBox siderBar;
-    DllManager import;
+
     QPushButton *bigSrc;
     QPushButton *bigRes;
     QPushButton *histRes;
