@@ -28,7 +28,7 @@ HEADERS += \
     dialog/AreaFillDlg.h \
     dialog/Remotelogin.h \
     dialog/ThresholdDlg.h \
-    dialog/Charrecogdlg.h \
+    dialog/CharRecogdlg.h \
     dialog/WriteDataDlg.h \
     dialog/NetSpyderDlg.h \
     dialog/CalcuDistDlg.h \
@@ -77,7 +77,7 @@ SOURCES += \
     dialog/WriteDataDlg.cpp \
     dialog/ThresholdDlg.cpp \
     dialog/CalcuDistDlg.cpp \
-    dialog/Charrecogdlg.cpp \
+    dialog/CharRecogdlg.cpp \
     dialog/FixThresholdDlg.cpp \
     dialog/TemplateMatchDlg.cpp \
     dialog/StatisticPixelDlg.cpp \
