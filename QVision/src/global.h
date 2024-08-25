@@ -4,8 +4,10 @@
 #include <QList>
 #include <QMenu>
 #include <QList>
+#include <Sort.h>
 #include <QLabel>
 #include <QTimer>
+#include <QDebug>
 #include <QObject>
 #include <QScreen>
 #include <QWidget>
@@ -57,6 +59,8 @@
 #include <QImageCapture>
 #include <QMediaDevices>
 #include <QJsonDocument>
+#include <QGraphicsView>
+#include <QGraphicsScene>
 #include <QPlainTextEdit>
 #include <QGuiApplication>
 #include <QTableWidgetItem>
@@ -64,21 +68,15 @@
 #include <QNetworkInterface>
 #include <QRegularExpression>
 #include <QMediaCaptureSession>
-#include <QNetworkAccessManager>
-#include <Sort.h>
-#include <QGraphicsView>
-#include <QGraphicsScene>
 #include <QGraphicsProxyWidget>
-
-// #include "include/dlib/opencv.h"
-// #include "include/dlib/image_processing.h"
-// #include "include/dlib/image_processing/frontal_face_detector.h"
-
+#include <QNetworkAccessManager>
+// #include <zbar.h>
 #include <baseapi.h>
 #include <allheaders.h>
-
 using namespace cv;
 using namespace std;
+// using namespace dlib;
+// using namespace zbar;
 using namespace tesseract;
 enum {
     MINDIST,

@@ -91,9 +91,10 @@ CoordinateSystem::CoordinateSystem(QWidget *parent) : QMainWindow(parent)
 }
 
 
-void CoordinateSystem::paintEvent(QPaintEvent *event)
+void CoordinateSystem::paintEvent(QPaintEvent *e)
 {
     QPainter painter(this);
+    qInfo()<<e->isAccepted();
     painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing);
     painter.save();
     painter.setBrush(QBrush(Qt::blue));
@@ -107,7 +108,6 @@ void CoordinateSystem::paintEvent(QPaintEvent *event)
         painter.drawText(controlPnts.at(i) + QPointF(-rect.width() / 2, rect.height() / 2 - 1.0), number);
     }
     painter.restore();
-
     if (controlPnts.size() >= 2) {
         QPainterPath curve;
         curve.moveTo(pntsOnCurve.at(0));
@@ -121,13 +121,13 @@ void CoordinateSystem::paintEvent(QPaintEvent *event)
     }
 }
 
-void CoordinateSystem::mousePressEvent(QMouseEvent *event)
+void CoordinateSystem::mousePressEvent(QMouseEvent *e)
 {
-    if (event->buttons() & Qt::LeftButton && event->pos().y() > 50) {
+    if (e->buttons() & Qt::LeftButton && e->pos().y() > 50) {
         mousePressed = true;
         if (iscompleted) {
             curIndex = -1;
-            auto pos = event->pos();
+            auto pos = e->pos();
             for (auto i = 0; i < controlPnts.size(); i++) {
                 auto point = controlPnts.at(i);
                 if (qAbs(qSqrt(qPow(pos.x() - point.x(), 2) + qPow(pos.y() - point.y(), 2))) < 10.0000) {
@@ -136,49 +136,49 @@ void CoordinateSystem::mousePressEvent(QMouseEvent *event)
                 }
             }
         } else {
-            controlPnts.append(event->pos());
+            controlPnts.append(e->pos());
             BezierCurve(controlPnts, pntsOnCurve, precision);
             update();
         }
-    } else if (event->buttons() & Qt::RightButton) iscompleted = true;
+    } else if (e->buttons() & Qt::RightButton) iscompleted = true;
 }
 
-void CoordinateSystem::mouseMoveEvent(QMouseEvent *event)
+void CoordinateSystem::mouseMoveEvent(QMouseEvent *e)
 {
-    if (event->buttons() & Qt::LeftButton && mousePressed && curIndex != -1 && event->pos().y() > 50) {
+    if (e->buttons() & Qt::LeftButton && mousePressed && curIndex != -1 && e->pos().y() > 50) {
         if (curIndex < controlPnts.size()) {
-            controlPnts[curIndex] = event->pos();
+            controlPnts[curIndex] = e->pos();
             BezierCurve(controlPnts, pntsOnCurve, precision);
             update();
         }
     }
 }
 
-void CoordinateSystem::mouseReleaseEvent(QMouseEvent *event)
+void CoordinateSystem::mouseReleaseEvent(QMouseEvent *e)
 {
     curIndex = -1;
-    if (event->buttons() & Qt::LeftButton) {
+    if (e->buttons() & Qt::LeftButton) {
         mousePressed = false;
     }
 }
 
 
-bool CoordinateSystem::eventFilter(QObject *obj, QEvent *event)
+bool CoordinateSystem::eventFilter(QObject *obj, QEvent *e)
 {
     if (obj == drawShape) {
-        if (event->type() == QEvent::MouseButtonPress) {
-            QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
+        if (e->type() == QEvent::MouseButtonPress) {
+            QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(e);
             QApplication::sendEvent(this, mouseEvent);
             return true;
         }
     }
-    return QMainWindow::eventFilter(obj, event);
+    return QMainWindow::eventFilter(obj, e);
 }
 
 
-void CoordinateSystem::wheelEvent(QWheelEvent *event)
+void CoordinateSystem::wheelEvent(QWheelEvent *e)
 {
-    int delta = event->angleDelta().y();
+    int delta = e->angleDelta().y();
     QMessageBox::information(this,"提示","右键结束添加控制点");
     if (delta > 0) {
         QRect currentRect = painter->window();

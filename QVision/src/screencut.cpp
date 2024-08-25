@@ -1,5 +1,5 @@
 #include "screencut.h"
-ScreenCut::ScreenCut(QWidget *parent)
+ScreenCut::ScreenCut()
 {
     QRegion virBox;
     setCursor(Qt::CrossCursor);

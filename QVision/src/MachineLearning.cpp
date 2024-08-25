@@ -112,7 +112,7 @@ void MachineLearning::closeWin()
     this->close();
 }
 
-void MachineLearning::paintEvent(QPaintEvent *event)
+void MachineLearning::paintEvent(QPaintEvent *e)
 {
     QPainter draw(this);
     // draw.setViewport(100,100,400,600);//绘制的位置
@@ -123,6 +123,8 @@ void MachineLearning::paintEvent(QPaintEvent *event)
         draw.setBrush(QBrush(Qt::green));
         drawStar(&draw, width() / 2, height() / 2, 20, 10, 5);
     }
+
+    qInfo()<<e->Paint;
 }
 
 void MachineLearning::drawStar(QPainter *painter, int x, int y, int outerRadius, int innerRadius, int points)

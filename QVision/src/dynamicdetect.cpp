@@ -1,11 +1,14 @@
 #include "dynamicdetect.h"
-void DynamicDetect::DetectLine()
+#include <dlib/opencv.h>
+// #include <dlib/image_processing.h>
+// #include <dlib/image_processing/frontal_face_detector.h>
+void DynamicDetect::detectLine()
 {
     VideoCapture capture(0);
     namedWindow("Detect Lines",0);
     while (true)
     {
-        Mat frame,gray;
+        Mat frame;
         int key = waitKey(10);
         vector<Vec2f> lines;
         capture.read(frame);
@@ -37,7 +40,7 @@ void DynamicDetect::DetectLine()
     destroyAllWindows();
 }
 
-void DynamicDetect::DetectCircle()
+void DynamicDetect::detectCircle()
 {
     VideoCapture capture(0);
     namedWindow("Detect Circle",0);
@@ -70,7 +73,7 @@ void DynamicDetect::DetectCircle()
     destroyAllWindows();
 }
 
-void DynamicDetect::DetectEllpise()
+void DynamicDetect::detectEllpise()
 {
     VideoCapture capture(0);
     namedWindow("Detect Ellpise",0);
@@ -101,7 +104,7 @@ void DynamicDetect::DetectEllpise()
     destroyAllWindows();
 }
 
-void DynamicDetect::DetectTriangle()
+void DynamicDetect::detectTriangle()
 {
     VideoCapture capture(0);
     namedWindow("Detect Triangles",0);
@@ -146,7 +149,7 @@ double DynamicDetect::angle(Point pt1, Point pt2, Point pt0)
     return (dx1 * dx2 + dy1 * dy2) / sqrt((dx1 * dx1 + dy1 * dy1) * (dx2 * dx2 + dy2 * dy2) + 1e-10);
 }
 
-void DynamicDetect::DetectSquare()
+void DynamicDetect::detectSquare()
 {
     VideoCapture capture(0);
     namedWindow("Detect Square", 0);
@@ -191,7 +194,7 @@ void DynamicDetect::DetectSquare()
     destroyAllWindows();
 }
 
-void DynamicDetect::DetectCharacter()
+void DynamicDetect::detectCharacter()
 {
     VideoCapture capture(0);
     if(!capture.isOpened())
@@ -219,7 +222,7 @@ void DynamicDetect::DetectCharacter()
     destroyAllWindows();
 }
 
-void DynamicDetect::DetectEye()
+void DynamicDetect::detectEye()
 {
     VideoCapture capture(0);
     CascadeClassifier faceCascade;
@@ -261,7 +264,7 @@ void DynamicDetect::DetectEye()
 }
 
 
-void DynamicDetect::DetectFace()
+void DynamicDetect::detectFace()
 {
     VideoCapture capture(0);
     CascadeClassifier faceCascade;
@@ -302,7 +305,7 @@ void DynamicDetect::DetectFace()
 }
 
 
-void DynamicDetect::DetectByUserCreateModel(const QString &modelPath)
+void DynamicDetect::detectByUserCreateModel(const QString &modelPath)
 {
     VideoCapture capture(0);
     CascadeClassifier usermodel;
@@ -339,5 +342,34 @@ void DynamicDetect::DetectByUserCreateModel(const QString &modelPath)
         }
     }
     capture.release();
+    destroyAllWindows();
+}
+
+void DynamicDetect::recognizeFace()
+{
+    VideoCapture cap(0);
+    if (!cap.isOpened()) {
+        QMessageBox::warning(nullptr,"提示","无法打开摄像头");
+        return ;
+    }
+    // dlib::frontal_face_detector detector = dlib::get_frontal_face_detector();
+    // dlib::shape_predictor predictor;
+    // dlib::deserialize("shape_predictor_68_face_landmarks.dat") >> predictor;
+    // while (true) {
+    //     Mat frame;
+    //     cap >> frame;
+    //     if (frame.empty()) break;
+    //     dlib::cv_image<dlib::bgr_pixel> img(frame);
+    //     vector<dlib::rectangle> faces = detector(img);
+    //     for (const dlib::rectangle &face : faces) {
+    //         rectangle(frame, Point(face.left(), face.top()), Point(face.right(), face.bottom()), QVGreen, 2);
+    //     }
+    //     namedWindow("Face Recognition", WINDOW_AUTOSIZE);
+    //     imshow("Face Recognition", frame);
+    //     if (waitKey(1) == 27) {
+    //         break;
+    //     }
+    // }
+    cap.release();
     destroyAllWindows();
 }

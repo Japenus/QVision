@@ -14,9 +14,7 @@
 namespace dlib
 {
 
-    template <
-        typename pixel_type
-        >
+    template <typename pixel_type>
     class cv_image
     {
     public:

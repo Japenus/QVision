@@ -1,9 +1,9 @@
 #ifndef DYNAMICDETECT_H
 #define DYNAMICDETECT_H
-#include"global.h"
-#include"tools.h"
-#include"Preprocess.h"
-#include"ImgAlgorithm.h"
+#include "Global.h"
+#include "tools.h"
+#include "Preprocess.h"
+#include "ImgAlgorithm.h"
 class DynamicDetect
 {
 public:
@@ -11,15 +11,16 @@ public:
     static DynamicDetect & ins(){static DynamicDetect d;return d;}
     ImgAlgorithm IAM;
     Preprocess Process;
-    void DetectEye();
-    void DetectFace();
-    void DetectLine();
-    void DetectSquare();
-    void DetectCircle();
-    void DetectEllpise();
-    void DetectTriangle();
-    void DetectCharacter();
-    void DetectByUserCreateModel(const QString &modelPath);
+    void detectEye();
+    void detectFace();
+    void detectLine();
+    void detectSquare();
+    void detectCircle();
+    void detectEllpise();
+    void detectTriangle();
+    void detectCharacter();
+    void detectByUserCreateModel(const QString &modelPath);
+    void recognizeFace();
     double angle(Point pt1, Point pt2, Point pt0);
 };
 

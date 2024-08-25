@@ -1402,50 +1402,50 @@ void QVision::TesseractOCR()
 
 void QVision::CaptureLine()
 {
-    DynamicDetect::ins().DetectLine();
+    DynamicDetect::ins().detectLine();
 }
 
 
 void QVision::CaptureCircle()
 {
-    DynamicDetect::ins().DetectCircle();
+    DynamicDetect::ins().detectCircle();
 }
 
 
 void QVision::CaptureTriangle()
 {
-    DynamicDetect::ins().DetectTriangle();
+    DynamicDetect::ins().detectTriangle();
 }
 
 void QVision::CaptureSquare()
 {
-    DynamicDetect::ins().DetectSquare();
+    DynamicDetect::ins().detectSquare();
 }
 
 void QVision::CaptureEllpise()
 {
-    DynamicDetect::ins().DetectEllpise();
+    DynamicDetect::ins().detectEllpise();
 }
 
 void QVision::CaptureCharacter()
 {
-    DynamicDetect::ins().DetectCharacter();
+    DynamicDetect::ins().detectCharacter();
 }
 
 void QVision::CaptureHumanEyes()
 {
-    DynamicDetect::ins().DetectEye();
+    DynamicDetect::ins().detectEye();
 }
 
 void QVision::CaptureHumanFace()
 {
-    DynamicDetect::ins().DetectFace();
+    DynamicDetect::ins().detectFace();
 }
 
 void QVision::CaptureArbitaryShape()
 {
     QString usermodelPath=QFileDialog::getOpenFileName(this,"获取模型","eg.xml","选择模型(*.xml)");
-    DynamicDetect::ins().DetectByUserCreateModel(usermodelPath);
+    DynamicDetect::ins().detectByUserCreateModel(usermodelPath);
 }
 
 //文件操作

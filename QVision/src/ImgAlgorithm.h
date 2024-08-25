@@ -2,7 +2,7 @@
 #define IMGALGORITHM_H
 #include"tools.h"
 #include"color.h"
-#include"global.h"
+#include"Global.h"
 #include"Dialog.h"
 #include"preprocess.h"
 class ImgAlgorithm:public QObject

@@ -13,8 +13,7 @@ namespace dlib
 
 // ----------------------------------------------------------------------------------------
 
-    const static point OBJECT_PART_NOT_PRESENT(0x7FFFFFFF,
-                                                0x7FFFFFFF);
+    const static point OBJECT_PART_NOT_PRESENT(0x7FFFFFFF,0x7FFFFFFF);
 
 // ----------------------------------------------------------------------------------------
 

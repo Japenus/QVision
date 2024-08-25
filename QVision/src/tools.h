@@ -1,7 +1,7 @@
 #ifndef TOOLS_H
 #define TOOLS_H
 #include"color.h"
-#include"global.h"
+#include"Global.h"
 #include"preprocess.h"
 #include"formattransfer.h"
 class Tools:public QObject
@@ -14,7 +14,6 @@ public:
     Scalar PickColor();
     QSqlDatabase MySql();
     int Pyramid(Mat src);
-    void recognizeFace();
     Rect GetCoordinate();
     void MakeBig(Mat src);
     Mat EdgeSobel(Mat src);

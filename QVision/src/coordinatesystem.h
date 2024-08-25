@@ -1,8 +1,6 @@
 #ifndef COORDINATESYSTEM_H
 #define COORDINATESYSTEM_H
-
 #include"global.h"
-
 class CoordinateSystem:public QMainWindow
 {
 public:
@@ -11,12 +9,12 @@ public:
 public:
     void BezierCurve(const QList<QPointF> &src, QList<QPointF> &dest, qreal precision);
 protected:
-    virtual void paintEvent(QPaintEvent *event) override;
-    virtual void wheelEvent(QWheelEvent *event) override;
-    virtual void mouseMoveEvent(QMouseEvent *event) override;
-    virtual void mousePressEvent(QMouseEvent *event) override;
-    virtual void mouseReleaseEvent(QMouseEvent *event) override;
-    bool eventFilter(QObject *obj, QEvent *event) override;
+    virtual void paintEvent(QPaintEvent *e) override;
+    virtual void wheelEvent(QWheelEvent *e) override;
+    bool eventFilter(QObject *obj, QEvent *e) override;
+    virtual void mouseMoveEvent(QMouseEvent *e) override;
+    virtual void mousePressEvent(QMouseEvent *e) override;
+    virtual void mouseReleaseEvent(QMouseEvent *e) override;
 public slots:
     void redraw();
     void exitCurWin();

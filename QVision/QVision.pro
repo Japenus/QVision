@@ -5,6 +5,7 @@ RC_ICONS = qvision.ico
 
 INCLUDEPATH +=$$PWD/src \
               $$PWD/dialog\
+              include \
               include/zbar \
               include/opencv2 \
               include/tesseract\
@@ -44,7 +45,7 @@ HEADERS += \
     src/Global.h \
     src/Database.h \
     src/Screencut.h \
-    src/Subpixels.h \
+    # src/Subpixels.h \
     src/DllManager.h \
     src/Preprocess.h \
     src/Multimedia.h \
@@ -84,7 +85,7 @@ SOURCES += \
     dialog/UpgradeTempMatchDlg.cpp \
     src/Tools.cpp \
     src/Database.cpp \
-    src/Subpixels.cpp \
+    # src/Subpixels.cpp \
     src/Screencut.cpp \
     src/DllManager.cpp \
     src/Preprocess.cpp \

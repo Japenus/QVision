@@ -281,37 +281,28 @@ Mat Tools::AreaCover(Mat img)
 
 Mat Tools::PersTransform(Mat src,Mat target)
 {
-    Mat hMatrix,transformed,output,Hmatrix;
+    Mat deSrc,desTar;
+    Mat hMatrix,transfer,output;
     vector<DMatch> best;
     vector<Point2f> points1, points2;
     Ptr<Feature2D> sift = SIFT::create();
     vector<KeyPoint> kp1,kp2;
-    Mat deSrc,desTar;
     sift->detectAndCompute(src,noArray(), kp1, deSrc);
     sift->detectAndCompute(target,noArray(), kp2,desTar);
     drawMatches(src,kp1, target,kp2, best, output);
-    for (const auto& kp : kp1)
-    {
-        points1.push_back(kp.pt);
-    }
-    for(const auto& kp : kp2)
-    {
-        points2.push_back(kp.pt) ;
-    }
-    try
-    {
+    for (const auto& kp : kp1) points1.push_back(kp.pt);
+    for(const auto& kp : kp2) points2.push_back(kp.pt);
+    try{
        hMatrix=findHomography(points2, points1,RANSAC);
-    }
-    catch(const exception& e)
-    {
+    }catch(const exception& e){
         QString eMsg ="无法计算H矩阵!\n";
         eMsg += e.what();
         QMessageBox::critical(nullptr,"错误",eMsg,QMessageBox::Ok);
         return Mat();
     }
-    warpPerspective(target, transformed,hMatrix,src.size());
+    warpPerspective(target,transfer,hMatrix,src.size());
     waitKey(0);
-    return transformed;
+    return transfer;
 }
 
 static void func(int e,int x,int y,int flags, void* userdata)
@@ -358,7 +349,7 @@ static void func(int e,int x,int y,int flags, void* userdata)
 
 static void mouseErase(int e,int x,int y,int f,void *data)
 {
-    Mat* im=(Mat*)data;
+    Mat *im=(Mat*)data;
     DataStruct* dts=static_cast<DataStruct*>(data);
     Point pt(x,y);
     if(e==EVENT_LBUTTONUP||!(f&EVENT_FLAG_LBUTTON)) temp1=Point(-1,-1);
@@ -538,34 +529,6 @@ int Tools::Pyramid(Mat src)
     return 0;
 }
 
-void Tools::recognizeFace()
-{
-    // VideoCapture cap(0);
-    // if (!cap.isOpened()) {
-    //     QMessageBox::information(this,tr("提示"),tr("无法打开摄像头"));
-    //     return ;
-    // }
-    // while (true) {
-    //     Mat frame;
-    //     cap >> frame;
-    //     detector = dlib::get_frontal_face_detector();
-    //     dlib::deserialize("shape_predictor_68_face_landmarks.dat") >> predictor;
-
-    //     dlib::cv_image<dlib::bgr_pixel> img(frame);
-    //     vector<dlib::rectangle> faces = detector(img);
-
-    //     for (dlib::rectangle face : faces) {
-    //         rectangle(frame, Point(face.left(), face.top()), Point(face.right(), face.bottom()), QVGreen, 2);
-    //     }
-
-    //     namedWindow("Face Recognition",0);
-    //     imshow("Face Recognition", frame);
-    //     if (waitKey(1) == 27) {
-    //         break;
-    //     }
-    // }
-}
-
 Scalar Tools::PickColor()
 {
     QColor defaultColor(Qt::black);
@@ -607,7 +570,7 @@ QString Tools::NetSpyder(QString &url,QProgressBar *bar,QElapsedTimer *t)
     RR.statusCode=reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     RR.success=(reply->error()==QNetworkReply::NoError);
     RR.isFailed=(reply->error()!=QNetworkReply::NoError);
-    if (RR.success) {
+    if (RR.success){
         RR.data=reply->readAll();
         htmlcode=QString(RR.data);
         MatchImgPath(regExp,htmlcode);
@@ -615,12 +578,10 @@ QString Tools::NetSpyder(QString &url,QProgressBar *bar,QElapsedTimer *t)
         QThread::msleep(2000);
         bar->setValue(0);
         manager->deleteLater();
-        return htmlcode;
-    }
-    qInfo()<<"success:"<<RR.success<<"RR.isFailed:"<<RR.isFailed;
-    if(RR.isFailed){
+    }else if(RR.isFailed){
         return htmlcode = "Error: " + reply->errorString();
     }
+    return htmlcode;
 }
 
 void Tools::MatchImgPath(QRegularExpression re,QString context)
@@ -688,9 +649,6 @@ QString Tools::recognizeQRCode(Mat img)
     }
 
 }
-
-// #include<zbar.h>
-// using namespace zbar;
 
 struct barCodeData{
     QString type;
