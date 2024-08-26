@@ -2,7 +2,7 @@ QT += core gui sql network multimedia multimediawidgets axcontainer
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 CONFIG += c++17
 RC_ICONS = qvision.ico
-
+DESTDIR = $$PWD/QVision
 INCLUDEPATH +=$$PWD/src \
               $$PWD/dialog\
               include/zbar \
