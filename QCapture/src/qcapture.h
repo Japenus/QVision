@@ -1,6 +1,6 @@
 #ifndef QCAPTURE_H
 #define QCAPTURE_H
-#include <global.h>
+#include <src/global.h>
 class QCapture : public QMainWindow
 {
     Q_OBJECT

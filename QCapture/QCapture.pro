@@ -14,6 +14,8 @@ HEADERS += \
     src/global.h \
     src/qcapture.h
 
+DESTDIR =$$PWD/Capture
+
 win32: LIBS += -L$$PWD/Source/lib/ -lOpenCV
 
 INCLUDEPATH += $$PWD/Source/opencv2

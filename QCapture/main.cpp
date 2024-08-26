@@ -1,4 +1,4 @@
-#include "qcapture.h"
+#include "src/qcapture.h"
 
 #include <QApplication>
 
