@@ -75,7 +75,6 @@
 #include <allheaders.h>
 using namespace cv;
 using namespace std;
-// using namespace dlib;
 // using namespace zbar;
 using namespace tesseract;
 enum {

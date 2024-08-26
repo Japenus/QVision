@@ -1,7 +1,4 @@
 #include "dynamicdetect.h"
-#include <dlib/opencv.h>
-// #include <dlib/image_processing.h>
-// #include <dlib/image_processing/frontal_face_detector.h>
 void DynamicDetect::detectLine()
 {
     VideoCapture capture(0);
@@ -342,34 +339,5 @@ void DynamicDetect::detectByUserCreateModel(const QString &modelPath)
         }
     }
     capture.release();
-    destroyAllWindows();
-}
-
-void DynamicDetect::recognizeFace()
-{
-    VideoCapture cap(0);
-    if (!cap.isOpened()) {
-        QMessageBox::warning(nullptr,"提示","无法打开摄像头");
-        return ;
-    }
-    // dlib::frontal_face_detector detector = dlib::get_frontal_face_detector();
-    // dlib::shape_predictor predictor;
-    // dlib::deserialize("shape_predictor_68_face_landmarks.dat") >> predictor;
-    // while (true) {
-    //     Mat frame;
-    //     cap >> frame;
-    //     if (frame.empty()) break;
-    //     dlib::cv_image<dlib::bgr_pixel> img(frame);
-    //     vector<dlib::rectangle> faces = detector(img);
-    //     for (const dlib::rectangle &face : faces) {
-    //         rectangle(frame, Point(face.left(), face.top()), Point(face.right(), face.bottom()), QVGreen, 2);
-    //     }
-    //     namedWindow("Face Recognition", WINDOW_AUTOSIZE);
-    //     imshow("Face Recognition", frame);
-    //     if (waitKey(1) == 27) {
-    //         break;
-    //     }
-    // }
-    cap.release();
     destroyAllWindows();
 }

@@ -123,7 +123,7 @@
 #endif
 
 #ifdef __cplusplus
-#  include "opencv2/core.hpp"
+#  include "../../include/opencv2/core.hpp"
 #endif
 
 /** @addtogroup core_c

@@ -5,14 +5,13 @@ RC_ICONS = qvision.ico
 
 INCLUDEPATH +=$$PWD/src \
               $$PWD/dialog\
-              include \
               include/zbar \
               include/opencv2 \
               include/tesseract\
               include/leptonica \
 
 
-LIBS +=-L$$PWD/lib -lOpenCV -lLeptonica -lOCR -lZBar -lSort -lDlib
+LIBS +=-L$$PWD/lib -lOpenCV -lLeptonica -lOCR -lZBar -lSort
 
 
 HEADERS += \

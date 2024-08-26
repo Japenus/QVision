@@ -3,8 +3,8 @@
 #ifndef DLIB_CvIMAGE_H_
 #define DLIB_CvIMAGE_H_
 
-#include <opencv2/core/core.hpp>
-#include <opencv2/core/types_c.h>
+#include <../../include/opencv2/core/core.hpp>
+#include <../../include/opencv2/core/types_c.h>
 #include "cv_image_abstract.h"
 #include "../algs.h"
 #include "../pixel.h"

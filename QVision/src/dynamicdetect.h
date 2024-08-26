@@ -19,9 +19,8 @@ public:
     void detectEllpise();
     void detectTriangle();
     void detectCharacter();
-    void detectByUserCreateModel(const QString &modelPath);
-    void recognizeFace();
     double angle(Point pt1, Point pt2, Point pt0);
+    void detectByUserCreateModel(const QString &modelPath);
 };
 
 #endif // DYNAMICDETECT_H
