@@ -1,20 +1,24 @@
 #include "qcapture.h"
 QCapture::QCapture(QWidget *parent): QMainWindow(parent)
 {
+    isPause=false;
     view = new Draw;
     main=new QVBoxLayout;
     container=new QWidget;
     scene=new QGraphicsScene;
     exit=new QPushButton("Exit");
+    pause=new QPushButton("Pause");
     detect=new QPushButton("Start");
     main->addWidget(view);
     main->addWidget(exit);
+    main->addWidget(pause);
     main->addWidget(detect);
     setCentralWidget(container);
     container->setLayout(main);
     view->setDragMode(QGraphicsView::ScrollHandDrag);
     connect(detect,&QPushButton::clicked,this,&QCapture::beginDetect);
     connect(exit,&QPushButton::clicked,this,&QCapture::closeDlib);
+    connect(pause,&QPushButton::clicked,this,&QCapture::pauseDlib);
     setWindowTitle("Dlib");
     resize(800,600);
 }
@@ -62,6 +66,11 @@ void QCapture::closeDlib()
 {
     if(cap.isOpened()) cap.release();
     QCoreApplication::quit();
+}
+
+void QCapture::pauseDlib()
+{
+    isPause = !isPause;
 }
 
 Draw::Draw(QWidget *parent) : QGraphicsView(parent)

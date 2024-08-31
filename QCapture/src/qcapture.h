@@ -24,11 +24,13 @@ class QCapture : public QMainWindow
 
 public:
     Draw *view;
+    bool isPause;
     QCapture(QWidget *parent = nullptr);
     ~QCapture();
 
 public slots:
     void closeDlib();
+    void pauseDlib();
     void beginDetect();
 
 private:
@@ -36,6 +38,7 @@ private:
     QVBoxLayout *main;
     QWidget *container;
     QPushButton *exit;
+    QPushButton *pause;
     QPushButton *detect;
     QGraphicsScene *scene;
 };

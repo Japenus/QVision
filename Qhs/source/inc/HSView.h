@@ -88,7 +88,9 @@ public:
 	{
 		hsImageReserved = 0,
 		hsImage8bppGreyScale = 1,
-		hsImage32bppRgb = 10
+		hsImage32bppRgb = 10,
+		hsImage16bppGreyScale = 20,
+		hsImage16bppHeightMap = 21
 	};
 
 public:

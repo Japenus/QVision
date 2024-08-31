@@ -1,7 +1,7 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
-#include <QTimer>
 #include <QDebug>
+#include <QThread>
 #include <opencv.hpp>
 #include <QVBoxLayout>
 #include <QMouseEvent>

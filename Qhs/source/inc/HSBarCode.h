@@ -116,7 +116,12 @@ public:
 		hsBarcodePDF417 = 8,
 		hsBarcodeBC412 = 9,
 		hsBarcodePostnet = 10,
-		hsBarcodePharmacode = 11
+		hsBarcodePharmacode = 11,
+		hsBarcodeISBN10 = 12,
+		hsBarcodeISBN13 = 13,
+		hsBarcodeUPCA = 14,
+		hsBarcodeQR = 15,
+		hsBarcodePartial = 16
 	};
 
 	enum hsBarcodePolarity
