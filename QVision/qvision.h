@@ -42,12 +42,10 @@ public:
     QString getFolder();
     QString getFilepath();
     QString getOutputpath();
+    QGraphicsScene *resScene;
     Mat QPixmap2Mat(QPixmap &pix);
     QFunctionPointer currentFunPtr;
     QHash<QString, QFunctionPointer> Ptrs;
-
-public:
-    QGraphicsScene *resScene;
 
 
 private:
