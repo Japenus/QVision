@@ -7,9 +7,11 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
+    src/hexSight.cpp \
     src/qhs.cpp
 
 HEADERS += \
+    src/hexSight.h \
     src/qhs.h \
     src/global.h \
 

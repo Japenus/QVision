@@ -28,12 +28,5 @@ private:
     QVBoxLayout *main;
     QPushButton *open;
     QGraphicsScene *scene;
-
-private:
-    HSImage *hsImg;
-    HSView *hsView;
-    HSDatabase hsDB;
-    HSScene *hsScene;
-    HSLocator locator;
 };
 #endif // QHS_H
