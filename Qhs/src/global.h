@@ -2,6 +2,7 @@
 #define GLOBAL_H
 #include <QDebug>
 #include <QImage>
+#include <QTimer>
 #include <QVector>
 #include <QVBoxLayout>
 #include <QMouseEvent>
@@ -12,6 +13,7 @@
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QGraphicsRectItem>
+#include <QGraphicsEllipseItem>
 
 #include <HSView.h>
 #include <HSScene.h>

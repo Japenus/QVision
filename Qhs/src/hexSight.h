@@ -20,9 +20,9 @@ public:
 
 private:
     bool inited;
+    HSModel model;
     HSImage *hsImg;
     HSView *hsView;
-    HSModel model;
     HSDatabase hsDB;
     HSScene hsScene;
     HSLocator locator;
