@@ -7,10 +7,6 @@
 class DynamicDetect
 {
 public:
-    Tools tool;
-    static DynamicDetect & ins(){static DynamicDetect d;return d;}
-    ImgAlgorithm IAM;
-    Preprocess Process;
     void detectEye();
     void detectFace();
     void detectLine();
@@ -21,6 +17,7 @@ public:
     void detectCharacter();
     double angle(Point pt1, Point pt2, Point pt0);
     void detectByUserCreateModel(const QString &modelPath);
+    static DynamicDetect & ins(){static DynamicDetect d;return d;}
 };
 
 #endif // DYNAMICDETECT_H

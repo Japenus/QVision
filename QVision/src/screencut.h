@@ -8,9 +8,9 @@ class ScreenCut : public QWidget
     Q_OBJECT
 public:
     Mat CurrentArea;
+    explicit ScreenCut();
     void CutArea(QPixmap &pix);
     static ScreenCut & ins(){static ScreenCut s;return s;}
-    explicit ScreenCut();
 private:
     bool drawing;
     QPixmap captured;

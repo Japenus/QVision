@@ -6,7 +6,6 @@ class CoordinateSystem:public QMainWindow
 public:
     CoordinateSystem(QWidget *parent = nullptr);
     static CoordinateSystem& ins(){static CoordinateSystem c;return c;}
-public:
     void BezierCurve(const QList<QPointF> &src, QList<QPointF> &dest, qreal precision);
 protected:
     virtual void paintEvent(QPaintEvent *e) override;
@@ -24,16 +23,16 @@ private:
     QLabel *drawShape;
     QPainter *painter;
     QWidget *container;
-    QPushButton *exitSubWin;
     QPushButton *reDraw;
+    QPushButton *exitSubWin;
     QComboBox *selectPrecison;
 private:
     int step=40;
     int offset=100;
-    bool iscompleted = false;
-    bool mousePressed = false;
     int curIndex = -1;
     qreal precision = 0.1;
+    bool iscompleted = false;
+    bool mousePressed = false;
     QList<QPointF> controlPnts;
     QList<QPointF> pntsOnCurve;
 };

@@ -8,9 +8,6 @@ class ImgCalculate:public QObject
 {
     Q_OBJECT
 public:
-    static ImgCalculate & ins(){static ImgCalculate i;return i;}
-public:
-    Preprocess prepro;
     Mat Divide(Mat src);
     Mat OnCalc(Mat src);
     Mat OffCalc(Mat src);
@@ -20,6 +17,7 @@ public:
     Mat FourierTransform(Mat src);
     Mat LaplacianTransform(Mat src);
     Mat Subtraction(Mat img1, Mat img2);
+    static ImgCalculate & ins(){static ImgCalculate i;return i;}
 };
 
 #endif // IMGCALCULATE_H

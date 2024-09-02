@@ -5,8 +5,8 @@ class FileOperation:public QObject
 {
     Q_OBJECT
 public:
-    static FileOperation & ins(){static FileOperation f;return f;}
     int ExportFiles(QString filefolder, QString outpuText);
+    static FileOperation & ins(){static FileOperation f;return f;}
     void GetImgData(const QString& folderPath, const QString& outputFile);
     int RenameFile(QString path,QString prefix,int& increment,QString exten);
     void ResizeImg(QString imgfolder, QString outputRes, int weight, int height);

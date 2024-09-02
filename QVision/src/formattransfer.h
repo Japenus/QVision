@@ -4,14 +4,14 @@
 class FormatTransfer
 {
 public:
-    static FormatTransfer & ins(){static FormatTransfer f;return f;}
-    // Mat Pix2Mat(Pix *datatype);
+    Mat Pix2Mat(Pix *datatype);
     Pix* Mat2Pix(Mat datatype);
-    // QImage Pix2QImage(Pix *datatype);
+    QString Int2QString(int data);
+    QImage Pix2QImage(Pix *datatype);
     Pix* QImage2Pix(QImage &datatype);
     Mat QPixmap2Mat(QPixmap &datatype);
     QPixmap matToQpixmap(Mat &datatype);
-    QString Int2QString(int data);
+    static FormatTransfer & ins(){static FormatTransfer f;return f;}
 };
 
 #endif // FORMATTRANSFER_H

@@ -65,7 +65,7 @@ Mat Tools::FixThreshold(Mat img, int val)
 
 Mat Tools::AdaptThreshold(Mat src ,int block,double C)
 {
-    Mat gray=process.GrayTransform(src);
+    Mat gray=Preprocess::ins().GrayTransform(src);
     Mat res(src.size(), CV_8UC1);
     adaptiveThreshold(gray,res,255,ADAPTIVE_THRESH_MEAN_C,THRESH_BINARY,block,C);
     return res;
@@ -99,7 +99,7 @@ Mat Tools::RegionGrow(Mat& src, Point seedPoint, int threshold, Mat& visited)
 }
 Mat Tools::EdgeSobel(Mat src)
 {
-    Mat gray=process.GrayTransform(src);
+    Mat gray=Preprocess::ins().GrayTransform(src);
     Mat X,Y,Xa,Ya,res;
     Sobel(gray,X,CV_16S,1,0);
     Sobel(gray,Y,CV_16S,0,1);
@@ -110,14 +110,14 @@ Mat Tools::EdgeSobel(Mat src)
 }
 Mat Tools::EdgeCanny(Mat src)
 {
-    Mat res, gray=process.GrayTransform(src);
+    Mat res, gray=Preprocess::ins().GrayTransform(src);
     Canny(gray, res, 150, 100);
     return res;
 }
 
 Mat Tools::EdgeCanny(Mat src,int low,int high)
 {
-    Mat res,gray=process.GrayTransform(src);
+    Mat res,gray=Preprocess::ins().GrayTransform(src);
     Canny(gray,res,low,high);
     return res;
 }
@@ -137,13 +137,13 @@ Mat Tools::Edgescharr(Mat src)
 }
 Mat Tools::ThresholdProcess(Mat src,int val,int type)
 {
-    Mat dst=process.GrayTransform(src);
+    Mat dst=Preprocess::ins().GrayTransform(src);
     threshold(src, dst, val, 255, type);
     return dst;
 }
 Mat Tools::ThresholdProcess(Mat src,int val)
 {
-    Mat dst=process.GrayTransform(src);
+    Mat dst=Preprocess::ins().GrayTransform(src);
     threshold(src,dst,val,255,THRESH_BINARY);
     return dst;
 }
@@ -156,7 +156,7 @@ Mat Tools::ThresholdProcess(Mat src,int val,int maxVal,int type)
 Mat Tools::ShowOutline(Mat src,int val)
 {
     Mat gray,bin;
-    gray = process.GrayTransform(src);
+    gray = Preprocess::ins().GrayTransform(src);
     bin = ThresholdProcess(gray,val,255,0);
     vector<vector<Point>> contours;
     vector<Vec4i> hierarchy;
@@ -171,7 +171,7 @@ Mat Tools::ShowOutline(Mat src,int val)
 
 int Tools::Statistic(Mat img, int pixVal)
 {
-    Mat temp,gray=process.GrayTransform(img);
+    Mat temp,gray=Preprocess::ins().GrayTransform(img);
     compare(gray,pixVal,temp,CMP_EQ);
     int count = countNonZero(temp);
     return count;

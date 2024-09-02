@@ -9,7 +9,7 @@ void DynamicDetect::detectLine()
         int key = waitKey(10);
         vector<Vec2f> lines;
         capture.read(frame);
-        lines=IAM.DynamicDetectLine(frame);
+        lines=ImgAlgorithm::ins().DynamicDetectLine(frame);
         for (int i = 0; i < lines.size(); i++)
         {
             float rho = lines[i][0];
@@ -47,7 +47,7 @@ void DynamicDetect::detectCircle()
         int key = waitKey(10);
         vector<Vec3f> circles;
         capture.read(frame);
-        circles=IAM.DynamicDetectcir(frame);
+        circles=ImgAlgorithm::ins().DynamicDetectcir(frame);
         for (int i = 0; i < circles.size(); i++)
         {
             Vec3i c = circles[i];
@@ -80,7 +80,7 @@ void DynamicDetect::detectEllpise()
         int key = waitKey(10);
         vector<Vec3f> ellpises;
         capture.read(frame);
-        ellpises=IAM.DynamicDetectEll(frame);
+        ellpises=ImgAlgorithm::ins().DynamicDetectEll(frame);
         for (size_t i = 0; i < ellpises.size(); i++)
         {
             Point center(cvRound(ellpises[i][0]), cvRound(ellpises[i][1]));
@@ -204,9 +204,8 @@ void DynamicDetect::detectCharacter()
         Mat frame,gray;
         int key = waitKey(10);
         capture.read(frame);
-        gray = Process.GrayTransform(frame);
-        QString result = tool.CharRecognize(frame);
-        // qDebug()<<"识别结果:"<< result;
+        gray = Preprocess::ins().GrayTransform(frame);
+        QString result = Tools::ins().CharRecognize(frame);
         QMessageBox::information(nullptr,"提示","识别结果:"+result);
         imshow("Detect Char",frame);
         if(key ==27){
@@ -239,7 +238,7 @@ void DynamicDetect::detectEye()
         int key = waitKey(10);
         vector<Rect> eyes;
         capture.read(frame);
-        gray = Process.GrayTransform(frame);
+        gray = Preprocess::ins().GrayTransform(frame);
         faceCascade.detectMultiScale(gray, eyes,1.1,3,0,Size(30,30));
         for (int i = 0; i < eyes.size(); i++)
         {
@@ -281,7 +280,7 @@ void DynamicDetect::detectFace()
         int key = waitKey(10);
         vector<Rect> faces;
         capture.read(frame);
-        gray = Process.GrayTransform(frame);
+        gray = Preprocess::ins().GrayTransform(frame);
         faceCascade.detectMultiScale(gray, faces,1.1,3,0,Size(30,30));
         for (int i = 0; i < faces.size(); i++)
         {
@@ -322,7 +321,7 @@ void DynamicDetect::detectByUserCreateModel(const QString &modelPath)
         int key = waitKey(10);
         vector<Rect> shapes;
         capture.read(frame);
-        gray = Process.GrayTransform(frame);
+        gray = Preprocess::ins().GrayTransform(frame);
         usermodel.detectMultiScale(gray,shapes,1.1,3,0,Size(30,30));
         for (int i = 0; i < shapes.size(); i++)
         {

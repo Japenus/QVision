@@ -2,7 +2,7 @@
 
 Mat ImgCalculate::OnCalc(Mat src)
 {
-    Mat gray=prepro.GrayTransform(src);
+    Mat gray=Preprocess::ins().GrayTransform(src);
     Mat kernel = getStructuringElement(MORPH_RECT,Size(5,5));
     Mat result;
     morphologyEx(gray,result,MORPH_OPEN,kernel);
@@ -11,7 +11,7 @@ Mat ImgCalculate::OnCalc(Mat src)
 
 Mat ImgCalculate::OffCalc(Mat src)
 {
-    Mat gray = prepro.GrayTransform(src);
+    Mat gray = Preprocess::ins().GrayTransform(src);
     Mat kernel = getStructuringElement(MORPH_RECT,Size(5,5));
     Mat result;
     morphologyEx(gray,result,MORPH_CLOSE,kernel);
@@ -47,7 +47,7 @@ Mat ImgCalculate::Divide(Mat src)
 
 Mat ImgCalculate::LineStretch(Mat src)
 {
-    Mat graySrc=prepro.GrayTransform(src);
+    Mat graySrc=Preprocess::ins().GrayTransform(src);
     double minVal, maxVal;
     minMaxLoc(graySrc, &minVal, &maxVal);
     Mat res,stretched = (graySrc - minVal) * (255.0 / (maxVal - minVal));
@@ -60,7 +60,7 @@ Mat ImgCalculate::LineStretch(Mat src)
 Mat ImgCalculate::LaplacianTransform(Mat src)
 {
     Mat res;
-    Laplacian(prepro.GrayTransform(src),res,CV_16S);
+    Laplacian(Preprocess::ins().GrayTransform(src),res,CV_16S);
     res.convertTo(res, CV_8U);
     return res;
 }
@@ -68,7 +68,7 @@ Mat ImgCalculate::LaplacianTransform(Mat src)
 //傅里叶变换(作用:频率分析、滤波、频域处理、图像恢复、特征提取)
 Mat ImgCalculate::FourierTransform(Mat src)
 {
-    Mat res,complexI,gray=prepro.GrayTransform(src);
+    Mat res,complexI,gray=Preprocess::ins().GrayTransform(src);
     Mat planes[] = {Mat_<float>(gray), Mat::zeros(gray.size(), CV_32F)};
     merge(planes,2,complexI);
     dft(complexI,complexI);

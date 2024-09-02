@@ -3,7 +3,7 @@ int matchRes=1;
 int recongizedNum=1;
 Mat ImgAlgorithm::GetFeature(Mat src)
 {
-    Mat res,gray = Process.GrayTransform(src);
+    Mat res,gray = Preprocess::ins().GrayTransform(src);
     int nfeatures = 0;
     int nLayers = 4;
     double contrastThreshold = 0.04;
@@ -102,13 +102,13 @@ Mat ImgAlgorithm::HoughLine(Mat src)
 {
     Mat edges;
     vector<Vec4i> lines;
-    if(CD.exec()== QDialog::Accepted){
-        int newL=CD.getValue(0);
-        int newH=CD.getValue(1);
-        CD.setValue(newH,newL);
-        CD.low= CD.getValue(0);
-        CD.high =CD.getValue(1);
-        edges = tools.EdgeCanny(src,newL,newH);
+    if(CannyDlg::ins().exec()== QDialog::Accepted){
+        int newL=CannyDlg::ins().getValue(0);
+        int newH=CannyDlg::ins().getValue(1);
+        CannyDlg::ins().setValue(newH,newL);
+        CannyDlg::ins().low= CannyDlg::ins().getValue(0);
+        CannyDlg::ins().high =CannyDlg::ins().getValue(1);
+        edges = Tools::ins().EdgeCanny(src,newL,newH);
         HoughLinesP(edges, lines, 1, CV_PI/180, (newL+newH)/2, 100, 5);
     }
     for (int i = 0; i < lines.size(); i++) {
@@ -122,7 +122,7 @@ Mat ImgAlgorithm::HoughLine(Mat src)
 
 Mat ImgAlgorithm::HoughTriangle(Mat src)
 {
-    Mat edges = tools.EdgeCanny(src);
+    Mat edges = Tools::ins().EdgeCanny(src);
     vector<Vec2f> lines;
     HoughLines(edges, lines , 1, CV_PI/180,100);
     for (int i = 0; i < lines.size(); ++i)
@@ -144,14 +144,14 @@ Mat ImgAlgorithm::HoughTriangle(Mat src)
 
 Mat ImgAlgorithm::HoughRectangle(Mat src)
 {
-    Mat edges = tools.EdgeCanny(src);
+    Mat edges = Tools::ins().EdgeCanny(src);
     Mat res = src.clone();
     vector<Vec2f> lines;
-    if(TD.exec()== QDialog::Accepted){
-        int newtype=TD.getValue(1);
-        int newval=TD.getValue(2);
-        TD.setValue(newval,newtype);
-        TD.thresval=newval;
+    if(ThresholdDlg::ins().exec()== QDialog::Accepted){
+        int newtype=ThresholdDlg::ins().getValue(1);
+        int newval=ThresholdDlg::ins().getValue(2);
+        ThresholdDlg::ins().setValue(newval,newtype);
+        ThresholdDlg::ins().thresval=newval;
         HoughLines(edges,lines,1,CV_PI/180,newval,0,0);
     }
     for (int i = 0; i < lines.size(); ++i)
@@ -175,16 +175,16 @@ Mat ImgAlgorithm::HoughRectangle(Mat src)
 
 Mat ImgAlgorithm::HoughCircle(Mat src)
 {
-    Mat gray = Process.GrayTransform(src);
-    Mat blur = Process.GaussFilter(gray);
+    Mat gray = Preprocess::ins().GrayTransform(src);
+    Mat blur = Preprocess::ins().GaussFilter(gray);
     vector<Vec3f> circles;
-    HoughCircles(blur, circles, HOUGH_GRADIENT, 1, blur.rows/4, 100, 30, 30,100);
+    HoughCircles(blur, circles, HOUGH_GRADIENT, 1, 50, 150, 20, 20,100);
     for(int i = 0; i < circles.size(); ++i)
     {
         Point center(cvRound(circles[i][0]), cvRound(circles[i][1]));
         int radius = cvRound(circles[i][2]);
-        circle(src, center, 3,Scalar(0,0,255), 3,8,0);
-        circle(src,center, radius, Scalar(0,255,0),5,8,0);
+        circle(src, center, 3,QVRed, 3,8,0);
+        circle(src,center, radius, QVGreen,5,8,0);
     }
     QMessageBox::information(nullptr,QString("提示"),QString("检测到圆的数量:%1").arg(circles.size()));
     waitKey(0);
@@ -194,9 +194,9 @@ Mat ImgAlgorithm::HoughCircle(Mat src)
 
 Mat ImgAlgorithm::HoughEllipse(Mat src)
 {
-    Mat gray = Process.GrayTransform(src);
+    Mat gray = Preprocess::ins().GrayTransform(src);
     vector<Vec3f> ellipses;
-    HoughCircles(gray,ellipses, HOUGH_GRADIENT,1, gray.rows/4,120,60,10,100);
+    HoughCircles(gray,ellipses, HOUGH_GRADIENT,1, 50,150,40,20,100);
     for (int i =0 ; i < ellipses.size(); ++i)
     {
         Point center(cvRound(ellipses[i][0]),cvRound(ellipses[i][1]));
@@ -209,7 +209,7 @@ Mat ImgAlgorithm::HoughEllipse(Mat src)
 
 vector<Vec2f> ImgAlgorithm::DynamicDetectLine(Mat frame)
 {
-    Mat edges = tools .EdgeCanny(frame);
+    Mat edges = Tools::ins().EdgeCanny(frame);
     vector<Vec2f> lines;
     HoughLines(edges, lines, 1, CV_PI/180,100);
     return lines;
@@ -217,7 +217,7 @@ vector<Vec2f> ImgAlgorithm::DynamicDetectLine(Mat frame)
 
 vector<Vec2f> ImgAlgorithm::DynamicDetectTriangle(Mat frame)
 {
-    Mat edges = tools.EdgeCanny(frame);
+    Mat edges = Tools::ins().EdgeCanny(frame);
     vector<Vec2f> triangle;
     HoughLines(edges, triangle,1, CV_PI/180,100);
     return triangle;
@@ -227,8 +227,8 @@ vector<Vec2f> ImgAlgorithm::DynamicDetectTriangle(Mat frame)
 vector<Vec3f> ImgAlgorithm::DynamicDetectcir(Mat frame)
 {
     vector<Vec3f> circles;
-    Mat gray = Process.GrayTransform(frame);
-    Mat blur = Process.GaussFilter(gray);
+    Mat gray = Preprocess::ins().GrayTransform(frame);
+    Mat blur = Preprocess::ins().GaussFilter(gray);
     HoughCircles(blur, circles, HOUGH_GRADIENT, 1, blur.rows/2, 100, 30, 30,100);
     return circles;
 }
@@ -237,7 +237,7 @@ vector<Vec3f> ImgAlgorithm::DynamicDetectcir(Mat frame)
 vector<Vec3f> ImgAlgorithm::DynamicDetectEll(Mat frame)
 {
     vector<Vec3f> ellipses;
-    Mat gray = Process.GrayTransform(frame);
+    Mat gray = Preprocess::ins().GrayTransform(frame);
     HoughCircles(gray, ellipses, HOUGH_GRADIENT,1, gray.rows/8,100, 50,10,100);
     return ellipses;
 }
@@ -246,8 +246,8 @@ vector<Vec3f> ImgAlgorithm::DynamicDetectEll(Mat frame)
 Mat ImgAlgorithm::MatchTemp(Mat src, Mat target, int thresVal)
 {
     auto start=chrono::high_resolution_clock::now();
-    Rect cutBox=tools.GetCoordinate();
-    Mat res,dst,output,diff;
+    Rect cutBox=Tools::ins().GetCoordinate();
+    Mat res,output,diff;
     pyrDown(src,src);
     pyrDown(target, target);
     matchTemplate(src, target, res ,TM_CCOEFF_NORMED);
@@ -260,7 +260,7 @@ Mat ImgAlgorithm::MatchTemp(Mat src, Mat target, int thresVal)
     Point rb(matchLoc.x + target.cols, matchLoc.y + target.rows);
     Rect outputRoi(matchLoc, rb);
     Mat roi = src(outputRoi).clone();
-    output = tools.ThresholdProcess(roi,thresVal);
+    output = Tools::ins().ThresholdProcess(roi,thresVal);
     absdiff(output, target, diff) ;
     diff.convertTo(diff,CV_32F);
     Scalar mse=sum(diff.mul(diff))/(output.rows * output.cols * output.channels());
@@ -292,10 +292,10 @@ Mat ImgAlgorithm::FeaturePointMatch(Mat m1, Mat m2)
     vector<Point2f> targetArea;
     vector<vector<DMatch>>twoPoint;
     Mat d1,d2,res,thM1,thM2;
-    Point2f tempBest,srcBest,matchedArea;
+    Point2f tempBest,srcBest;
     Ptr<SIFT> sift = SIFT::create();
-    thM1 = Process.GrayTransform(m1);
-    thM2 = Process.GrayTransform(m2);
+    thM1 = Preprocess::ins().GrayTransform(m1);
+    thM2 = Preprocess::ins().GrayTransform(m2);
     sift->detectAndCompute(thM1, noArray(), p1, d1);
     sift->detectAndCompute(thM2,noArray(), p2,d2);
     BFMatcher matcher(NORM_L2);
@@ -338,11 +338,11 @@ Mat ImgAlgorithm::UpgradeMatchTemp(Mat temp, Mat src,int a,double b,double c, do
     auto start = chrono::high_resolution_clock::now();
     Mat tempEdge,srcEdge ;
     Mat thSrc, thTemp;
-    thSrc =tools.ThresholdProcess(src,a,255,0);
-    thTemp =tools.ThresholdProcess(temp,a,255,0);
+    thSrc =Tools::ins().ThresholdProcess(src,a,255,0);
+    thTemp =Tools::ins().ThresholdProcess(temp,a,255,0);
     Canny(thSrc,srcEdge,100,200);
     Canny(thTemp, tempEdge,100,200);
-    vector<pair<Rect, double>> matches = tools.TotalArea(srcEdge,tempEdge,b,c,d,e);
+    vector<pair<Rect, double>> matches = Tools::ins().TotalArea(srcEdge,tempEdge,b,c,d,e);
     vector<Rect>rects;
     vector<double>matchScores;
     for(const auto& match:matches)
@@ -350,7 +350,7 @@ Mat ImgAlgorithm::UpgradeMatchTemp(Mat temp, Mat src,int a,double b,double c, do
         rects.push_back(match.first);
         matchScores.push_back(match.second);
     }
-    vector<Rect>nmsRects = tools.NonMaxSuppress(rects, matchScores,f);
+    vector<Rect>nmsRects = Tools::ins().NonMaxSuppress(rects, matchScores,f);
     for (const auto& nmsRect : nmsRects)
     {
         Scalar colorful(rand() % 256, rand() % 256, rand() % 256);
@@ -371,7 +371,7 @@ Mat ImgAlgorithm::UpgradeMatchTemp(Mat temp, Mat src,int a,double b,double c, do
 
 Mat ImgAlgorithm::HoughBallard(Mat src,Mat temp,double mindist, int level, double dp, int buffer, int vote, int low, int high)
 {
-    Rect tempArea= tools.GetCoordinate();
+    Rect tempArea= Tools::ins().GetCoordinate();
     if (tempArea.width == 0||tempArea.height == 0)
     {
         QMessageBox::warning(nullptr,QString("提示"),QString("未获取到截图区域坐标"));
@@ -393,18 +393,18 @@ NullCoord:
     pyrDown(temp,temp);
     Mat gray,templ;
     int lineWidth = 1;
-    gray= tools.EdgeCanny(src);
-    templ = tools.EdgeCanny(temp);
+    gray= Tools::ins().EdgeCanny(src);
+    templ = Tools::ins().EdgeCanny(temp);
     vector<Vec4f> Positions;
     int w = templ.cols;
     int h = templ.rows;
     Ptr<GeneralizedHoughBallard> ballard = createGeneralizedHoughBallard();
-    tools.SetHoughParas(ballard,mindist,level,dp,buffer,vote,low,high);
+    Tools::ins().SetHoughParas(ballard,mindist,level,dp,buffer,vote,low,high);
     ballard->setTemplate(templ);
     ballard->detect(gray,Positions);
     for(const auto& p : Positions)
     {
-        tools.DrawRotRect(src, Point2f(p[0], p[1]), Size2f(w * p[2], h * p[2]), p[3], QVGreen,lineWidth);
+        Tools::ins().DrawRotRect(src, Point2f(p[0], p[1]), Size2f(w * p[2], h * p[2]), p[3], QVGreen,lineWidth);
     }
     auto end=chrono::high_resolution_clock::now();
     auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);
@@ -425,15 +425,15 @@ Mat ImgAlgorithm::HoughGuil(Mat src, Mat temp, double mindist, int level, double
     int lineWidth = 1;
     pyrDown(src,src);
     pyrDown(temp,temp);
-    Mat graySrc = Process.GrayTransform(src);
-    Mat grayTemp = Process.GrayTransform(temp);
+    Mat graySrc = Preprocess::ins().GrayTransform(src);
+    Mat grayTemp = Preprocess::ins().GrayTransform(temp);
     vector<Vec4f> Positions;
     int w= grayTemp.cols;
     int h= grayTemp.rows;
     Ptr<GeneralizedHoughGuil> guil = createGeneralizedHoughGuil();
     try
     {
-        tools.SetHoughParas(guil, mindist, level, dp, xi,buffersize, cannylow, cannyhigh, minangle, maxangle, anglestep, anglethreshold,
+        Tools::ins().SetHoughParas(guil, mindist, level, dp, xi,buffersize, cannylow, cannyhigh, minangle, maxangle, anglestep, anglethreshold,
                             minscale,maxscale,angleeplise,scalestep,scalethreshold,positionthreshold);
     }
     catch(const exception& e)
@@ -447,7 +447,7 @@ Mat ImgAlgorithm::HoughGuil(Mat src, Mat temp, double mindist, int level, double
     guil->detect(grayTemp, Positions);
     for(const auto& p : Positions)
     {
-        tools.DrawRotRect(src,Point2f(p[0], p[1]),Size2f(w * p[2], h * p[2]), p[3],QVGreen,lineWidth);
+        Tools::ins().DrawRotRect(src,Point2f(p[0], p[1]),Size2f(w * p[2], h * p[2]), p[3],QVGreen,lineWidth);
     }
     auto end = chrono::high_resolution_clock::now();
     auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);
@@ -463,7 +463,7 @@ Mat ImgAlgorithm::HoughGuil(Mat src, Mat temp, double mindist, int level, double
 //shi-Tomasi 角点检测器(抗噪声)
 Mat ImgAlgorithm::ShiTomasiDetect(Mat src)
 {
-    Mat gray = Process.GrayTransform(src);
+    Mat gray = Preprocess::ins().GrayTransform(src);
     vector<Point2f> corners;
     goodFeaturesToTrack(gray, corners, 1000,0.5,10);
     for (int i = 0; i < corners.size(); i++)
@@ -479,7 +479,7 @@ Mat ImgAlgorithm::ShiTomasiDetect(Mat src)
 Mat ImgAlgorithm::HarrisDetect(Mat src)
 {
     Mat gray,corners,res;
-    gray = Process.GrayTransform(src);
+    gray = Preprocess::ins().GrayTransform(src);
     cornerHarris(gray,corners,10,3,0.04);
     normalize(corners,corners,0,255,NORM_MINMAX,CV_32FC1);
     vector<Point2f> HarrisRes;
@@ -505,7 +505,7 @@ Mat ImgAlgorithm::HarrisDetect(Mat src)
 //FAST角占检测器(通过在圆周上选择像素占并快速判断是否为角占)
 Mat ImgAlgorithm::FASTDetect(Mat src)
 {
-    Mat res,gray = Process.GrayTransform(src);
+    Mat res,gray = Preprocess::ins().GrayTransform(src);
     int val = 25;
     Ptr<FastFeatureDetector> detector=FastFeatureDetector::create(val, true,FastFeatureDetector::TYPE_5_8);
     vector<KeyPoint> keypoints;
@@ -521,7 +521,7 @@ Mat ImgAlgorithm::FASTDetect(Mat src)
 Mat ImgAlgorithm::ORBDetect(Mat src)
 {
     Mat res;
-    src=Process.GrayTransform(src);
+    src=Preprocess::ins().GrayTransform(src);
     Ptr<ORB> orb = ORB::create();
     vector<KeyPoint> keypoints;
     // orb->detectAndCompute(src,noArray(), keypoints, descriptors);
@@ -562,7 +562,7 @@ Mat ImgAlgorithm::BRISKDetect(Mat src)
 //MSER角点检测器(检测稳定的极值区域,也可以用于检测角点。
 Mat ImgAlgorithm::MSERDetect(Mat src)
 {
-    Mat gray = Process.GrayTransform(src);
+    Mat gray = Preprocess::ins().GrayTransform(src);
     vector<Rect> areaBox;
     vector<vector<Point>> regions;
     Ptr<MSER> mser = MSER::create();
@@ -631,7 +631,7 @@ Mat ImgAlgorithm::DetectFaceFromImg(Mat src)
 //均衡化处理
 Mat ImgAlgorithm::HistEqual(Mat src)
 {
-    Mat res,gray=Process.GrayTransform(src);
+    Mat res,gray=Preprocess::ins().GrayTransform(src);
     equalizeHist(gray, res);
     return res;
 }

@@ -5,8 +5,6 @@ class Preprocess:public QObject
 {
     Q_OBJECT
 public:
-    static Preprocess & ins(){static Preprocess p;return p;}
-public:
     Mat Erosion(Mat src);
     Mat Dilation(Mat src);
     Mat BoxFilter(Mat src);
@@ -18,5 +16,6 @@ public:
     Mat LinearTransform(Mat src);
     Mat LogTransform(Mat src , double para);
     Mat GammaTransform(Mat src, float gamma);
+    static Preprocess & ins(){static Preprocess p;return p;}
 };
 #endif // PREPROCESS_H

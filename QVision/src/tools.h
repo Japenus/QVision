@@ -8,9 +8,6 @@ class Tools:public QObject
 {
     Q_OBJECT
 public:
-    static Tools& ins(){static Tools t;return t;}
-public:
-    Preprocess process;
     Scalar PickColor();
     QSqlDatabase MySql();
     int Pyramid(Mat src);
@@ -38,6 +35,7 @@ public:
     int Screenshot(Mat src, QString winName);
     QStringList GetTables(QSqlDatabase *qDB);
     QStringList GetDataBases(QSqlDatabase *qDB);
+    static Tools& ins(){static Tools t;return t;}
     Mat ThresholdProcess(Mat src,int val,int type);
     double CalcDist(int X1, int Y1, int x2, int Y2);
     Mat RotateScale(Mat src, double angle, double scale);

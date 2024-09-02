@@ -49,22 +49,22 @@ public:
 
 
 private:
+    QLabel *tip1;
+    QLabel *tip2;
+    int fixPara=10;
     bool flag=false;
     Mat Src,Dst,Res;
     QWidget *appFace;
     QToolBox siderBar;
     DllManager import;
-    QString iconSrc="ico.png";
     QString color1="blue";
-    QString color2="orange";
     QString color3="cyan";
     QString color4="green";
+    QString color2="orange";
     QString color5="yellow";
     QString color6="purple";
+    QString iconSrc="ico.png";
     QString color7="lightgreen";
-    QLabel *tip1;
-    QLabel *tip2;
-    int fixPara=10;
 
     QGraphicsView *srcBox;
     QGraphicsView *resBox;
@@ -76,15 +76,17 @@ private:
     QPushButton *histSrc;
     QPushButton *closeApp;
 
-    QPushButton *openSider;
     QPushButton *qtChart;
     QPushButton *fixIcon;
     QPushButton *scanwifi;
     QPushButton *searchIp;
+    QPushButton *openSider;
     QPushButton *showCoord;
     QPushButton *deviceInfo;
     QPushButton *remoteSignIn;
 
+    QWidget *drawer1;
+    QWidget *drawer2;
     QPushButton *heapS;
     QPushButton *quickS;
     QPushButton *mergeS;
@@ -155,6 +157,9 @@ private slots:
     void ScanNearWifi();
 
     void dlldemo();
+    void openNote();
+    void drawRose();
+    void openCalc();
     void heapSort();
     void shellSort();
     void quickSort();

@@ -1599,75 +1599,76 @@ void QVision::JueJin()
 void QVision::showSider()
 {
     siderBar.setWindowTitle("工具箱");
-    QWidget *drawer1 = new QWidget(this);
-    QWidget *drawer2 = new QWidget(this);
-
-    QVBoxLayout *layout = new QVBoxLayout(drawer1);
-    QVBoxLayout *drawer2Layout = new QVBoxLayout(drawer2);
-    QHBoxLayout *row1 = new QHBoxLayout();
-    QHBoxLayout *row2 = new QHBoxLayout();
+    drawer1 = new QWidget;
+    drawer2 = new QWidget;
+    QVBoxLayout *box1 = new QVBoxLayout(drawer1);
+    QVBoxLayout *box2 = new QVBoxLayout(drawer2);
 
     searchIp = new QPushButton("ip查询", drawer1);
     qtChart = new QPushButton("显示图表", drawer1);
+    fixIcon = new QPushButton("修改图标", drawer1);
+    showCoord = new QPushButton("坐标系", drawer1);
     scanwifi = new QPushButton("wifi扫描", drawer1);
     deviceInfo = new QPushButton("设备信息", drawer1);
     remoteSignIn = new QPushButton("远程登录", drawer1);
-    showCoord = new QPushButton("坐标系", drawer1);
-    fixIcon = new QPushButton("修改图标", drawer1);
+    QPushButton *calc = new QPushButton("计算器", drawer1);
+    QPushButton *pyRose = new QPushButton("玫瑰花", drawer1);
+    QPushButton *notebook = new QPushButton("记事本", drawer1);
     searchIp->setIcon(QIcon(iconSrc));
 
+    testdll = new QPushButton("dll", drawer2);
     heapS = new QPushButton("堆排序", drawer2);
+    quickS = new QPushButton("快速排序", drawer2);
     shellS = new QPushButton("希尔排序", drawer2);
+    mergeS = new QPushButton("归并排序", drawer2);
     bubbleS = new QPushButton("冒泡排序", drawer2);
     insertS = new QPushButton("插入排序", drawer2);
     selectS = new QPushButton("选择排序", drawer2);
-    quickS = new QPushButton("快速排序", drawer2);
-    mergeS = new QPushButton("归并排序", drawer2);
-    testdll = new QPushButton("dll", drawer2);
 
+    box1->addWidget(calc);
+    box1->addWidget(pyRose);
+    box1->addWidget(qtChart);
+    box1->addWidget(fixIcon);
+    box1->addWidget(searchIp);
+    box1->addWidget(notebook);
+    box1->addWidget(scanwifi);
+    box1->addWidget(showCoord);
+    box1->addWidget(deviceInfo);
+    box1->addWidget(remoteSignIn);
 
-    row1->addWidget(scanwifi);
-    row1->addWidget(deviceInfo);
-    row1->addWidget(showCoord);
-
-    row2->addWidget(remoteSignIn);
-    row2->addWidget(qtChart);
-    row2->addWidget(searchIp);
-    row2->addWidget(fixIcon);
-
-    layout->addLayout(row1);
-    layout->addLayout(row2);
-
-    drawer2Layout->addWidget(heapS);
-    drawer2Layout->addWidget(shellS);
-    drawer2Layout->addWidget(bubbleS);
-    drawer2Layout->addWidget(insertS);
-    drawer2Layout->addWidget(selectS);
-    drawer2Layout->addWidget(quickS);
-    drawer2Layout->addWidget(mergeS);
-    drawer2Layout->addWidget(testdll);
+    box2->addWidget(heapS);
+    box2->addWidget(shellS);
+    box2->addWidget(bubbleS);
+    box2->addWidget(insertS);
+    box2->addWidget(selectS);
+    box2->addWidget(quickS);
+    box2->addWidget(mergeS);
+    box2->addWidget(testdll);
 
     siderBar.addItem(drawer1, "Drawer1");
     siderBar.addItem(drawer2, "Drawer2");
 
+    connect(calc, &QPushButton::clicked, this, &QVision::openCalc);
+    connect(pyRose, &QPushButton::clicked, this, &QVision::drawRose);
+    connect(notebook, &QPushButton::clicked, this, &QVision::openNote);
     connect(scanwifi, &QPushButton::clicked, this, &QVision::ScanNearWifi);
     connect(qtChart, &QPushButton::clicked, this, &QVision::DisplayQtChart);
     connect(searchIp, &QPushButton::clicked, this, &QVision::SearchLocation);
     connect(remoteSignIn, &QPushButton::clicked, this, &QVision::RemotelogIn);
     connect(deviceInfo, &QPushButton::clicked, this, &QVision::GetDeviceInfo);
-    connect(showCoord, &QPushButton::clicked, this, &QVision::ShowCoordinateSystem);
     connect(fixIcon, &QPushButton::clicked, this, &QVision::ChangeSoftWareIcon);
+    connect(showCoord, &QPushButton::clicked, this, &QVision::ShowCoordinateSystem);
 
 
     connect(heapS, &QPushButton::clicked, this, &QVision::heapSort);
+    connect(testdll, &QPushButton::clicked, this, &QVision::dlldemo);
     connect(shellS, &QPushButton::clicked, this, &QVision::shellSort);
     connect(quickS, &QPushButton::clicked, this, &QVision::quickSort);
     connect(mergeS, &QPushButton::clicked, this, &QVision::mergeSort);
-    connect(testdll, &QPushButton::clicked, this, &QVision::dlldemo);
     connect(bubbleS, &QPushButton::clicked, this, &QVision::insertSort);/////
     connect(insertS, &QPushButton::clicked, this, &QVision::insertSort);
     connect(selectS, &QPushButton::clicked, this, &QVision::selectSort);
-    siderBar.resize(300, 400);
+    siderBar.resize(300,400);
     siderBar.show();
 }
 
@@ -1901,4 +1902,22 @@ void QVision::ChangeSoftWareIcon()
     }
     QProcess::startDetached(qApp->applicationFilePath());
     qApp->exit();
+}
+
+void QVision::openNote()
+{
+    QProcess p;
+    p.execute("write.exe",QStringList());
+}
+
+void QVision::openCalc()
+{
+    QProcess p;
+    p.execute("calc.exe",QStringList());
+}
+
+void QVision::drawRose()
+{
+    QProcess p;
+    p.execute("Rose.exe",QStringList());
 }
