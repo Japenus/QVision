@@ -1,12 +1,12 @@
 #ifndef COORDINATESYSTEM_H
 #define COORDINATESYSTEM_H
 #include"global.h"
-class CoordinateSystem:public QMainWindow
+class CoordinateSystem:public QWidget
 {
 public:
     CoordinateSystem(QWidget *parent = nullptr);
     static CoordinateSystem& ins(){static CoordinateSystem c;return c;}
-    void BezierCurve(const QList<QPointF> &src, QList<QPointF> &dest, qreal precision);
+    void bezierCurve(const QList<QPointF> &src, QList<QPointF> &dest, qreal precision);
 protected:
     virtual void paintEvent(QPaintEvent *e) override;
     virtual void wheelEvent(QWheelEvent *e) override;
@@ -22,10 +22,11 @@ private:
     QLabel *label;
     QLabel *drawShape;
     QPainter *painter;
-    QWidget *container;
-    QPushButton *reDraw;
-    QPushButton *exitSubWin;
-    QComboBox *selectPrecison;
+    QPushButton *exit;
+    QHBoxLayout *menu;
+    QVBoxLayout *main;
+    QComboBox *precison;
+    QPushButton *fallback;
 private:
     int step=40;
     int offset=100;

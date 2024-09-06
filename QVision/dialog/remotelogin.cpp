@@ -2,35 +2,28 @@
 RemoteLogin::RemoteLogin(QWidget *parent):QMainWindow(parent)
 {
     QIcon icon("ico.png");
-    QMenuBar *menubar = new QMenuBar();
+    QMenuBar *menubar = new QMenuBar;
     QMenu *list = menubar->addMenu("Tool");
-    QAction *createConn = new QAction("Create", this);
+    QAction *createConn = new QAction("Create");
     list->addSeparator();
     list->addAction(createConn);
     setMenuBar(menubar);
-    QRect DeviceSize = QGuiApplication::screens().at(0)->geometry();
-    int w = DeviceSize.width();
-    int h = DeviceSize.height();
-
     /*how to get CLSID（Class Identifier）
      *Win + R,regedit;
      *HKEY_CLASSES_ROOT\CLSID
     */
-    connectedWin = new QAxWidget();
-    connectedWin->setControl("{8b918b82-7985-4c24-89df-c33ad2bbfbcd}");
-    connectedWin->setProperty("DesktopWidth", 800);
-    connectedWin->setProperty("DesktopHeight", 600);
-
+    remoteDesk = new QAxWidget;
+    remoteDesk->setControl("{8b918b82-7985-4c24-89df-c33ad2bbfbcd}");
     remoteConn = new QPushButton("远程连接");
     closeRemote = new QPushButton("关闭远程");
-    exitLogin = new QPushButton("退出登录");
+    exitLogin = new QPushButton("关闭窗口");
     buildConn = new QPushButton("建立连接");
 
-    remoteConn->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
-    closeRemote->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
-    exitLogin->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
-    buildConn->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
-    connectedWin->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: blue;border-radius: 5px;font-weight: bold;");
+    remoteConn->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: pink;border-radius: 5px;font-weight: bold;");
+    closeRemote->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: pink;border-radius: 5px;font-weight: bold;");
+    exitLogin->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: pink;border-radius: 5px;font-weight: bold;");
+    buildConn->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: pink;border-radius: 5px;font-weight: bold;");
+    remoteDesk->setStyleSheet("border: 2px solid rgb(25, 25, 112);padding: 5px;color: pink;border-radius: 5px;font-weight: bold;");
 
     QVBoxLayout *MainStruct = new QVBoxLayout;
     QHBoxLayout *Row1 = new QHBoxLayout;
@@ -41,7 +34,7 @@ RemoteLogin::RemoteLogin(QWidget *parent):QMainWindow(parent)
     Row1->addWidget(remoteConn);Row1->addWidget(buildConn);
     Row2->addWidget(closeRemote);Row2->addWidget(exitLogin);
 
-    MainStruct->addWidget(connectedWin);
+    MainStruct->addWidget(remoteDesk);
     MainStruct->addLayout(Row1);MainStruct->addLayout(Row2);
     MainStruct->setStretch(0, 10);
 
@@ -54,27 +47,29 @@ RemoteLogin::RemoteLogin(QWidget *parent):QMainWindow(parent)
     connect(exitLogin, &QPushButton::clicked, this, &RemoteLogin::exitApp);
     connect(buildConn, &QPushButton::clicked, this, &RemoteLogin::buildCon);
 
-    resize(w / 2, h / 2);
+    remoteDesk->show();
+    resize(600, 400);
     setWindowIcon(icon);
-    setWindowTitle("Remote Connection");
+    setWindowTitle("Remote Login");
 }
 
 
 
 void RemoteLogin::buildCon()
 {
-    // QString host = QInputDialog::getText(this, "远程登录", "主机名:");
-    QString computerName = QInputDialog::getText(this, "远程登录", "主机名:");
-    // QString password = QInputDialog::getText(this, "远程登录", "密码:", QLineEdit::Password);
+    // QString host = QInputDialog::getText(this, "", "主机名:");
+    QString computerName = QInputDialog::getText(this, "", "主机名:");
+    // QString password = QInputDialog::getText(this, "", "密码:", QLineEdit::Password);
     QProcess mstscProcess;
     QStringList arguments;
     arguments << "/v:" + computerName;
     mstscProcess.start("mstsc", arguments);
     if (!mstscProcess.waitForStarted()||!mstscProcess.waitForFinished()) {
-        QMessageBox::information(nullptr, "提示", "建立连接失败!");
+        QMessageBox::information(nullptr, "", "建立连接失败!");
         return;
     }else{
-        QMessageBox::information(nullptr, "提示", "远程桌面连接成功!");
+        QMessageBox::warning(nullptr, "", "远程桌面连接成功!");
+        return;
     }
 }
 
@@ -85,22 +80,22 @@ void RemoteLogin::remoteCon()
 
 void RemoteLogin::createRemoteCon()
 {
-    if(connectedWin->isNull()){
+    if(remoteDesk->isNull()){
         qInfo()<<"初始化失败!";
         return;
     }
-    QString computerIp = QInputDialog::getText(this, "远程登录", "计算机地址:");
-    QString userName = QInputDialog::getText(this, "远程登录", "用户名:");
-    QString passWord = QInputDialog::getText(this, "远程登录", "密码:", QLineEdit::Password);
-    connectedWin->setProperty("Server",computerIp);
-    connectedWin->setProperty("UserName", userName);
-    connectedWin->setProperty("ClearTextPassword", passWord);
-    connectedWin->dynamicCall("Connect()");
+    QString computerIp = QInputDialog::getText(this, "", "计算机地址:");
+    QString userName = QInputDialog::getText(this, "", "用户名:");
+    QString passWord = QInputDialog::getText(this, "", "密码:", QLineEdit::Password);
+    remoteDesk->setProperty("Server",computerIp);
+    remoteDesk->setProperty("UserName", userName);
+    remoteDesk->setProperty("ClearTextPassword", passWord);
+    remoteDesk->dynamicCall("Connect()");
 }
 
 RemoteLogin::~RemoteLogin()
 {
-    delete connectedWin;
+    delete remoteDesk;
     delete buildConn;
     delete exitLogin;
     delete remoteConn;
@@ -116,5 +111,5 @@ void RemoteLogin::exitApp()
 
 void RemoteLogin::closeCon()
 {
-    connectedWin->close();
+    remoteDesk->close();
 }

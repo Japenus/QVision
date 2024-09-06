@@ -1,33 +1,34 @@
 #include "coordinatesystem.h"
-CoordinateSystem::CoordinateSystem(QWidget *parent) : QMainWindow(parent)
+CoordinateSystem::CoordinateSystem(QWidget *parent) : QWidget(parent)
 {
-    QIcon icon("ico.png");
-    setWindowIcon(icon);
-    container = new QWidget(this);
-    exitSubWin = new QPushButton("关闭");
-    reDraw = new QPushButton("重绘");
+    QPen p(Qt::cyan);
     QRect DeviceSize=QGuiApplication::screens().at(0)->geometry();
     int w=DeviceSize.width();
     int h=DeviceSize.height();
-    QHBoxLayout *MainStruct = new QHBoxLayout();
-    QVBoxLayout *all = new QVBoxLayout();
-    selectPrecison = new QComboBox();
     label = new QLabel;
-    label->setText("精度");
-    drawShape =new QLabel(this);
-    box=new QPixmap(w/3,h/2);
-    MainStruct->addWidget(reDraw);
-    MainStruct->addWidget(exitSubWin);
-    MainStruct->addWidget(label);
-    MainStruct->addWidget(selectPrecison);
+    drawShape =new QLabel;
+    menu = new QHBoxLayout;
+    main = new QVBoxLayout;
+    precison = new QComboBox;
+    box = new QPixmap(w/3,h/2);
     box->fill(Qt::transparent);
-    painter=new QPainter(box);
+    painter = new QPainter(box);
+    exit = new QPushButton("关闭");
+    fallback = new QPushButton("重绘");
+    label->setText("精度");
+    menu->addWidget(fallback);
+    menu->addWidget(exit);
+    menu->addWidget(label);
+    menu->addWidget(precison);
 
     QPoint origin = QPoint(this->width() / 2, this->height() / 2);
     QPoint axisXfrom(0,origin.y());
     QPoint axisXto(width(), origin.y());
     QPoint axisYfrom(origin.x(), 0);
     QPoint axisYto(origin.x(), height());
+
+    p.setWidth(3);
+    painter->setPen(p);
     painter->drawLine(axisXfrom,axisXto);
     painter->drawLine(axisYfrom,axisYto);
     for (int x = origin.x() + step; x < width(); x += step) {
@@ -61,40 +62,34 @@ CoordinateSystem::CoordinateSystem(QWidget *parent) : QMainWindow(parent)
     drawShape->setPixmap(*box);
     drawShape->show();
 
-    all->addWidget(drawShape);
-    all->addLayout(MainStruct);
+    main->addWidget(drawShape);
+    main->addLayout(menu);
 
-    label->setStyleSheet("border: 1px solid red;border-radius:5px;color:black");
-    container->setStyleSheet("border: 1px solid red;border-radius:5px;");
-    drawShape->setStyleSheet("border: 1px solid blue;border-radius:5px;background-color: rgba(0, 0, 0, 0.4);");
-
+    this->setStyleSheet("border: 1px solid gray;border-radius:5px;background-color: rgba(0, 0, 0, 0.4);color:cyan");
     label->setFixedSize(50,20);
-    reDraw->setFixedHeight(20);
-    exitSubWin->setFixedHeight(20);
-    selectPrecison->addItem(QString::number(0.1));
-    selectPrecison->addItem(QString::number(0.01));
-    selectPrecison->addItem(QString::number(0.001));
-
-    container->setBackgroundRole(QPalette::Shadow);
-    container->setLayout(all);
-    setCentralWidget(container);
-
-    connect(selectPrecison, QOverload<int>::of(&QComboBox::activated), this, [=](int index) {
-        precision = selectPrecison->itemText(index).toDouble();
-        BezierCurve(controlPnts, pntsOnCurve, precision);
+    fallback->setFixedHeight(20);
+    exit->setFixedHeight(20);
+    precison->addItem(QString::number(0.1));
+    precison->addItem(QString::number(0.01));
+    precison->addItem(QString::number(0.001));
+    connect(precison, QOverload<int>::of(&QComboBox::activated), this, [=](int index) {
+        precision = precison->itemText(index).toDouble();
+        bezierCurve(controlPnts, pntsOnCurve, precision);
         update();
     });
-    connect(reDraw, &QPushButton::clicked, this, &CoordinateSystem::redraw);
-    connect(exitSubWin, &QPushButton::clicked, this, &CoordinateSystem::exitCurWin);
+    connect(fallback, &QPushButton::clicked, this, &CoordinateSystem::redraw);
+    connect(exit, &QPushButton::clicked, this, &CoordinateSystem::exitCurWin);
     resize(600, 400);
-    setWindowTitle("二维坐标系");
+    this->setLayout(main);
+    QIcon icon("ico.png");
+    setWindowIcon(icon);
+    setWindowTitle("坐标系");
 }
 
 
 void CoordinateSystem::paintEvent(QPaintEvent *e)
 {
     QPainter painter(this);
-    qInfo()<<e->isAccepted();
     painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing);
     painter.save();
     painter.setBrush(QBrush(Qt::blue));
@@ -137,7 +132,7 @@ void CoordinateSystem::mousePressEvent(QMouseEvent *e)
             }
         } else {
             controlPnts.append(e->pos());
-            BezierCurve(controlPnts, pntsOnCurve, precision);
+            bezierCurve(controlPnts, pntsOnCurve, precision);
             update();
         }
     } else if (e->buttons() & Qt::RightButton) iscompleted = true;
@@ -148,7 +143,7 @@ void CoordinateSystem::mouseMoveEvent(QMouseEvent *e)
     if (e->buttons() & Qt::LeftButton && mousePressed && curIndex != -1 && e->pos().y() > 50) {
         if (curIndex < controlPnts.size()) {
             controlPnts[curIndex] = e->pos();
-            BezierCurve(controlPnts, pntsOnCurve, precision);
+            bezierCurve(controlPnts, pntsOnCurve, precision);
             update();
         }
     }
@@ -172,7 +167,7 @@ bool CoordinateSystem::eventFilter(QObject *obj, QEvent *e)
             return true;
         }
     }
-    return QMainWindow::eventFilter(obj, e);
+    return eventFilter(obj, e);
 }
 
 
@@ -195,7 +190,7 @@ void CoordinateSystem::wheelEvent(QWheelEvent *e)
 }
 
 
-void CoordinateSystem::BezierCurve(const QList<QPointF> &src, QList<QPointF> &dest, qreal precision)
+void CoordinateSystem::bezierCurve(const QList<QPointF> &src, QList<QPointF> &dest, qreal precision)
 {
     if (src.size() <= 0) return;
     QList<QPointF>().swap(dest);

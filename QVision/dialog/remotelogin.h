@@ -15,7 +15,7 @@ private slots:
     void remoteCon();
     void createRemoteCon();
 private:
-    QAxWidget *connectedWin;
+    QAxWidget *remoteDesk;
     QPushButton *buildConn;
     QPushButton *exitLogin;
     QPushButton *remoteConn;

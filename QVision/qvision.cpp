@@ -35,9 +35,9 @@ QVision::QVision(QWidget *parent): QMainWindow(parent)
     exit = new QAction("Exit", this);
 
     erose = new QAction("Erosion", this);
+    dilate = new QAction("Dilation", this);
     boxFilt = new QAction("Box Filter", this);
     meanFilt = new QAction("Mean Filter", this);
-    dilate = new QAction("Dilation", this);
     logTrans = new QAction("Log Transform", this);
     gaussFilt = new QAction("Gauss Filter", this);
     grayTrans = new QAction("Gray Transform", this);
@@ -306,10 +306,10 @@ QVision::QVision(QWidget *parent): QMainWindow(parent)
     connect(exit,&QAction::triggered,this,&QVision::exitQVision);
 
 
-    connect(boxFilt,&QAction::triggered,this,&QVision::BoxFilter);
     connect(erose,&QAction::triggered,this,&QVision::Erosion);
-    connect(meanFilt,&QAction::triggered,this,&QVision::MeanFilter);
     connect(dilate,&QAction::triggered,this,&QVision::Dilation);
+    connect(boxFilt,&QAction::triggered,this,&QVision::BoxFilter);
+    connect(meanFilt,&QAction::triggered,this,&QVision::MeanFilter);
     connect(logTrans,&QAction::triggered,this,&QVision::LogTransform);
     connect(gaussFilt,&QAction::triggered,this,&QVision::GaussFilter);
     connect(grayTrans,&QAction::triggered,this,&QVision::GrayTransform);
@@ -318,82 +318,82 @@ QVision::QVision(QWidget *parent): QMainWindow(parent)
     connect(linearTrans,&QAction::triggered,this,&QVision::LinearTransform);
     connect(bilateralFilt,&QAction::triggered,this,&QVision::BilateralFilter);
 
+    connect(erase,&QAction::triggered,this,&QVision::Eraser);
+    connect(wakeQQ,&QAction::triggered,this,&QVision::WakeUpQQ);
     connect(sobelEdge,&QAction::triggered,this,&QVision::Sobel);
     connect(cannyEdge,&QAction::triggered,this,&QVision::Canny);
-    connect(erase,&QAction::triggered,this,&QVision::Eraser);
     connect(scharrEdge,&QAction::triggered,this,&QVision::Scharr);
     connect(areaFilled,&QAction::triggered,this,&QVision::AreaFill);
+    connect(rotScale,&QAction::triggered,this,&QVision::RotateScale);
+    connect(showEdge,&QAction::triggered,this,&QVision::ShowOutline);
     connect(areaCovered,&QAction::triggered,this,&QVision::AreaCover);
     connect(pickupColor,&QAction::triggered,this,&QVision::PickColor);
-    connect(wakeQQ,&QAction::triggered,this,&QVision::WakeUpQQ);
     connect(fixThres,&QAction::triggered,this,&QVision::FixThreshold);
-    connect(showEdge,&QAction::triggered,this,&QVision::ShowOutline);
     connect(imgPyramid,&QAction::triggered,this,&QVision::ImagePyramid);
     connect(regionGrowing,&QAction::triggered,this,&QVision::RegionGrow);
-    connect(rotScale,&QAction::triggered,this,&QVision::RotateScale);
-    connect(adaptThres,&QAction::triggered,this,&QVision::AdaptThreshold);
     connect(screenShot,&QAction::triggered,this,&QVision::CaptureScreen);
+    connect(adaptThres,&QAction::triggered,this,&QVision::AdaptThreshold);
     connect(statisticPix,&QAction::triggered,this,&QVision::StatisticPixels);
     connect(thresProcess,&QAction::triggered,this,&QVision::ThresholdProcess);
     connect(calculateDist,&QAction::triggered,this,&QVision::CalculateDistance);
     connect(perspectTrans,&QAction::triggered,this,&QVision::PerspectiveTransform);
 
 
-    connect(surfFeature,&QAction::triggered,this,&QVision::SURF);
-    connect(gfttCornerDetect,&QAction::triggered,this,&QVision::GFTT);
     connect(houghGuil,&QAction::triggered,this,&QVision::Guil);
     connect(houghLine,&QAction::triggered,this,&QVision::Line);
-    connect(fastCornerDetect,&QAction::triggered,this,&QVision::Fast);
-    connect(mserCornerDetect,&QAction::triggered,this,&QVision::Mser);
-    connect(briskCornerDetect,&QAction::triggered,this,&QVision::Brisk);
+    connect(surfFeature,&QAction::triggered,this,&QVision::SURF);
     connect(houghCircle,&QAction::triggered,this,&QVision::Circle);
-    connect(harrisCornerDetect,&QAction::triggered,this,&QVision::Harris);
+    connect(imgEqual,&QAction::triggered,this,&QVision::ImageEqual);
     connect(houghEllipse,&QAction::triggered,this,&QVision::Ellipse);
     connect(houghBallard,&QAction::triggered,this,&QVision::Ballard);
     connect(floodFilled,&QAction::triggered,this,&QVision::FloodFill);
-    connect(imgEqual,&QAction::triggered,this,&QVision::ImageEqual);
+    connect(gfttCornerDetect,&QAction::triggered,this,&QVision::GFTT);
+    connect(fastCornerDetect,&QAction::triggered,this,&QVision::Fast);
+    connect(mserCornerDetect,&QAction::triggered,this,&QVision::Mser);
     connect(houghTriangle,&QAction::triggered,this,&QVision::Triangle);
-    connect(houghRectangle,&QAction::triggered,this,&QVision::Rectangle);
-    connect(shiTomasiCornerDetect,&QAction::triggered,this,&QVision::ShiTomasi);
+    connect(briskCornerDetect,&QAction::triggered,this,&QVision::Brisk);
     connect(tempMatch,&QAction::triggered,this,&QVision::TemplateMatch);
+    connect(houghRectangle,&QAction::triggered,this,&QVision::Rectangle);
+    connect(harrisCornerDetect,&QAction::triggered,this,&QVision::Harris);
     connect(upgradeTMatch,&QAction::triggered,this,&QVision::UpgradeTempMatch);
+    connect(shiTomasiCornerDetect,&QAction::triggered,this,&QVision::ShiTomasi);
     connect(featurePntMatch,&QAction::triggered,this,&QVision::FeaturePointMatch);
 
     connect(addOper,&QAction::triggered,this,&QVision::Add);
     connect(divideCal,&QAction::triggered,this,&QVision::Divide);
-    connect(fourierTrans,&QAction::triggered,this,&QVision::Fourier);
     connect(multipyCal,&QAction::triggered,this,&QVision::Multipy);
+    connect(fourierTrans,&QAction::triggered,this,&QVision::Fourier);
     connect(openCal,&QAction::triggered,this,&QVision::OpenCalculate);
     connect(laplaceTrans,&QAction::triggered,this,&QVision::Laplacian);
     connect(closeCal,&QAction::triggered,this,&QVision::CloseCalculate);
-    connect(lineStretch,&QAction::triggered,this,&QVision::LinearStretch);
     connect(subtractOper,&QAction::triggered,this,&QVision::Subtraction);
+    connect(lineStretch,&QAction::triggered,this,&QVision::LinearStretch);
 
     connect(capLine,&QAction::triggered,this,&QVision::CaptureLine);
+    connect(tessOcr,&QAction::triggered,this,&QVision::TesseractOCR);
     connect(capCircle,&QAction::triggered,this,&QVision::CaptureCircle);
     connect(capSquare,&QAction::triggered,this,&QVision::CaptureSquare);
-    connect(capEllipse,&QAction::triggered,this,&QVision::CaptureEllpise);
-    connect(tessOcr,&QAction::triggered,this,&QVision::TesseractOCR);
-    connect(capTriangle,&QAction::triggered,this,&QVision::CaptureTriangle);
     connect(recogFace,&QAction::triggered,this,&QVision::RecongnizeFace);
-    connect(capHumaneye,&QAction::triggered,this,&QVision::CaptureHumanEyes);
     connect(capChar,&QAction::triggered,this,&QVision::CaptureCharacter);
-    connect(machineLearn,&QAction::triggered,this,&QVision::MachineLearning);
+    connect(capEllipse,&QAction::triggered,this,&QVision::CaptureEllpise);
     connect(userModel,&QAction::triggered,this,&QVision::SelfDefineModel);
+    connect(capTriangle,&QAction::triggered,this,&QVision::CaptureTriangle);
+    connect(capHumaneye,&QAction::triggered,this,&QVision::CaptureHumanEyes);
+    connect(machineLearn,&QAction::triggered,this,&QVision::MachineLearning);
     connect(capHumanFace,&QAction::triggered,this,&QVision::CaptureHumanFace);
     connect(capSelfmodel,&QAction::triggered,this,&QVision::CaptureArbitaryShape);
 
-    connect(contactCSDN,&QAction::triggered,this,&QVision::CSDN);
     connect(tcpIp,&QAction::triggered,this,&QVision::TCPIP);
-    connect(contactGithub,&QAction::triggered,this,&QVision::Follow);
-    connect(spyderNet,&QAction::triggered,this,&QVision::Spyder);
-    connect(contactJueJin,&QAction::triggered,this,&QVision::JueJin);
     connect(launchDB,&QAction::triggered,this,&QVision::Launch);
+    connect(spyderNet,&QAction::triggered,this,&QVision::Spyder);
+    connect(contactCSDN,&QAction::triggered,this,&QVision::CSDN);
+    connect(contactGithub,&QAction::triggered,this,&QVision::Follow);
+    connect(contactJueJin,&QAction::triggered,this,&QVision::JueJin);
     connect(videoPage,&QAction::triggered,this,&QVision::VideoPlayer);
     connect(renameFiles,&QAction::triggered,this,&QVision::RenameFile);
     connect(writeToFile,&QAction::triggered,this,&QVision::WriteToData);
-    connect(exportImgdata,&QAction::triggered,this,&QVision::OutputImgData);
     connect(resizeImg,&QAction::triggered,this,&QVision::ResizeImgSize);
+    connect(exportImgdata,&QAction::triggered,this,&QVision::OutputImgData);
     connect(exportFileinfo,&QAction::triggered,this,&QVision::OutputFileInfo);
 
     srcBox->setScene(srcScene);
