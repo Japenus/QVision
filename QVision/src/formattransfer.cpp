@@ -167,7 +167,33 @@ QPixmap FormatTransfer::matToQpixmap(Mat &datatype)
     return QPixmap::fromImage(image);
 }
 
-QString FormatTransfer::Int2QString(int data)
+QImage FormatTransfer::MatToQImage(const Mat &mat)
 {
-    return QString::number(data);
+    if (mat.empty()) return QImage();
+    Mat rgbMat;
+    if (mat.type() == CV_8UC3) {
+        cvtColor(mat, rgbMat, COLOR_BGR2RGB);
+    } else if (mat.type() == CV_8UC1) {
+        return QImage(mat.data, mat.cols, mat.rows, mat.step[0], QImage::Format_Grayscale8);
+    } else {
+        return QImage();
+    }
+    return QImage(rgbMat.data, rgbMat.cols, rgbMat.rows, rgbMat.step[0], QImage::Format_RGB888).copy();
+}
+
+Mat FormatTransfer::QImageToMat(const QImage &image)
+{
+    if (image.isNull()) return Mat();
+    switch (image.format()) {
+    case QImage::Format_RGB888: {
+        Mat mat(image.height(), image.width(), CV_8UC3, (void*)image.bits(), image.bytesPerLine());
+        return mat.clone();
+    }
+    case QImage::Format_Grayscale8: {
+        Mat mat(image.height(), image.width(), CV_8UC1, (void*)image.bits(), image.bytesPerLine());
+        return mat.clone();
+    }
+    default:
+        return Mat();
+    }
 }

@@ -402,6 +402,7 @@ QVision::QVision(QWidget *parent): QMainWindow(parent)
     resBox->show();
     resize(1000,600);
     setWindowIcon(icon);
+    this->setAcceptDrops(true);
     setWindowTitle("Image System");
 }
 
@@ -424,6 +425,80 @@ void QVision::wheelEvent(QWheelEvent *event)
         }
     }
     event->accept();
+}
+
+void QVision::dropEvent(QDropEvent *e)
+{
+    srcBox->resetTransform();
+    QFileInfo f(e->mimeData()->urls().at(0).toLocalFile());
+    image = QImage(f.filePath());
+    if(!image.isNull()){
+        srcScene->clear();
+        srcScene->addPixmap(QPixmap::fromImage(image).scaled(srcBox->size(),Qt::IgnoreAspectRatio));
+    }
+}
+
+void QVision::dragEnterEvent(QDragEnterEvent *e)
+{
+    QStringList fileTypes;
+    fileTypes.append("jpg");
+    fileTypes.append("png");
+    fileTypes.append("bmp");
+    if(e->mimeData()->hasUrls() && e->mimeData()->urls().count()==1){
+        QFileInfo f(e->mimeData()->urls().at(0).toLocalFile());
+        image = QImage(f.filePath());
+        tmp=QPixmap::fromImage(image);
+        Src=QPixmap2Mat(tmp);
+        srcScene->clear();
+        srcScene->addPixmap(tmp);
+        if(fileTypes.contains(f.suffix().toLower())){
+            e->acceptProposedAction();
+            flag=true;
+        }
+    }
+}
+
+void QVision::dragLeaveEvent(QDragLeaveEvent *e)
+{
+
+}
+
+void QVision::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton && event->pos().x()>resScene->sceneRect().x()) {
+        QPointF scenePos = resBox->mapToScene(event->pos());
+        QGraphicsItem *item = resBox->itemAt(scenePos.x(),scenePos.y());
+        if (item) {
+            base = event->pos();
+        }
+    }
+}
+
+void QVision::mouseMoveEvent(QMouseEvent *event)
+{
+    if ((event->buttons() & Qt::LeftButton) && event->pos().x()>resScene->sceneRect().x())
+    {
+        if ((event->pos() - base).manhattanLength() >= QApplication::startDragDistance())
+        {
+            static int i=1;
+            QDrag *drag = new QDrag(resBox);
+            QMimeData *mimeData = new QMimeData;
+            QString desktop = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
+            QString fileName = desktop + "/image"+QString::number(i)+".png";
+            tmp = FormatTransfer::ins().matToQpixmap(Dst);
+            image = FormatTransfer::ins().MatToQImage(Dst);
+            if (image.save(fileName, "PNG")) {
+                mimeData->setUrls(QList<QUrl>() << QUrl::fromLocalFile(fileName));
+                drag->setMimeData(mimeData);
+                drag->setPixmap(tmp.scaled(resBox->size(),Qt::IgnoreAspectRatio));
+                drag->exec(Qt::CopyAction);
+                i++;
+            } else {
+                QMessageBox::warning(this,"","Save Failed!");
+                return;
+            }
+        }
+    }
 }
 
 void QVision::init()
@@ -451,13 +526,14 @@ QVision::~QVision()
 
 
 //basic
+
 void QVision::openImg()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open Image"), "png", tr("Type (*.png *.jpg *.bmp)"));
-    Src=imread(fileName.toStdString());
     if (!fileName.isEmpty()) {
         flag=true;
-        QImage image(fileName);
+        Src=imread(fileName.toStdString());
+        image = QImage(fileName);
         srcScene->clear();
         srcScene->addPixmap(QPixmap::fromImage(image).scaled(srcBox->size(),Qt::IgnoreAspectRatio));
     }
@@ -480,7 +556,7 @@ void QVision::exitQVision()
     QApplication::quit();
 }
 
-bool QVision::IsImgOpen()
+bool QVision::imageOpen()
 {
     if(!flag)
     {
@@ -646,9 +722,9 @@ bool QVision::Save(Mat what)
     return true;
 }
 
-Mat QVision::QPixmap2Mat(QPixmap &datatype)
+Mat QVision::QPixmap2Mat(QPixmap &pix)
 {
-    QImage image = datatype.toImage();
+    QImage image = pix.toImage();
     if(image.isNull())
     {
         QMessageBox::warning(this,tr("警告"),tr("转换失败"));
@@ -661,7 +737,7 @@ Mat QVision::QPixmap2Mat(QPixmap &datatype)
 
 void QVision::SrcHist()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     QPixmap pixmap = srcBox->grab();
     Src = QPixmap2Mat(pixmap);
     Tools::ins().ShowHistogram(Src);
@@ -670,7 +746,7 @@ void QVision::SrcHist()
 
 void QVision::ResHist()
 {
-    if(!IsImgOpen()||resScene->items().empty()) return;
+    if(!imageOpen()||resScene->items().empty()) return;
     QPixmap pixmap = resBox->grab();
     Dst = QPixmap2Mat(pixmap);
     Tools::ins().ShowHistogram(Dst);
@@ -678,7 +754,7 @@ void QVision::ResHist()
 
 void QVision::BigSrc()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Tools::ins().MakeBig(Src);
     // resScene->addPixmap(Tools::ins().tmp);
 }
@@ -686,7 +762,7 @@ void QVision::BigSrc()
 
 void QVision::BigRes()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Tools::ins().MakeBig(Dst);
 }
 
@@ -699,7 +775,7 @@ void QVision::closeQVision()
 //预处理
 void QVision::GrayTransform()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=Preprocess::ins().GrayTransform(Src);
     Show(Dst);
 }
@@ -707,7 +783,7 @@ void QVision::GrayTransform()
 
 void QVision::LogTransform()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     bool ok;
     int log=QInputDialog::getInt(this,tr("设置值"),tr("Log:"),5,0,100,1,&ok);
     if(ok) Dst=Preprocess::ins().LogTransform(Src,log);
@@ -717,7 +793,7 @@ void QVision::LogTransform()
 
 void QVision::LinearTransform()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=Preprocess::ins().LinearTransform(Src);
     Show(Dst);
 }
@@ -725,7 +801,7 @@ void QVision::LinearTransform()
 
 void QVision::GammaTransform()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     bool ok;
     double gamma = QInputDialog::getDouble(this, tr("设置值"), tr("gamma:"), 2.0, 0, 10, 2, &ok);
     if(ok) Dst = Preprocess::ins().GammaTransform(Src, gamma);
@@ -735,7 +811,7 @@ void QVision::GammaTransform()
 
 void QVision::BoxFilter()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=Preprocess::ins().BoxFilter(Src);
     Show(Dst);
 }
@@ -743,7 +819,7 @@ void QVision::BoxFilter()
 
 void QVision::MeanFilter()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=Preprocess::ins().MeanFilter(Src);
     Show(Dst);
 }
@@ -751,7 +827,7 @@ void QVision::MeanFilter()
 
 void QVision::MediumFilter()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=Preprocess::ins().MediumFilter(Src);
     Show(Dst);
 }
@@ -759,14 +835,14 @@ void QVision::MediumFilter()
 
 void QVision::BilateralFilter()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=Preprocess::ins().BilateralFilter(Src);
     Show(Dst);
 }
 
 void QVision::GaussFilter()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=Preprocess::ins().GaussFilter(Src);
     Show(Dst);
 }
@@ -774,7 +850,7 @@ void QVision::GaussFilter()
 
 void QVision::Dilation()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=Preprocess::ins().Dilation(Src);
     Show(Dst);
 }
@@ -782,7 +858,7 @@ void QVision::Dilation()
 
 void QVision::Erosion()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=Preprocess::ins().Erosion(Src);
     Show(Dst);
 }
@@ -790,7 +866,7 @@ void QVision::Erosion()
 //工具
 void QVision::Sobel()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=Tools::ins().EdgeSobel(Src);
     Show();
 }
@@ -798,7 +874,7 @@ void QVision::Sobel()
 
 void QVision::Canny()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     if(CannyDlg::ins().exec()== QDialog::Accepted){
         int L=CannyDlg::ins().getValue(0);
         int H=CannyDlg::ins().getValue(1);
@@ -813,7 +889,7 @@ void QVision::Canny()
 
 void QVision::Scharr()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=Tools::ins().Edgescharr(Src);
     Show();
 }
@@ -821,7 +897,7 @@ void QVision::Scharr()
 
 void QVision::RegionGrow()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     bool ok;
     int threshold=QInputDialog::getInt(this,tr("设置阈值"),tr("value:"),100,0,255,10,&ok);
     Point seedPoint(10, 10);
@@ -833,7 +909,7 @@ void QVision::RegionGrow()
 
 void QVision::FixThreshold()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     if(FixThresholdDlg::ins().exec()== QDialog::Accepted){
         int val=FixThresholdDlg::ins().getValue();
         FixThresholdDlg::ins().setValue(val);
@@ -846,7 +922,7 @@ void QVision::FixThreshold()
 
 void QVision::ShowOutline()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     bool ok;
     int val=QInputDialog::getInt(this,tr("设置阈值"),tr("value:"),100,0,255,10,&ok);
     if(ok) Dst=Tools::ins().ShowOutline(Src,val);
@@ -856,7 +932,7 @@ void QVision::ShowOutline()
 
 void QVision::ThresholdProcess()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     if(ThresholdDlg::ins().exec()== QDialog::Accepted){
         int type=ThresholdDlg::ins().getValue(1);
         int val=ThresholdDlg::ins().getValue(2);
@@ -871,7 +947,7 @@ void QVision::ThresholdProcess()
 
 void QVision::AdaptThreshold()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     int size=15;
     bool ok;
     double para = QInputDialog::getDouble(this, tr("设置系数"), tr("x:"), 2.0, 0, 10, 2, &ok);
@@ -882,7 +958,7 @@ void QVision::AdaptThreshold()
 
 void QVision::AreaCover()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=Tools::ins().AreaCover(Src);
     Show();
 }
@@ -890,7 +966,7 @@ void QVision::AreaCover()
 
 void QVision::AreaFill()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Scalar fill=Tools::ins().PickColor();
     if(AreaFillDlg::ins().exec()== QDialog::Accepted){
         int setNum=AreaFillDlg::ins().getValue(1);
@@ -906,7 +982,7 @@ void QVision::AreaFill()
 
 void QVision::StatisticPixels()
 {
-    if(!IsImgOpen())return;
+    if(!imageOpen())return;
     if(StatisticPixelDlg::ins().exec()== QDialog::Accepted){
         int pixval=StatisticPixelDlg::ins().getValue();
         StatisticPixelDlg::ins().setValue(pixval);
@@ -954,7 +1030,7 @@ void QVision::CalculateDistance()
 
 void QVision::RotateScale()
 {
-    if(!IsImgOpen())return;
+    if(!imageOpen())return;
     if(RotScaleDlg::ins().exec()== QDialog::Accepted)
     {
         double rotate=RotScaleDlg::ins().getValue();
@@ -970,7 +1046,7 @@ void QVision::RotateScale()
 
 void QVision::ImagePyramid()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Tools::ins().Pyramid(Src);
 }
 
@@ -1028,7 +1104,7 @@ void QVision::Eraser()
 //图像运算
 void QVision::Divide()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=ImgCalculate::ins().Divide(Src);
     Show();
 }
@@ -1036,7 +1112,7 @@ void QVision::Divide()
 
 void QVision::OpenCalculate()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=ImgCalculate::ins().OnCalc(Src);
     Show();
 }
@@ -1044,7 +1120,7 @@ void QVision::OpenCalculate()
 
 void QVision::CloseCalculate()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=ImgCalculate::ins().OffCalc(Src);
     Show();
 }
@@ -1052,7 +1128,7 @@ void QVision::CloseCalculate()
 
 void QVision::Multipy()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=ImgCalculate::ins().Multipy(Src);
     Show();
 }
@@ -1060,7 +1136,7 @@ void QVision::Multipy()
 
 void QVision::LinearStretch()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=ImgCalculate::ins().LineStretch(Src);
     Show();
 }
@@ -1094,7 +1170,7 @@ void QVision::Subtraction()
 
 void QVision::Fourier()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=ImgCalculate::ins().FourierTransform(Src);
     Show();
 }
@@ -1102,7 +1178,7 @@ void QVision::Fourier()
 
 void QVision::Laplacian()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=ImgCalculate::ins().LaplacianTransform(Src);
     Show();
 }
@@ -1110,7 +1186,7 @@ void QVision::Laplacian()
 //图像算法
 void QVision::SURF()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=ImgAlgorithm::ins().SURF(Src);
     Show();
 }
@@ -1118,7 +1194,7 @@ void QVision::SURF()
 
 void QVision::FloodFill()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=ImgAlgorithm::ins().FloodFill(Src);
     Show();
 }
@@ -1126,7 +1202,7 @@ void QVision::FloodFill()
 
 void QVision::ImageEqual()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=ImgAlgorithm::ins().HistEqual(Src);
     Show();
 }
@@ -1191,7 +1267,7 @@ void QVision::UpgradeTempMatch()
 
 void QVision::Line()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=ImgAlgorithm::ins().HoughLine(Src);
     Show();
 }
@@ -1199,7 +1275,7 @@ void QVision::Line()
 
 void QVision::Circle()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=ImgAlgorithm::ins().HoughCircle(Src);
     Show();
 }
@@ -1207,7 +1283,7 @@ void QVision::Circle()
 
 void QVision::Ellipse()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=ImgAlgorithm::ins().HoughEllipse(Src);
     Show();
 }
@@ -1215,14 +1291,14 @@ void QVision::Ellipse()
 
 void QVision::Triangle()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=ImgAlgorithm::ins().HoughTriangle(Src);
     Show();
 }
 
 void QVision::Rectangle()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=ImgAlgorithm::ins().HoughRectangle(Src);
     Show();
 }
@@ -1327,7 +1403,7 @@ void QVision::Guil()
 
 void QVision::ShiTomasi()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=ImgAlgorithm::ins().ShiTomasiDetect(Src);
     Show();
 }
@@ -1335,7 +1411,7 @@ void QVision::ShiTomasi()
 
 void QVision::Harris()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=ImgAlgorithm::ins().HarrisDetect(Src);
     Show();
 }
@@ -1343,7 +1419,7 @@ void QVision::Harris()
 
 void QVision::Fast()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=ImgAlgorithm::ins().FASTDetect(Src);
     Show();
 }
@@ -1351,7 +1427,7 @@ void QVision::Fast()
 
 void QVision::Brisk()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=ImgAlgorithm::ins().BRISKDetect(Src);
     Show();
 }
@@ -1359,7 +1435,7 @@ void QVision::Brisk()
 
 void QVision::Mser()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=ImgAlgorithm::ins().MSERDetect(Src);
     Show();
 }
@@ -1367,7 +1443,7 @@ void QVision::Mser()
 
 void QVision::GFTT()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=ImgAlgorithm::ins().GFTTDetect(Src);
     Show();
 }
@@ -1381,7 +1457,7 @@ void QVision::MachineLearning()
 
 void QVision::SelfDefineModel()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     QString modelPath=getModel();
     Dst=ImgAlgorithm::ins().SelfModel(Src,modelPath);
     Show();
@@ -1389,7 +1465,7 @@ void QVision::SelfDefineModel()
 
 void QVision::RecongnizeFace()
 {
-    if(!IsImgOpen()) return;
+    if(!imageOpen()) return;
     Dst=ImgAlgorithm::ins().DetectFaceFromImg(Src);
     Show();
 }

@@ -4,6 +4,7 @@
 #include <QList>
 #include <QMenu>
 #include <QList>
+#include <QDrag>
 #include <Sort.h>
 #include <QLabel>
 #include <QTimer>
@@ -20,6 +21,8 @@
 #include <QSpinBox>
 #include <QToolBox>
 #include <QLibrary>
+#include <QMimeData>
+#include <QFileInfo>
 #include <QLineEdit>
 #include <QTextEdit>
 #include <QComboBox>
@@ -60,6 +63,7 @@
 #include <QMediaDevices>
 #include <QJsonDocument>
 #include <QGraphicsView>
+#include <QStandardPaths>
 #include <QGraphicsScene>
 #include <QPlainTextEdit>
 #include <QGuiApplication>

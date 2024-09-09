@@ -342,7 +342,7 @@ void DataBase::findItem()
             {
                 int rowIndex = d->row();
                 int columnIndex = d->column();
-                searchList.append("<行" + FormatTransfer::ins().Int2QString(rowIndex+1) + ",列" + FormatTransfer::ins().Int2QString(columnIndex+1) + ">");
+                searchList.append("<行" + QString::number(rowIndex+1) + ",列" + QString::number(columnIndex+1) + ">");
             }
             if (!searchList.isEmpty()) {
                 temp=searchField + "在表中的位置:" + searchList.join(",");

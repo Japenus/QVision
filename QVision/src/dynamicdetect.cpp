@@ -206,7 +206,8 @@ void DynamicDetect::detectCharacter()
         capture.read(frame);
         gray = Preprocess::ins().GrayTransform(frame);
         QString result = Tools::ins().CharRecognize(frame);
-        QMessageBox::information(nullptr,"提示","识别结果:"+result);
+        // QMessageBox::information(nullptr,"提示","识别结果:"+result);
+        qInfo()<<"识别结果:"<<result;
         imshow("Detect Char",frame);
         if(key ==27){
             break;

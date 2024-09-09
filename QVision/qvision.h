@@ -23,19 +23,23 @@ class QVision : public QMainWindow
     Q_OBJECT
 
 public:
-    QVision(QWidget *parent = nullptr);
     void init();
-    // void dropEvent(QDropEvent *event);
-    // void dragEnterEvent(QDragEnterEvent *event);
+    QVision(QWidget *parent = nullptr);
     ~QVision();
 
 protected:
+    void dropEvent(QDropEvent *e) override;
     void wheelEvent(QWheelEvent *event) override;
+    void dragEnterEvent(QDragEnterEvent *e) override;
+    void dragLeaveEvent(QDragLeaveEvent *e) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
 
 public:
+    QPoint base;
     void Show();
     void SetIcon();
-    bool IsImgOpen();
+    bool imageOpen();
     void Show(Mat src);
     bool Save(Mat what);
     QString getModel();
@@ -51,6 +55,8 @@ public:
 private:
     QLabel *tip1;
     QLabel *tip2;
+    QImage image;
+    QPixmap tmp;
     int fixPara=10;
     bool flag=false;
     Mat Src,Dst,Res;
